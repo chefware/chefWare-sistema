@@ -1,0 +1,50 @@
+@import url('https://fonts.cdnfonts.com/css/made-tommy-soft-outline?styles=59309,59310,59307,59308,59305,59306,59304');
+body {
+    margin: 0;
+    padding: 0;
+}
+.main{
+    background-color: #F5CCB0;
+    width: 100%;
+    height: 120vh;
+    display: flex;
+    justify-content: center;
+}
+.container{
+    width: 90%;
+    background-color: #540804;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.header{
+    width: 100%;
+    background-color: #d74e47;
+    height: 10%;
+    display: flex;
+    justify-content: flex-end;
+}
+.header-content{
+    width: 55%;
+    display: flex;
+    background-color: blue;
+    justify-content: space-between;
+    align-items: center;
+}
+.logo{
+    height: 100%;
+}
+.login-button{
+    width:15%;
+    color: white;
+    height: 40%;
+    background-color: #d74e47;
+    margin-right: 5%;
+    border: none;
+    border-radius: 10px;
+}
+.text-box{
+    width: 50%;
+    background-color: #F5CCB0;
+}
