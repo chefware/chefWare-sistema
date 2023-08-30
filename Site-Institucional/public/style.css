@@ -6,13 +6,12 @@ body {
 .main{
     background-color: #F5CCB0;
     width: 100%;
-    height: 120vh;
+    height: 200vh;
     display: flex;
     justify-content: center;
 }
 .container{
     width: 90%;
-    background-color: #540804;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -20,7 +19,6 @@ body {
 }
 .header{
     width: 100%;
-    background-color: #d74e47;
     height: 10%;
     display: flex;
     justify-content: flex-end;
@@ -28,12 +26,12 @@ body {
 .header-content{
     width: 55%;
     display: flex;
-    background-color: blue;
     justify-content: space-between;
     align-items: center;
 }
 .logo{
     height: 100%;
+    margin-top: 5%;
 }
 .login-button{
     width:15%;
@@ -43,8 +41,79 @@ body {
     margin-right: 5%;
     border: none;
     border-radius: 10px;
+    font-size: 1.2vmax;
+    font-weight: 300;
 }
 .text-box{
     width: 50%;
-    background-color: #F5CCB0;
+    background-color: #F5CCB0;   
+}
+.subtittle{
+    color: #81171B;
+}
+.content1{
+    width: 100%;
+    height: 75%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.content-text{
+    font-family: 'MADE Tommy Soft';
+    width: 45%;
+    height: 55%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.content-tittle{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 5%;
+}
+.egg{
+    width: 35%;
+}
+.tittle{
+    color: #540804;
+    font-size: 2.6vmax;
+    font-weight: 600;
+}
+.home-text{
+    color: #540804;
+    font-size: 1.2vmax;
+    font-weight: 300;
+}
+.onda{
+    width: 99vw;
+}
+.content2{
+    width: 99vw;
+    height: 100%;
+    background-color: #540804;
+    display: flex;
+    justify-content: center;
+}
+.retangulo{
+    width: 25%;
+    height: 60vh;
+}
+.container2{
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+.text-box2{
+    display: flex;
+    flex-direction: column;
+    height: 50%;
+    margin-right: 8%;
+    width: 65%;
+    color: #FFF0DD;
+    font-family: 'MADE Tommy Soft';
+}
+.tittle-2{
+    font-size: 2vmax;
 }
