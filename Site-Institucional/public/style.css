@@ -2,11 +2,12 @@
 body {
     margin: 0;
     padding: 0;
+    scroll-behavior: smooth;
 }
 .main{
-    background-color: #F5CCB0;
+    background-color: white;
     width: 100%;
-    height: 200vh;
+    height: auto;
     display: flex;
     justify-content: center;
 }
@@ -16,6 +17,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: white;
 }
 .header{
     width: 100%;
@@ -30,26 +32,39 @@ body {
     align-items: center;
 }
 .logo{
-    height: 100%;
-    margin-top: 5%;
+    height: 50%;
 }
 .login-button{
-    width:15%;
+    width: 20%;
     color: white;
-    height: 40%;
-    background-color: #d74e47;
+    height: 35%;
+    background-color: #4671C7;
     margin-right: 5%;
     border: none;
     border-radius: 10px;
     font-size: 1.2vmax;
-    font-weight: 300;
+    font-weight: 700;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 }
 .text-box{
     width: 50%;
-    background-color: #F5CCB0;   
+    background-color: white;   
 }
 .subtittle{
-    color: #81171B;
+    color: #040454;
+    font-weight: 800;
+}
+.button-contato{
+    width: 35%;
+    height: 8vh;
+    color: white;
+    font-size: 1.2vmax;
+    border: 2px solid #4671C7;
+    border-radius: 10px;
+    background: #4671C7;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    font-weight: 700;
+    
 }
 .content1{
     width: 100%;
@@ -62,6 +77,7 @@ body {
     font-family: 'MADE Tommy Soft';
     width: 45%;
     height: 55%;
+    line-height: 4vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -71,17 +87,18 @@ body {
     flex-direction: column;
     margin-bottom: 5%;
 }
-.egg{
-    width: 35%;
+.tecnico{
+    width: 50%;
 }
 .tittle{
-    color: #540804;
-    font-size: 2.6vmax;
+    color: black;
+    font-size: 2.5vmax;
     font-weight: 600;
+    line-height: 6vh;
 }
 .home-text{
-    color: #540804;
-    font-size: 1.2vmax;
+    color: #040454;
+    font-size: 1.3vmax;
     font-weight: 300;
 }
 .onda{
@@ -89,14 +106,14 @@ body {
 }
 .content2{
     width: 99vw;
-    height: 100%;
-    background-color: #540804;
+    height: 100vh;
+    background-color: #040454;
     display: flex;
     justify-content: center;
+    flex-direction: column;
 }
 .retangulo{
-    width: 25%;
-    height: 60vh;
+    width: 30%;
 }
 .container2{
     width: 90%;
@@ -104,16 +121,30 @@ body {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    line-height: 10vh;
+    height: 400vh;
 }
 .text-box2{
     display: flex;
     flex-direction: column;
-    height: 50%;
-    margin-right: 8%;
-    width: 65%;
-    color: #FFF0DD;
+    height: 70%;
+    margin-right: 5%;
+    width: 50%;
+    color: white;
     font-family: 'MADE Tommy Soft';
+    font-size: 1vmax;
+    font-weight: 400;
+    line-height: 4vh;
 }
 .tittle-2{
     font-size: 2vmax;
+    margin-bottom: 4%;
+    font-weight: 700;
+}
+.content3{
+    background-color: aliceblue;
+    width: 100%;
+    display: flex;
+    height: 2200vh;
+    border-radius: 10px;
 }
