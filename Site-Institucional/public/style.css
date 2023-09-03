@@ -1,17 +1,45 @@
 @import url('https://fonts.cdnfonts.com/css/made-tommy-soft-outline?styles=59309,59310,59307,59308,59305,59306,59304');
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
 body {
     margin: 0;
     padding: 0;
     scroll-behavior: smooth;
 }
-.main{
+
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    border-radius: 5px;
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #2E4CAD; 
+    border-radius: 10px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #040454; 
+  }
+
+.main {
     background-color: white;
     width: 100%;
     height: auto;
     display: flex;
     justify-content: center;
 }
-.container{
+
+.container {
     width: 90%;
     height: 100%;
     display: flex;
@@ -19,22 +47,27 @@ body {
     align-items: center;
     background-color: white;
 }
-.header{
+
+.header {
     width: 100%;
     height: 10%;
     display: flex;
     justify-content: flex-end;
 }
-.header-content{
+
+.header-content {
     width: 55%;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-.logo{
-    height: 50%;
+
+.logo {
+    margin-top: 2%;
+    width: 20vh;
 }
-.login-button{
+
+.login-button {
     width: 20%;
     color: white;
     height: 35%;
@@ -47,15 +80,23 @@ body {
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
     cursor: pointer;
 }
-.text-box{
-    width: 50%;
-    background-color: white;   
+
+.login-button:hover{
+    background-color: #040454;
 }
-.subtittle{
+
+.text-box {
+    width: 50%;
+    background-color: white;
+}
+
+.subtittle {
     color: #040454;
     font-weight: 800;
+    margin-top: 5%;
 }
-.button-contato{
+
+.button-contato {
     width: 35%;
     height: 8vh;
     color: white;
@@ -67,14 +108,20 @@ body {
     font-weight: 700;
     cursor: pointer;
 }
-.content1{
+
+.button-contato:hover{
+    background-color: #040454;
+}
+
+.content1 {
     width: 100%;
     height: 75%;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
-.content-text{
+
+.content-text {
     font-family: 'MADE Tommy Soft';
     width: 45%;
     height: 55%;
@@ -83,29 +130,35 @@ body {
     flex-direction: column;
     justify-content: center;
 }
-.content-tittle{
+
+.content-tittle {
     display: flex;
     flex-direction: column;
     margin-bottom: 5%;
 }
-.tecnico{
+
+.tecnico {
     width: 50%;
 }
-.title{
+
+.title {
     color: black;
     font-size: 2.5vmax;
     font-weight: 600;
     line-height: 6vh;
 }
-.home-text{
+
+.home-text {
     color: #040454;
     font-size: 1.3vmax;
     font-weight: 300;
 }
-.onda{
+
+.onda {
     width: 99vw;
 }
-.content2{
+
+.content2 {
     width: 99vw;
     height: 100vh;
     background-color: #040454;
@@ -113,10 +166,13 @@ body {
     justify-content: center;
     flex-direction: column;
 }
-.retangulo{
+
+.retangulo {
     width: 30%;
+    margin-left: 5%;
 }
-.container2{
+
+.container2 {
     width: 90%;
     display: flex;
     flex-direction: row;
@@ -125,10 +181,11 @@ body {
     line-height: 10vh;
     height: 400vh;
 }
-.text-box2{
+
+.text-box2 {
     display: flex;
     flex-direction: column;
-    margin-right: 5%;
+    margin-left: 10%;
     width: 50%;
     color: white;
     font-family: 'MADE Tommy Soft';
@@ -136,18 +193,22 @@ body {
     font-weight: 400;
     line-height: 4vh;
 }
-.title-2{
+
+.title-2 {
     font-size: 2vmax;
     margin-bottom: 4%;
     font-weight: 700;
 }
 
-.main2{
+.text-2 {
+    text-align: justify;
+}
+.main2 {
     width: 99vw;
     background-color: #040454;
 }
 
-.content3{
+.content3 {
     background-color: aliceblue;
     width: 99vw;
     display: flex;
@@ -157,7 +218,7 @@ body {
     justify-content: center;
 }
 
-.text-box3{
+.text-box3 {
     width: 90%;
     display: flex;
     text-align: justify;
@@ -165,7 +226,7 @@ body {
     margin-top: 5%;
 }
 
-.title-3{
+.title-3 {
     font-size: 2vmax;
     margin-bottom: 2%;
     font-weight: 700;
@@ -174,12 +235,13 @@ body {
     font-family: 'MADE Tommy Soft';
 }
 
-.text-3{
+.text-3 {
     color: #2E4CAD;
     font-size: 2.5vh;
+    line-height: 5vh;
 }
 
-.step-by-step{
+.step-by-step {
     width: 80%;
     display: flex;
     flex-direction: row;
@@ -192,7 +254,7 @@ body {
     width: 15%;
 }
 
-.values-box{
+.values-box {
     width: 90%;
     border: solid 2px #040454;
     border-radius: 15px;
@@ -203,7 +265,7 @@ body {
     flex-direction: column;
 }
 
-.values{
+.values {
     margin: 1% 0 1% 0;
     width: 98%;
     border-radius: 15px;
@@ -215,7 +277,7 @@ body {
     flex-direction: column;
 }
 
-.title_value{
+.title_value {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -223,13 +285,13 @@ body {
     margin-top: 2%;
 }
 
-.title-4{
+.title-4 {
     margin-top: 2%;
     font-size: 3vh;
     font-family: 'MADE Tommy Soft';
 }
 
-.cards-values{
+.cards-values {
     margin: 5% 0 5% 0;
     width: 90%;
     display: flex;
@@ -242,7 +304,7 @@ body {
     width: 20vh;
 }
 
-.card{
+.card {
     text-align: center;
     width: 25%;
     height: 50vh;
@@ -255,20 +317,18 @@ body {
     margin: 0 5vh 0 5vh;
 }
 
-.img-values{
+.img-values {
     height: 25vh;
 }
 
-
-
-.info-values{
+.info-values {
     display: flex;
     flex-direction: column;
     margin-top: 5%;
     width: 80%;
 }
 
-.title-cards{
+.title-cards {
     font-family: 'MADE Tommy Soft';
     margin-top: 2%;
 }
@@ -277,7 +337,7 @@ body {
     margin-top: 25%;
 }
 
-.footer-value{
+.footer-value {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -286,11 +346,156 @@ body {
     margin-bottom: 2%;
 }
 
-.circle-white{
+.circle-white {
     margin: 0 1% 0 1%;
     border-radius: 40vh;
     height: 2vh;
     width: 2vh;
     background-color: white;
     display: flex;
+}
+
+.content4 {
+    width: 99vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #040454;
+}
+
+.important-box {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: 5% 0 10% 0;
+}
+
+.important-description {
+    width: 40%;
+    height: 30vh;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    margin: 0 2% 0 2%;
+}
+
+ .important-description span {
+    font-size: 2.8vh;
+    text-align: justify;
+    margin-top: 2%;
+    color: #FFF;
+    line-height: 5vh;
+} 
+
+.title-important {
+    font-family: 'MADE Tommy Soft';
+    font-size: 100vh;
+}
+
+.oval-box {
+    width: 100%;
+}
+
+.content5 {
+    width: 99vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.title-contact {
+    font-size: 5vh;
+    color: #2E4CAD;
+    font-family: 'MADE Tommy Soft';
+}
+
+.info-contact {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-contact {
+    width: 21%;
+    border-radius: 15px;
+    border: solid 2px #4671C7;
+    margin: 2% 2% 2% 2%;
+}
+
+.data-contact {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.data-contact img {
+    width: 40%;
+    margin: 2% 0 2% 0;
+}
+
+.title-contact {
+    color: #4671C7;
+    font-size: 4.3vh;
+    margin: 3% 0 3% 0;
+}
+
+.subtitle-contact {
+    color: #4671C7;
+    margin-bottom: 5%;
+}
+
+.means-of-contact {
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    justify-content: space-between;
+    margin: 5% 0 0 6%;
+    font-size: 1.8vh; 
+}
+
+.means-of-contact .means {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 3% 0 3% 0;
+}
+
+.means-of-contact img {
+    width: 10%;
+}
+
+.means-of-contact .means-company {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 8% 0 8% 0;
+    font-size: 1.6vh; 
+}
+
+.means-of-contact .means-company img {
+    width: 15%;
+}
+
+.subtitle-company {
+    font-size: 2.5vh;
+    color: #2E4CAD;
+}
+
+.content6 {
+    width: 99.4vw;
+    background-color: #040454;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2% 0 2% 0;
 }
