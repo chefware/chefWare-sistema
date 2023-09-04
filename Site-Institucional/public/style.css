@@ -1,4 +1,4 @@
-@import url('https://fonts.cdnfonts.com/css/made-tommy-soft-outline?styles=59309,59310,59307,59308,59305,59306,59304');
+@import url('https://fonts.cdnfonts.com/css/montserrat');
 
 * {
     margin: 0;
@@ -9,6 +9,7 @@ body {
     margin: 0;
     padding: 0;
     scroll-behavior: smooth;
+    font-family: Montserrat;
 }
 
 ::-webkit-scrollbar {
@@ -74,11 +75,12 @@ body {
     background-color: #4671C7;
     margin-right: 5%;
     border: none;
-    border-radius: 10px;
+    border-radius: 20px;
     font-size: 1.2vmax;
     font-weight: 700;
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
     cursor: pointer;
+    font-family: Montserrat;
 }
 
 .login-button:hover{
@@ -90,23 +92,25 @@ body {
     background-color: white;
 }
 
-.subtittle {
+.subtitle {
     color: #040454;
     font-weight: 800;
     margin-top: 5%;
+    font-size: 20px;
 }
 
 .button-contato {
-    width: 35%;
-    height: 8vh;
+    width: 40%;
+    height: 6vh;
     color: white;
     font-size: 1.2vmax;
     border: 2px solid #4671C7;
-    border-radius: 10px;
+    border-radius: 15px;
     background: #4671C7;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-    font-weight: 700;
+    font-weight: 800;
     cursor: pointer;
+    font-family: Montserrat;
 }
 
 .button-contato:hover{
@@ -122,7 +126,7 @@ body {
 }
 
 .content-text {
-    font-family: 'MADE Tommy Soft';
+    font-family: 'Montserrat';
     width: 45%;
     height: 55%;
     line-height: 4vh;
@@ -134,7 +138,7 @@ body {
 .content-tittle {
     display: flex;
     flex-direction: column;
-    margin-bottom: 5%;
+    margin-bottom: 0%;
 }
 
 .tecnico {
@@ -143,32 +147,33 @@ body {
 
 .title {
     color: black;
-    font-size: 2.5vmax;
-    font-weight: 600;
-    line-height: 6vh;
+    font-size: 2vmax;
+    font-weight: 800;
+    line-height: 5vh;
 }
 
 .home-text {
     color: #040454;
-    font-size: 1.3vmax;
-    font-weight: 300;
+    font-size: 1.2vmax;
+    font-weight: 500;
 }
 
 .onda {
-    width: 99vw;
+    width: 100vw;
 }
 
 .content2 {
-    width: 99vw;
+    width: 100vw;
     height: 100vh;
     background-color: #040454;
     display: flex;
     justify-content: center;
     flex-direction: column;
+    margin-top: -0.1%;
 }
 
 .retangulo {
-    width: 30%;
+    width: 40%;
     margin-left: 5%;
 }
 
@@ -185,32 +190,34 @@ body {
 .text-box2 {
     display: flex;
     flex-direction: column;
-    margin-left: 10%;
     width: 50%;
     color: white;
-    font-family: 'MADE Tommy Soft';
+    font-family: 'Montserrat';
     font-size: 1vmax;
     font-weight: 400;
     line-height: 4vh;
+
 }
 
 .title-2 {
-    font-size: 2vmax;
+    font-size: 2.5vmax;
     margin-bottom: 4%;
-    font-weight: 700;
+    font-weight: 800;
 }
 
 .text-2 {
-    text-align: justify;
+    text-align: left;
+    font-size: 23px;
+    font-weight: 400;
 }
 .main2 {
-    width: 99vw;
+    width: 100vw;
     background-color: #040454;
 }
 
 .content3 {
     background-color: aliceblue;
-    width: 99vw;
+    width: 100vw;
     display: flex;
     border-radius: 20px;
     flex-direction: column;
@@ -228,17 +235,17 @@ body {
 
 .title-3 {
     font-size: 2vmax;
-    margin-bottom: 2%;
-    font-weight: 700;
+    margin-bottom: 1%;
+    font-weight: 800;
     color: #2E4CAD;
     margin-top: 2%;
-    font-family: 'MADE Tommy Soft';
+    font-family: 'Montserrat';
 }
 
 .text-3 {
     color: #2E4CAD;
-    font-size: 2.5vh;
-    line-height: 5vh;
+    font-size: 28px;
+    line-height: 40px;
 }
 
 .step-by-step {
@@ -287,8 +294,8 @@ body {
 
 .title-4 {
     margin-top: 2%;
-    font-size: 3vh;
-    font-family: 'MADE Tommy Soft';
+    font-size: 40px;
+    font-weight: 800;
 }
 
 .cards-values {
@@ -326,11 +333,14 @@ body {
     flex-direction: column;
     margin-top: 5%;
     width: 80%;
+    font-size: 18px;
 }
 
 .title-cards {
-    font-family: 'MADE Tommy Soft';
+    font-family: 'Montserrat';
     margin-top: 2%;
+    font-size: 22px;
+    font-weight: 800;
 }
 
 .client {
@@ -356,7 +366,7 @@ body {
 }
 
 .content4 {
-    width: 99vw;
+    width: 100vw;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -383,7 +393,7 @@ body {
 }
 
  .important-description span {
-    font-size: 2.8vh;
+    font-size: 25px;
     text-align: justify;
     margin-top: 2%;
     color: #FFF;
@@ -391,16 +401,17 @@ body {
 } 
 
 .title-important {
-    font-family: 'MADE Tommy Soft';
-    font-size: 100vh;
+    font-weight: 800;
+    font-size: 100px;
 }
 
 .oval-box {
+    margin-top: 3%;
     width: 100%;
 }
 
 .content5 {
-    width: 99vw;
+    width: 100vw;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -408,9 +419,17 @@ body {
 }
 
 .title-contact {
-    font-size: 5vh;
+    font-size: 30px;
+    font-weight: 600;
     color: #2E4CAD;
-    font-family: 'MADE Tommy Soft';
+    font-family: 'Montserrat';
+}
+
+.title-c{
+    font-size: 40px;
+    font-weight: 800;
+    color: #2E4CAD;
+    font-family: 'Montserrat';
 }
 
 .info-contact {
@@ -437,18 +456,16 @@ body {
 
 .data-contact img {
     width: 40%;
-    margin: 2% 0 2% 0;
+    margin-top: 10%;
 }
 
 .title-contact {
     color: #4671C7;
-    font-size: 4.3vh;
-    margin: 3% 0 3% 0;
+    margin: 3% 0 1% 0;
 }
 
 .subtitle-contact {
     color: #4671C7;
-    margin-bottom: 5%;
 }
 
 .means-of-contact {
@@ -457,7 +474,7 @@ body {
     align-items: baseline;
     justify-content: space-between;
     margin: 5% 0 0 6%;
-    font-size: 1.8vh; 
+    font-size: 15px; 
 }
 
 .means-of-contact .means {
@@ -491,7 +508,7 @@ body {
 }
 
 .content6 {
-    width: 99.4vw;
+    width: 100vw;
     background-color: #040454;
     color: white;
     display: flex;
