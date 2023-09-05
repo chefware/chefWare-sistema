@@ -1,0 +1,36 @@
+/* PARA TELAS DESKTOP MEDIO */
+@media (max-width: 1440px) {
+    .title {
+        font-size: 28px;
+        line-height: 35px;
+    }
+
+    .home-text{
+        font-size: 20px;
+    }
+
+    .subtitle {
+        font-size: 18px;
+    }
+
+    .button-contato {
+        width: 45%;
+        height: 60px;
+        font-size: 18px;
+    }
+
+    .retangulo {
+        width: 35%;
+        margin-left: 5%;
+    }
+
+    .text-2 {
+        font-size: 20px;    
+    }
+
+    .text-3 {
+            font-size: 22px;
+            line-height: 40px;
+    }
+
+}
