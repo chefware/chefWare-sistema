@@ -33,4 +33,25 @@
             line-height: 40px;
     }
 
+    .step-by-step {
+        width: 68%;
+    }
+
+    .title-cards {
+        font-size: 19px;
+    }
+
+    .info-values {
+        font-size: 17px;
+    }
+
+    .client {
+        margin-top: 45%;
+    }
+
+
+    .title-important {
+        font-size: 40px;
+    }
+
 }

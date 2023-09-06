@@ -333,6 +333,7 @@ body {
     flex-direction: column;
     margin-top: 5%;
     width: 80%;
+    background-color: red;
     font-size: 18px;
 }
 
@@ -346,6 +347,8 @@ body {
 .client {
     margin-top: 25%;
 }
+
+
 
 .footer-value {
     display: flex;
@@ -390,19 +393,19 @@ body {
     display: flex;
     flex-direction: column;
     margin: 0 2% 0 2%;
+    font-size: 25px;
+    text-align: left;
 }
 
- .important-description span {
-    font-size: 25px;
-    text-align: justify;
-    margin-top: 2%;
-    color: #FFF;
-    line-height: 5vh;
+ #description {
+    line-height: 35px;
+    font-size: 30px;
+    font-weight: 300;
 } 
 
 .title-important {
     font-weight: 800;
-    font-size: 100px;
+    font-size: 40px;
 }
 
 .oval-box {
