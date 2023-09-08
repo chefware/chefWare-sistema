@@ -5,6 +5,7 @@
     width: 120px;
   }
   .tecnico {
+    margin-top: 10%;
     width: 45%;
   }
   .title {
@@ -74,6 +75,7 @@
   }
 
   .tecnico {
+    margin-top: 10%;
     width: 40%;
   }
   .title {
@@ -193,9 +195,36 @@
 
 /* PARA TELAS DESKTOP PEQUENO */
 @media only screen and (max-width: 450px) {
+  .header {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+  }
+
+  .header-content {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
   .logo {
+    position: relative;
+    right: 15%;
     margin-top: 2%;
     width: 60px;
+  }
+
+  .login-button {
+    position: relative;
+    width: 20%;
+    height: 40%;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 700;
+    left: 5%;
   }
 
   .content1 {
@@ -207,14 +236,7 @@
     flex-direction: column;
   }
 
-  .login-button {
-    width: 30%;
-    height: 40%;
-    margin-right: 5%;
-    border-radius: 20px;
-    font-size: 10px;
-    font-weight: 700;
-  }
+
 
   .tecnico {
     margin-top: 15%;
@@ -246,7 +268,7 @@
     font-size: 12px;
   }
 
-  .content2{
+  .content2 {
     margin-top: -0.17%;
   }
 
@@ -278,14 +300,18 @@
   }
 
   .title-3 {
-    text-align: center;
+    text-align: left;
     font-size: 20px;
   }
 
   .text-3 {
     font-size: 15px;
-    text-align: justify;
+    text-align: left;
     line-height: 25px;
+  }
+
+  .text-box3{
+    margin-top: 10%;
   }
 
   .step-by-step {
@@ -293,15 +319,15 @@
     width: 80%;
   }
 
-  .title-4{
+  .title-4 {
     font-size: 20px;
   }
 
-  .cards-values{
+  .cards-values {
     flex-direction: column;
   }
 
-  .card{
+  .card {
     width: 100%;
     margin-top: 10%;
   }
@@ -339,7 +365,7 @@
     text-align: center;
   }
 
-  .important-description{
+  .important-description {
     width: 90%;
   }
 
@@ -351,14 +377,14 @@
 
   .important-description-desc {
     font-size: 15px;
-    margin-top: 2%;
+    margin-top: 8%;
     line-height: 25px;
     width: 90%;
     text-align: justify;
     margin-left: 0;
   }
 
-  .important-box{
+  .important-box {
     flex-direction: column;
   }
 
@@ -397,16 +423,15 @@
   .means-of-contact .means-company {
     font-size: 13px;
   }
-  
-  .content6{
+
+  .content6 {
     width: 100vw;
     align-items: center;
     justify-content: center;
     text-align: center;
-  
   }
 
-  #footer-text{
+  #footer-text {
     font-size: 10px;
     width: 90%;
   }

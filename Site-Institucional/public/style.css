@@ -66,7 +66,7 @@ body {
 
 .logo {
     margin-top: 2%;
-    width: 20vh;
+    width: 15vh;
 }
 
 .login-button {
@@ -79,7 +79,6 @@ body {
     border-radius: 20px;
     font-size: 1.2vmax;
     font-weight: 700;
-    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
     cursor: pointer;
     font-family: Montserrat;
 }
@@ -119,6 +118,7 @@ body {
 }
 
 .content1 {
+    margin-top: 10%;
     width: 100%;
     height: 75%;
     display: flex;
