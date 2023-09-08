@@ -1,4 +1,4 @@
-@import url('https://fonts.cdnfonts.com/css/montserrat');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 * {
     margin: 0;
@@ -10,6 +10,7 @@ body {
     padding: 0;
     scroll-behavior: smooth;
     font-family: Montserrat;
+    overflow-x: hidden;
 }
 
 ::-webkit-scrollbar {
@@ -328,12 +329,12 @@ body {
     height: 25vh;
 }
 
+
 .info-values {
     display: flex;
     flex-direction: column;
     margin-top: 5%;
     width: 80%;
-    background-color: red;
     font-size: 18px;
 }
 
@@ -392,15 +393,28 @@ body {
     color: white;
     display: flex;
     flex-direction: column;
-    margin: 0 2% 0 2%;
+    text-align: left;
+    line-height: 40px;
+}
+
+.important-description-desc{
+    width: 40%;
+    height: 30vh;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    margin-left: 4%;
+    margin-top: 6%;
     font-size: 25px;
     text-align: left;
+    line-height: 40px;
 }
 
  #description {
     line-height: 35px;
-    font-size: 30px;
+    font-size: 25px;
     font-weight: 300;
+    margin-top: 5%;
 } 
 
 .title-important {
@@ -409,7 +423,7 @@ body {
 }
 
 .oval-box {
-    margin-top: 3%;
+    margin-top: 1%;
     width: 100%;
 }
 
@@ -419,6 +433,8 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-color: white;
+    margin-top: -0.06%;
 }
 
 .title-contact {
@@ -486,11 +502,9 @@ body {
     justify-content: space-between;
     align-items: center;
     margin: 3% 0 3% 0;
+    white-space: nowrap;
 }
 
-.means-of-contact img {
-    width: 10%;
-}
 
 .means-of-contact .means-company {
     display: flex;
@@ -509,6 +523,15 @@ body {
     font-size: 2.5vh;
     color: #2E4CAD;
 }
+
+    .email-img{
+        width: 30%;
+        margin-right: 2%;
+    }
+    .linkedin-img{
+        margin-right: 2%;
+        width: 30%;
+    }
 
 .content6 {
     width: 100vw;
