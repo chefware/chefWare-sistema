@@ -72,7 +72,7 @@ body {
 .login-button {
     width: 20%;
     color: white;
-    height: 35%;
+    height: 40%;
     background-color: #4671C7;
     margin-right: 5%;
     border: none;
@@ -118,7 +118,7 @@ body {
 }
 
 .content1 {
-    margin-top: 10%;
+    margin-top: 7%;
     width: 100%;
     height: 75%;
     display: flex;
@@ -321,35 +321,41 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-evenly;
     margin: 0 5vh 0 5vh;
 }
 
 .img-values {
-    height: 25vh;
+    width: 100%;
+    height: 60%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 
 .info-values {
     display: flex;
     flex-direction: column;
-    margin-top: 5%;
     width: 80%;
+    height: 40%;
     font-size: 18px;
 }
 
 .title-cards {
     font-family: 'Montserrat';
-    margin-top: 2%;
     font-size: 22px;
     font-weight: 800;
+    margin-bottom: 5%;
 }
 
 .client {
-    margin-top: 25%;
+    height: 60%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-
-
 
 .footer-value {
     display: flex;
@@ -460,10 +466,17 @@ body {
 }
 
 .card-contact {
-    width: 21%;
+    width: 18%;
+    height: 420px;
     border-radius: 15px;
     border: solid 2px #4671C7;
     margin: 2% 2% 2% 2%;
+    box-shadow: 5px 5px 5px rgb(202, 202, 202);
+}
+
+
+.telephone-img {
+    margin-left: 5%;
 }
 
 .data-contact {
