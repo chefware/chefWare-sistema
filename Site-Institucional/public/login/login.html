@@ -1,45 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
-    <link rel="stylesheet" href="style-login.css">
-    <link rel="stylesheet" href="mediaQuerysLogin.css">
-    <link rel="shortcut icon" href="assets/logoBRANCA icon.png">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Montserrat"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0"
+    />
+    <link rel="stylesheet" href="style-login.css" />
+    <link rel="stylesheet" href="mediaQuerysLogin.css" />
+    <link rel="shortcut icon" href="assets/logoBRANCA icon.png" />
     <title>Login</title>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <div id="div_main">
-            <div class="section_logo">
-                <div class="div_logo">
-                    <img id="logo_img" src="../assets/logoBRANCA.png">
-                </div>
-            </div>
-            <div class="div_form">
-                <div class="div_titulo_cadastro">
-                    <h1 class="titulo">Login</h1>
-                </div>
-
-                <div class="input_group">
-                    <div class="container_input">
-                        <i class="material-symbols-outlined icon">person</i>
-                        <input class="input_form" placeholder="Usuário">
-                    </div>
-                    <div class="container_input">
-                        <i class="material-symbols-rounded icon">lock</i>
-                        <input class="input_form" type="password" placeholder="Senha">
-                    </div>
-                    <div class="areaBotao">
-                        <a href="../index.html" id="botaoVoltarLogin"><button class="bt_cadastro cancelar">Voltar</button></a>
-                        <button class="bt_cadastro">Entrar</button>
-                    </div>
-                </div>
-            </div>
+      <div id="div_main">
+        <div class="section_logo">
+          <div class="div_logo">
+            <img id="logo_img" src="./assets/logoBRANCA.png" />
+          </div>
         </div>
+        <div class="div_form">
+          <div class="div_titulo_cadastro">
+            <h1 class="titulo">Login</h1>
+          </div>
+
+          <div class="input_group">
+            <div class="container_input">
+              <i class="material-symbols-outlined icon">person</i>
+              <input class="input_form" id="inp_user" placeholder="Usuário" />
+            </div>
+            <div class="container_input">
+              <i class="material-symbols-rounded icon">lock</i>
+              <input
+                class="input_form"
+                type="password"
+                id="inp_password"
+                placeholder="Senha"
+              />
+            </div>
+            <div class="areaBotao">
+              <a href="./index.html" id="botaoVoltarLogin"
+                ><button class="bt_cadastro cancelar"">Voltar</button></a
+              >
+              <button class="bt_cadastro" onclick="logar()" >Entrar</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-</body>
+  </body>
 </html>
+<script>
+  function logar() {
+
+    var user = document.getElementById("inp_user").value;
+    var password = document.getElementById("inp_password").value;
+    var correctUser = "fernanda";
+    var correctPassword = "caramico";
+
+    if (correctUser == "" || correctPassword == "") {
+      alert("Preencha todos os campos!");
+      return false;
+    } else {
+      if (correctUser == user && correctPassword == password) {
+        alert("Login realizado com sucesso!");
+        window.location.href = "./index.html";
+        sessionStorage.setItem("user", user);
+      } else {
+        alert("Usuário ou senha incorretos!");
+        return false;
+      }
+    }
+  }
+</script>

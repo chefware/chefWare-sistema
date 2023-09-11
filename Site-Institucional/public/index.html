@@ -20,9 +20,9 @@
   <div class="main">
     <div class="container">
       <div class="header">
-        <div class="header-content">
+        <div class="header-content" id="header">
           <img src="./assets/logoAZUL.png" class="logo" />
-          <button onclick="window.location.href='./login/login.html'" class="login-button">LOGIN</button>
+          <button onclick="window.location.href='login.html'" class="login-button" id="botaoLogin">LOGIN</button>
         </div>
       </div>
       <div class="content1">
@@ -256,3 +256,27 @@
 </body>
 
 </html>
+<script>
+
+  var botaoLogin = document.getElementById("botaoLogin");
+  var header = document.getElementById("header");
+
+  function verificarLogin() {
+    var user = sessionStorage.getItem("user");
+
+    if (user != null) {
+      botaoLogin.style.display = "none";
+      header.innerHTML += `<span class='user'>Olá, ${user}</span>`;
+      header.innerHTML += `<button onclick="deslogar()" class="login-button" id="botaoLogOut">LOG-OUT</button>`;
+    }
+  
+  }
+
+  function deslogar() {
+    alert("Você foi deslogado com sucesso!")
+    sessionStorage.removeItem("user");
+    location.reload();
+  }
+
+  window.onload = verificarLogin();
+</script>
