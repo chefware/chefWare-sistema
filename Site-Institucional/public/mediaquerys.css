@@ -156,10 +156,6 @@
     width: 35vw;
   }
 
-  .client {
-    margin-top: 0%;
-  }
-
   .title-important {
     font-size: 22px;
     align-items: center;
@@ -309,10 +305,6 @@
     width: 14vw;
   }
 
-  .client {
-    margin-top: 0%;
-  }
-
   .title-important {
     font-size: 33px;
   }
@@ -415,11 +407,6 @@
   .info-values {
     font-size: 17px;
   }
-
-  .client {
-    margin-top: 45%;
-  }
-
   .title-important {
     font-size: 40px;
   }
@@ -478,9 +465,6 @@
   .info-values {
     font-size: 17px;
   }
-  .client {
-    margin-top: 45%;
-  }
   .title-important {
     font-size: 40px;
   }
@@ -537,9 +521,6 @@
   }
   .info-values {
     font-size: 90%;
-  }
-  .client {
-    margin-top: 45%;
   }
   .title-important {
     font-size: 40px;
