@@ -20,8 +20,8 @@
   <div class="main">
     <div class="container">
       <div class="header">
+        <img src="./assets/logoAZUL.png" class="logo" />
         <div class="header-content" id="header">
-          <img src="./assets/logoAZUL.png" class="logo" />
           <button onclick="window.location.href='login.html'" class="login-button" id="botaoLogin">LOGIN</button>
         </div>
       </div>
@@ -102,7 +102,7 @@
                 </div>
                 <div class="card">
                   <div class="img-client client">
-                    <img src="./assets/group.png" id="cliente" alt="">
+                    <img src="./assets/cliente.svg" id="cliente" alt="">
                   </div>
                   <div class="info-values" id="client-text">
                     <span class="title-cards">CLIENTE</span>
@@ -208,6 +208,25 @@
               </div>
             </div>
           </div>
+
+          <div class="card-contact">
+            <div class="data-contact">
+              <img src="./assets/thiago.png" alt="">
+              <span class="title-contact">Thiago Garcia</span>
+              <span class="subtitle-contact">Founder Developer</span>
+            </div>
+            <div class="means-of-contact">
+              <div class="means">
+                <img src="./assets/email.png" class ="email-img" alt="">
+                <span>thiago.chefware@hotmail.com</span>
+              </div>
+              <div class="means">
+                <img src="./assets/linkedin.png"  class="linkedin-img" alt="">
+                <span>thiago-garcia</span>
+              </div>
+            </div>
+          </div>
+          
           <div class="card-contact">
             <div class="data-contact">
               <span class="title-contact">EMPRESA</span>
@@ -228,23 +247,9 @@
               </div>
             </div>
           </div>
-          <div class="card-contact">
-            <div class="data-contact">
-              <img src="./assets/thiago.png" alt="">
-              <span class="title-contact">Thiago Garcia</span>
-              <span class="subtitle-contact">Founder Developer</span>
-            </div>
-            <div class="means-of-contact">
-              <div class="means">
-                <img src="./assets/email.png" class ="email-img" alt="">
-                <span>thiago.chefware@hotmail.com</span>
-              </div>
-              <div class="means">
-                <img src="./assets/linkedin.png"  class="linkedin-img" alt="">
-                <span>thiago-garcia</span>
-              </div>
-            </div>
-          </div>
+
+        
+
         </div>
       </div>
       <div class="content6">
@@ -266,14 +271,13 @@
 
     if (user != null) {
       botaoLogin.style.display = "none";
-      header.innerHTML += `<span class='user'>Olá, ${user}</span>`;
+      header.innerHTML += `<span class='user'>Olá, <span id="text-user">${user}</span></span>`;
       header.innerHTML += `<button onclick="deslogar()" class="login-button" id="botaoLogOut">LOG-OUT</button>`;
     }
   
   }
 
   function deslogar() {
-    alert("Você foi deslogado com sucesso!")
     sessionStorage.removeItem("user");
     location.reload();
   }
