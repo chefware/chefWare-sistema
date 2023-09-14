@@ -16,23 +16,23 @@ body {
 
 ::-webkit-scrollbar {
     width: 10px;
-  }
-  
-  /* Track */
-  ::-webkit-scrollbar-track {
+}
+
+/* Track */
+::-webkit-scrollbar-track {
     border-radius: 5px;
-  }
-   
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: #2E4CAD; 
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #2E4CAD;
     border-radius: 10px;
-  }
-  
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: #040454; 
-  }
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #040454;
+}
 
 .main {
     background-color: white;
@@ -43,7 +43,7 @@ body {
 }
 
 .container {
-    width: 90%;
+    width: 85%;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -53,7 +53,7 @@ body {
 
 .header {
     width: 100%;
-    height: 10%;
+    height: 10vh;
     display: flex;
 }
 
@@ -67,37 +67,37 @@ body {
 }
 
 .logo {
-    margin-top: 2%;
-    width: 15vh;
+    position: absolute;
+    margin-top: 1%;
+    width: 10vh;
     display: flex;
-    margin-left: 45%;
 }
 
 .login-button {
-    width: 20%;
+    width: 17%;
     color: white;
     height: 40%;
     background-color: #4671C7;
     margin-right: 5%;
     border: none;
     border-radius: 20px;
-    font-size: 1.2vmax;
+    font-size: 90%;
     font-weight: 700;
     cursor: pointer;
     font-family: Montserrat;
 }
 
-.login-button:hover{
+.login-button:hover {
     background-color: #040454;
 }
 
-.user{
+.user {
     font-size: 2.5vh;
     font-weight: 700;
     color: #040454;
 }
 
-#text-user{
+#text-user {
     font-weight: 500;
 }
 
@@ -127,7 +127,7 @@ body {
     font-family: Montserrat;
 }
 
-.button-contato:hover{
+.button-contato:hover {
     background-color: #040454;
 }
 
@@ -159,6 +159,12 @@ body {
     width: 50%;
 }
 
+.before-title {
+    color: #040454;
+    font-size: 2vh;
+    font-weight: 800;
+}
+
 .title {
     color: black;
     font-size: 2vmax;
@@ -174,6 +180,11 @@ body {
 
 .onda {
     width: 100vw;
+}
+
+.onda2 {
+    width: 100vw;
+    transform: rotate(180deg);
 }
 
 .content2 {
@@ -224,23 +235,27 @@ body {
     font-size: 23px;
     font-weight: 400;
 }
+
 .main2 {
     width: 100vw;
     background-color: #040454;
+    justify-content: center;
+    display: flex;
 }
 
 .content3 {
-    background-color: aliceblue;
-    width: 100vw;
+    background-color: rgb(255, 255, 255);
+    width: 90vw;
     display: flex;
     border-radius: 20px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    margin-bottom: 10%;
 }
 
 .text-box3 {
-    width: 90%;
+    width: 85%;
     display: flex;
     text-align: justify;
     flex-direction: column;
@@ -249,6 +264,7 @@ body {
 
 .title-3 {
     font-size: 2vmax;
+    text-align: center;
     margin-bottom: 1%;
     font-weight: 800;
     color: #2E4CAD;
@@ -390,51 +406,120 @@ body {
 
 .content4 {
     width: 100vw;
+    height: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: #040454;
+    background-color: #ffffff;
 }
 
 .important-box {
     width: 100%;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin: 5% 0 10% 0;
+    margin: 0 0 10% 0;
 }
 
 .important-description {
-    width: 40%;
-    height: 30vh;
-    color: white;
+    width: 70%;
+    height: auto;
+    color: #040454;
     display: flex;
     flex-direction: column;
-    text-align: left;
+    text-align: justify;
     line-height: 40px;
+    align-items: center;
 }
 
-.important-description-desc{
-    width: 40%;
-    height: 30vh;
+.data-div{
+    display: flex;
+    flex-direction: row;
+    width: 60%;
+
+}
+
+.data {
+    display: flex;
+    min-width: 40%;
+    height: auto;
+    font-weight: 600;
+    font-size: 10vh;
+    margin-right: 10%;
+    margin-top: 5%;
+    flex-direction: column;
+    align-items: center;
+    color: #040454;
+}
+
+.data-two {
+    display: flex;
+    min-width: 20%;
+    height: auto;
+    font-weight: 600;
+    font-size: 10vh;
+    margin-top: 5%;
+    flex-direction: column;
+    align-items: center;
+    color: #040454;
+}
+
+#milhoes {
+    font-size: 4vh;
+    font-weight: 700;
+}
+
+#pessoas{
+    font-size: 3vh;
+    width: 80%;
+    text-align: center;
+}
+
+#numero {
+    font-size: 2vh;
+    margin-top: 2%;
+    width: 100%;
+    text-align: center;
+}
+.desc-title{
+    font-weight: 800;
+    font-size: 40px;
+    text-align: center;
+    color: white;
+    margin-top: 5%;
+}
+.important-description-desc {
+    width: 70%;
+    height: 80%;
     color: white;
     display: flex;
     flex-direction: column;
     margin-left: 4%;
-    margin-top: 6%;
+    margin-top: 2%;
+    row-gap: 3%;
     font-size: 25px;
-    text-align: left;
+    text-align: center;
     line-height: 40px;
 }
 
- #description {
+.div-important-desc{
+    display: flex;
+    width: 100%;
+    background-color: #040454;
+    height: 120vh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#description {
     line-height: 35px;
     font-size: 25px;
     font-weight: 300;
     margin-top: 5%;
-} 
+}
 
 .title-important {
     font-weight: 800;
@@ -442,7 +527,7 @@ body {
 }
 
 .oval-box {
-    margin-top: 1%;
+    margin-top: -10%;
     width: 100%;
 }
 
@@ -463,7 +548,7 @@ body {
     font-family: 'Montserrat';
 }
 
-.title-c{
+.title-c {
     font-size: 40px;
     font-weight: 800;
     color: #2E4CAD;
@@ -519,7 +604,7 @@ body {
     align-items: baseline;
     justify-content: space-between;
     margin: 5% 0 0 6%;
-    font-size: 15px; 
+    font-size: 15px;
 }
 
 .means-of-contact .means {
@@ -538,7 +623,7 @@ body {
     justify-content: space-between;
     align-items: center;
     margin: 8% 0 8% 0;
-    font-size: 1.6vh; 
+    font-size: 1.6vh;
 }
 
 .means-of-contact .means-company img {
@@ -550,14 +635,15 @@ body {
     color: #2E4CAD;
 }
 
-    .email-img{
-        width: 30%;
-        margin-right: 2%;
-    }
-    .linkedin-img{
-        margin-right: 2%;
-        width: 30%;
-    }
+.email-img {
+    width: 30%;
+    margin-right: 2%;
+}
+
+.linkedin-img {
+    margin-right: 2%;
+    width: 30%;
+}
 
 .content6 {
     width: 100vw;

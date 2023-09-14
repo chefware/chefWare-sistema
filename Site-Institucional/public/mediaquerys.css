@@ -2,7 +2,7 @@
 @media only screen  and (min-width: 0px) and (max-width: 450px) {
   .header {
     width: 100%;
-    height: 10%;
+    height: 5vh;
     display: flex;
     justify-content: center;
     flex-direction: row;
@@ -16,9 +16,6 @@
   }
 
   .logo {
-    position: relative;
-    right: 15%;
-    margin-top: 2%;
     width: 60px;
   }
 
@@ -52,8 +49,12 @@
     width: 100%;
   }
 
+  .before-title{
+    font-size: 10px;
+    margin-top: 10%;
+  }
+
   .title {
-    margin-top: 20%;
     font-size: 17px;
     line-height: 25px;
   }
@@ -122,6 +123,10 @@
   .step-by-step {
     margin-top: 10%;
     width: 80%;
+  }
+
+  .values-box{
+    margin-top: 10%;
   }
 
   .title-4 {
@@ -233,6 +238,33 @@
     font-size: 10px;
     width: 90%;
   }
+
+  #numero{
+    font-size: 10px;
+  }
+  #pessoas{
+    font-size: 10px;
+  }
+  #milhoes{
+    font-size: 20px;
+  }
+  .data{
+    font-size: 40px;
+  }
+  .data-two{
+    font-size: 40px;
+  }
+  .data-div{
+    margin-top: 10%;
+  }
+  .div-important-desc{
+    height: 90vh;
+  }
+  .user{
+    position: relative;
+    font-size: 10px;
+    left: 5%;
+  }
 }
 
 /* PARA TELAS DESKTOP PEQUENO */
@@ -246,8 +278,13 @@
     margin-top: 10%;
     width: 40%;
   }
+  .before-title{
+    margin-top: 10%;
+  }
+  .main2{
+    margin-top: -0.1%;
+  }
   .title {
-    margin-top: 20%;
     font-size: 25px;
     line-height: 31px;
   }
@@ -290,8 +327,9 @@
   }
 
   .info-values {
-    font-size: 17px;
+    font-size: 90%;
   }
+
 
   #inovacao {
     width: 14vw;
@@ -303,6 +341,11 @@
 
   #cliente {
     width: 14vw;
+  }
+
+  
+  .onda2{
+    margin-top: -0.1%;
   }
 
   .title-important {
@@ -321,6 +364,18 @@
   .title-c {
     font-size: 30px;
   }
+
+  #numero{
+    font-size: 16px;
+  }
+
+  #milhoes {
+    font-size: 3vh;
+}
+
+.div-important-desc{
+  height: 90vh;
+}
 
   .title-contact {
     font-size: 22px;
@@ -362,24 +417,26 @@
     margin-top: 10%;
     width: 45%;
   }
+  .before-title{
+    margin-top: 10%;
+  }
   .title {
-    margin-top: 20%;
     font-size: 28px;
     line-height: 35px;
   }
 
   .home-text {
-    font-size: 20px;
+    font-size: 18px;
   }
 
   .subtitle {
-    font-size: 18px;
+    font-size: 17px;
   }
 
   .button-contato {
     width: 45%;
     height: 60px;
-    font-size: 18px;
+    font-size: 16px;
   }
 
   .retangulo {
@@ -396,27 +453,67 @@
     line-height: 40px;
   }
 
+  .title-4{
+    font-size: 30px;
+  }
+
   .step-by-step {
     width: 68%;
   }
 
   .title-cards {
-    font-size: 19px;
+    font-size: 18px;
   }
 
   .info-values {
-    font-size: 17px;
+    font-size: 15px;
   }
   .title-important {
     font-size: 40px;
   }
 
-  .means-of-contact .means-company {
-    font-size: 90%;
+  .onda2{
+    margin-top: -0.1%;
   }
-  .means-of-contact{
-    font-size: 75%;
+  
+  #numero{
+    font-size: 16px;
   }
+
+  #milhoes {
+    font-size: 3vh;
+}
+
+#pessoas{
+    font-size: 2.5vh;
+    width: 80%;
+    text-align: center;
+}
+
+.div-important-desc{
+  height: 90vh;
+}
+
+.info-values {
+  font-size: 17px;
+}
+.title-important {
+  font-size: 40px;
+}
+.title-contact{
+  font-size: 25px;
+}
+.means-of-contact .means-company {
+  font-size: 100%;
+  white-space: wrap;
+}
+.means-of-contact{
+  font-size: 70%;
+}
+
+.main2{
+  margin-top: -0.1%;
+}
 }
 
 /* PARA TELAS DE 1500px */
@@ -429,8 +526,10 @@
     margin-top: 10%;
     width: 45%;
   }
+  .before-title{
+    margin-top: 10%;
+  }
   .title {
-    margin-top: 20%;
     font-size: 28px;
     line-height: 35px;
   }
@@ -448,6 +547,12 @@
   .retangulo {
     width: 35%;
     margin-left: 5%;
+  }
+  .onda2{
+    margin-top: -0.1%;
+  }
+  .div-important-desc{
+    height: 80vh;
   }
   .text-2 {
     font-size: 20px;
@@ -478,29 +583,25 @@
 
 /* PARA TELAS DE 1920px */
 @media only screen and (min-width: 1501px) and (max-width: 1920px) {
-  .logo {
-    margin-top: 2%;
-    width: 120px;
-  }
   .tecnico {
     margin-top: 10%;
     width: 45%;
   }
   .title {
-    margin-top: 20%;
     font-size: 28px;
     line-height: 35px;
   }
   .home-text {
-    font-size: 20px;
+    font-size: 17px;
   }
   .subtitle {
-    font-size: 18px;
+    font-size: 16px;
   }
   .button-contato {
     width: 45%;
     height: 60px;
-    font-size: 18px;
+    font-size: 16px;
+    margin-top: 1%;
   }
   .retangulo {
     width: 35%;
