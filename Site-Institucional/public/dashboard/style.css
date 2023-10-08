@@ -13,8 +13,17 @@ body {
     left: 0;
     height: 100%;
     width: 5%;
-    background-color: #2f2f2f;
+    background-color: #040454;
     transition: width 0.3s;
+    padding-top: 2%;
+}
+.sidebar-itens{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 50%;
+    align-self: center;
+    margin-top: 20%;
 }
 /* animação
 #sidebar:hover {
@@ -31,10 +40,8 @@ body {
 }
 
 .sidebar-item:hover {
-    background-color: #555;
+    background-color: rgba(95, 95, 170, 0.76);
 }
 
 .sidebar-icon {
-    font-size: 24px;
-    color: white;
 }
