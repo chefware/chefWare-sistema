@@ -29,11 +29,13 @@ body {
     width: 100%;
 }
 .sidebar-logo{
-    height: 10%;
+    width: auto;
+    display: flex;
+    justify-content: center;
 }
 .logo{
-    width: 90px;
-    height: 61px;
+    width: 75px;
+
 }
 
 #sidebar:hover {
