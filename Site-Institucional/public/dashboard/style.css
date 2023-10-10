@@ -1,8 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap');
+
 body {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
+}
+
+.main {
+    display: flex;
 }
 
 #sidebar {
@@ -13,21 +19,29 @@ body {
     background-color: #040454;
     transition: width 0.3s;
     align-items: center;
+    justify-content: space-between;
+    position: absolute;
+}
+
+.menuEmbaixo {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 5vw;
 }
 
 .itensMenu {
     display: flex;
     flex-direction: column;
-    height: 80%;
+    height: 85%;
     justify-content: center;
 }
 
-.sidebar-itens{
-    display: flex;
-    flex-direction: column;
-    height: 50%;
-    width: 100%;
+.sidebar-item span{
+    font-size: 15px;
+    font-weight: 500;
 }
+
 .sidebar-logo{
     width: auto;
     display: flex;
@@ -35,19 +49,21 @@ body {
 }
 .logo{
     width: 75px;
-
+    margin-top: 18%;
 }
 
 #sidebar:hover {
     width: 15%;
+    z-index: 1;
 }
 
 .sidebar-item {
-    height: 100%;
+    height: 10%;
     width: 100%;
     display: flex;
+    margin-top: 10px;
+    align-items: center;
     transition: background-color 0.3s;
-    display: flex;
 }
 
 .sidebar-sair {
@@ -57,7 +73,6 @@ body {
     align-items: center;
     justify-content: center;
     transition: background-color 0.3s;
-    margin-bottom: 10px;
 }
 
 
@@ -76,4 +91,33 @@ body {
 
 #sidebar:hover .sidebar-text {
     display: flex;
+}
+
+.conteudoPrincipal {
+    width: 95vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+
+.header {
+    height: 8%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.container {
+    width: 95%;
+}
+
+.conteudoEmpresa {
+    display: flex;
+    flex-direction: column;
+}
+
+.conteudoEmpresa h1{
+    margin: 0;
+    font-size: 20px;
 }
