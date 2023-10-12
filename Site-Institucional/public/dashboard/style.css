@@ -73,7 +73,6 @@ body {
     display: flex;
     transition: background-color 0.3s;
     cursor: pointer;
-    position: relative;
 }
 
 .sidebar-item span{
