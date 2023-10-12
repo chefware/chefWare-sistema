@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 body {
     font-family: 'Poppins', sans-serif;
@@ -9,37 +9,48 @@ body {
 
 .main {
     display: flex;
+    width: 100vw;
+    height: 100vh;
 }
 
 #sidebar {
     display: flex;
     flex-direction: column;
-    height: 100vh;
-    width: 5vw;
+    height: 100%;
+    width: 5%;
     background-color: #040454;
     transition: width 0.3s;
     align-items: center;
-    justify-content: space-between;
     position: absolute;
+    justify-content: space-between;
 }
 
-.menuEmbaixo {
+#sidebar:hover {
+    width: 15%;
+}
+
+#sidebar:hover .sidebar-item {
+    align-items: center;
+}
+
+#sidebar:hover .sidebar-sair {
+    height: 10%;
+    width: 100%;
+    display: flex;
+    align-items: center; 
+    transition: background-color 0.3s;
+}
+
+#sidebar:hover .sidebar-text {
+    display: flex;
+}
+
+.areaSideBar {
     display: flex;
     flex-direction: column;
-    height: 100vh;
-    width: 5vw;
-}
-
-.itensMenu {
-    display: flex;
-    flex-direction: column;
-    height: 85%;
-    justify-content: center;
-}
-
-.sidebar-item span{
-    font-size: 15px;
-    font-weight: 500;
+    height: 100%;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .sidebar-logo{
@@ -47,31 +58,38 @@ body {
     display: flex;
     justify-content: center;
 }
-.logo{
-    width: 75px;
-    margin-top: 18%;
-}
 
-#sidebar:hover {
-    width: 15%;
-    z-index: 1;
+.itensMenu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    height: 50%;
 }
 
 .sidebar-item {
     height: 10%;
     width: 100%;
     display: flex;
-    margin-top: 10px;
-    align-items: center;
     transition: background-color 0.3s;
+    cursor: pointer;
+    position: relative;
+}
+
+.sidebar-item span{
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.logo{
+    width: 75px;
+    margin-top: 18%;
 }
 
 .sidebar-sair {
     height: 10%;
-    width: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
     transition: background-color 0.3s;
 }
 
@@ -89,15 +107,27 @@ body {
     text-align: center;
 }
 
-#sidebar:hover .sidebar-text {
-    display: flex;
+.sidebar-text:hover {
+    color: rgba(218, 218, 218, 0.705);
 }
 
 .conteudoPrincipal {
-    width: 95vw;
+    width: 100vw;
     height: 100vh;
     display: flex;
+    justify-content: flex-end;
+}
+
+.areaConteudo {
+    display: flex;
     justify-content: center;
+    width: 95%;
+    height: 100%;
+}
+
+.container {
+    width: 95%;
+    height: 100%;
 }
 
 .header {
@@ -106,10 +136,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-
-.container {
-    width: 95%;
+    align-items: center;
 }
 
 .conteudoEmpresa {
@@ -119,15 +146,31 @@ body {
 
 .conteudoEmpresa h1{
     margin: 0;
-    font-size: 20px;
+    font-size: 22px;
+    font-weight: 700;
+    color: #040454;
+}
+
+.conteudoEmpresa span {
+    font-weight: 200;
+    line-height: 0.4;
+    font-size: 12px;
 }
 .perfil-img{
     display: flex;
     align-items: center;
-    width: 9%;
-    justify-content: space-between;
-    margin-right: 5%;
+}
+
+.perfil-img span {
+    color: #454444;
+    font-weight: 400;
 }
 .perfil {
-    width: 60px;
+    width: 50px;
+    margin-right: 15px;
+}
+
+.conteudo {
+    width: 100%;
+    height: 90%;
 }
