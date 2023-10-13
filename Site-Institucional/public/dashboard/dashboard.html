@@ -7,9 +7,6 @@
     <title>Chefware</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="../assets/css/style-dashboard.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-    </style>
 </head>
 
 <body>
@@ -66,7 +63,7 @@
                             <span>Empresa</span>
                             <h1>Fogo de Chão</h1>
                         </div>
-    
+
                         <div class="perfil-img">
                             <img src="../assets/julia.png" class="perfil">
                             <span>Olá, Julia</span>
@@ -78,30 +75,135 @@
                         <h1 class="tituloGeralDashboard">Visão Geral Máquina</h1>
                         <div class="dashboard">
                             <div class="cabecalho">
-                                <h1>Máquina 001</h1>
-                                <button>Ações Rápidas</button>
-                                <div class="indicadores">
-                                    <span>Indicadores</span>
-                                    <div class="legenda">
-                                        <img src="../assets/img/indicadorVermelho.svg" alt="Indicador Vermelho">
-                                        <span>Crítico</span>
-                                        <img src="../assets/img/indicadorAmarelo.svg" alt="Indicador Vermelho">
-                                        <span>Alerta</span>
-                                        <img src="../assets/img/indicadorVerde.svg" alt="Indicador Vermelho">
-                                        <span>Normal</span>
+                                <div class="itensCabecalho">
+                                    <h1 id="nomeMaquina">Máquina 001</h1>
+                                    <button class="botaoAcoesRapidas">Ações Rápidas</button>
+                                    <div class="indicadores">
+                                        <span class="tituloIndicadores">Indicadores</span>
+                                        <div class="legenda">
+                                            <img src="../assets/img/indicadorVermelho.svg" alt="Indicador Vermelho">
+                                            <span class="legendaIndicadores">Crítico</span>
+                                            <img src="../assets/img/indicadorAmarelo.svg" alt="Indicador Vermelho">
+                                            <span class="legendaIndicadores">Alerta</span>
+                                            <img src="../assets/img/indicadorVerde.svg" alt="Indicador Vermelho">
+                                            <span class="legendaIndicadores">Normal</span>
+                                        </div>
                                     </div>
                                 </div>
+
+
+                                <div class="areaBotao">
+                                    <div class="botao">
+                                        <img src="../assets/img/iconEditar.svg">
+                                    </div>
+
+                                    <div class="botao">
+                                        <img src="../assets/img/iconExcluir.svg">
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="areaDadosGraficos">
+                                <div class="menuComponentes">
+                                    <div class="areaTituloMenu">
+                                        <h3>Menu</h3>
+                                    </div>
+                                    <div class="opcaoMenuComponentes">
+                                        <h2>CPU</h2>
+                                        <span>Uso: <span>7%</span></span>
+                                    </div>
+
+                                    <div class="opcaoMenuComponentes">
+                                        <h2>DISCO 01</h2>
+                                        <span>(C:)</span>
+                                    </div>
+
+                                    <div class="opcaoMenuComponentes">
+                                        <h2>MEMÓRIA</h2>
+                                        <span>Uso: <span>50%</span></span>
+                                    </div>
+
+                                    <div class="opcaoMenuComponentes">
+                                        <h2>REDE</h2>
+                                        <span>Não conectada</span>
+                                    </div>
+                                </div>
+
+                                <div class="conteudoPrincipalDashboard">
+                                    <div class="informacoesDashboard">
+                                        <div class="nomeComponenteGrafico">
+                                            <h3>CPU</h3>
+                                            <span>% UTILIZADA</span>
+                                        </div>
+
+                                        <h2>RYZEN 2800 GHZ 40</h2>
+                                    </div>
+
+                                    <div class="areaGrafico">
+                                        <canvas id="myChart"></canvas>
+                                        <div class="informacoesDinamicas">
+                                            <h4>Uso Atual:</h4>
+
+                                            <div class="areaDadoGrafico">
+                                                <span>35%</span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="informacoesEstaticas">
+
+                                        <span class="tituloInformacoesEstaticas">Informações Estáticas:</span>
+                                        <div class="areaDadosEstaticos">
+                                            <div class="colunaDado">
+                                                <span class="tituloDadoEstatico">Fabricante: <span
+                                                        class="dadoEstatico">GenuineIntel</span></span>
+
+                                                <span class="tituloDadoEstatico">ID: <span
+                                                        class="dadoEstatico">bfebfbff000806ea</span></span>
+                                            </div>
+
+                                            <div class="colunaDado">
+                                                <span class="tituloDadoEstatico">Identificador: <span
+                                                        class="dadoEstatico">Intel64 Family 6 Model 142 Stepping
+                                                        10</span></span>
+
+                                                <span class="tituloDadoEstatico">Frequência: <span
+                                                        class="dadoEstatico">1400000000 Hz</span></span>
+                                            </div>
+
+                                            <div class="colunaDado">
+                                                <span class="tituloDadoEstatico">Nº Pacotes Físicos: <span
+                                                        class="dadoEstatico">1</span></span>
+
+                                                <span class="tituloDadoEstatico">Nº de CPU`s Físicas: <span
+                                                        class="dadoEstatico">4</span></span>
+                                            </div>
+
+                                            <span class="tituloDadoEstatico">Nº de CPU`s Lógicas: <span
+                                                    class="dadoEstatico">8</span></span>
+                                        </div>
+
+                                        <!--  -->
+
+                                    </div>
+
+                                </div>
+
+
                             </div>
                         </div>
-                   </div>
+                    </div>
                 </div>
             </div>
-            
+
         </div>
     </div>
 
-
-
 </body>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="../assets/js/graficoCpu.js"></script>
 
 </html>
