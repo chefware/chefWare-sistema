@@ -1,14 +1,16 @@
 .tituloGeralDashboard {
-    color: #040454;
-    font-size: 28px;
+    color: #5C5C5C;
+    font-size: 22px;
     margin: 0 0 5px 0;
+    font-weight: 300;
 }
 
 .dashboard {
     width: 100%;
     height: 92%;
-    background-color: rgb(217, 217, 217);
     border-radius: 10px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+    background-color: #f6f5f5;
 }
 
 .cabecalho {
@@ -16,10 +18,239 @@
     height: 8%;
     margin-top: 1%;
     display: flex;
+    justify-content: space-between;
     align-items: center;
+    background-color: #f6f5f5;
 }
 
 .indicadores {
     display: flex;
     flex-direction: column;
+}
+
+.areaBotao {
+    display: flex;
+    justify-content: space-evenly;
+    width: 15%;
+}
+
+.botao {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #5C5C5C;
+    border-radius: 5px;
+    width: 2.2rem;
+    height: 2.2rem;
+    cursor: pointer;
+    background-color: #FFFF;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.itensCabecalho {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 65%;
+}
+
+.botaoAcoesRapidas {
+    color: #040454;
+    font-size: 18px;
+    font-weight: 700;
+    border: 1px solid #5C5C5C;
+    background-color: white;
+    border-radius: 5px;
+    height: 2.5rem;
+    width: 11rem;
+    cursor: pointer;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.itensCabecalho h1{
+    color: #040454;
+}
+
+.tituloIndicadores {
+    color: #545454;
+    font-weight: 300;
+    font-size: 14px;
+}
+
+.legendaIndicadores {
+    color: #040454;
+    font-weight: 600;
+    margin-right: 8px;
+}
+
+.areaDadosGraficos {
+    display: flex;
+    width: 100%;
+    height: 90%;
+    background-color: rgb(243, 243, 243);
+    margin-top: 5px;
+}
+
+.menuComponentes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    width: 15%;
+    border-radius: 8px;
+    background-color: #eeeeee;
+    overflow-y: auto;
+}
+
+.areaTituloMenu {
+    width: 100%;
+    background-color: #040454;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px 10px 0 0;
+}
+
+.areaTituloMenu h3 {
+    color: white;
+}
+
+.opcaoMenuComponentes {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 98%;
+    height: 25%;
+    background-color: rgb(250, 250, 250);
+    border-radius: 0px 0px 8px 8px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+.opcaoMenuComponentes h2 {
+    color: #040454;
+    margin: 0;
+}
+
+.conteudoPrincipalDashboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 85%;
+    height: 100%;
+    background-color: #f6f5f5;
+}
+
+.informacoesDashboard {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 98%;
+    height: 10%;
+}
+
+.informacoesDashboard .nomeComponenteGrafico h3 {
+    margin: 0;
+    color: #040454;
+    font-size: 25px;
+}
+
+.informacoesDashboard .nomeComponenteGrafico span {
+    color: #7C7C7C;
+    font-size: 12px;
+}
+
+.areaGrafico {
+    display: flex;
+    align-items: center;
+    width: 98%;
+    height: 65%;
+    background-color: rgb(250, 250, 250);
+    border-radius: 15px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+.informacoesDinamicas {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 25%;
+    height: 90%;
+    background-color: rgb(251, 250, 250);
+    margin-left: 5px;
+    border-radius: 10px;
+    border: 1px solid #5C5C5C;
+}
+
+
+.tituloDadoEstatico {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #040454;
+}
+
+.tituloDadoEstatico .dadoEstatico {
+    font-weight: 300;
+    color: #5C5C5C;
+}
+
+.informacoesEstaticas {
+    margin: 5px 0 5px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 98%;
+    height: 30%;
+    background-color: rgb(250, 250, 250);
+    border-radius: 15px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+.tituloInformacoesEstaticas {
+    margin: 0 0 10px 15px;
+    font-weight: 600;
+}
+
+.areaDadoGrafico {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    width: 80%;
+    height: 50%;
+    border-radius: 15px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+.informacoesDinamicas h4{
+    font-size: 1.5rem;
+    margin: 0 0 5px 0;
+    color: #040454;
+}
+
+.areaDadoGrafico span {
+    margin: 0;
+    font-size: 4rem;
+    font-weight: 800;
+    color: #040454;
+}
+
+.areaDadosEstaticos {
+    display: flex;
+    margin-left: 15px;
+}
+
+.colunaDado {
+    display: flex;
+    flex-direction: column;
+    margin-right: 2%;
+}
+
+.informacoesDashboard h2{
+    color: #040454;
 }
