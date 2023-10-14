@@ -72,7 +72,7 @@
                     </div>
 
                     <div class="conteudo">
-                        <h1 class="tituloGeralDashboard">Visão Geral Máquina</h1>
+                        <h1 class="tituloGeralDashboard">Visão Máquina</h1>
                         <div class="dashboard">
                             <div class="cabecalho">
                                 <div class="itensCabecalho">
@@ -109,22 +109,22 @@
                                     <div class="areaTituloMenu">
                                         <h3>Menu</h3>
                                     </div>
-                                    <div class="opcaoMenuComponentes">
+                                    <div id="botaoCpu" class="opcaoMenuComponentes">
                                         <h2>CPU</h2>
-                                        <span>Uso: <span>7%</span></span>
+                                        <span>Em uso: <span>35%</span></span>
                                     </div>
 
-                                    <div class="opcaoMenuComponentes">
+                                    <div id="botaoDisco" class="opcaoMenuComponentes">
                                         <h2>DISCO 01</h2>
                                         <span>(C:)</span>
                                     </div>
 
-                                    <div class="opcaoMenuComponentes">
+                                    <div id="botaoMemoria" class="opcaoMenuComponentes">
                                         <h2>MEMÓRIA</h2>
-                                        <span>Uso: <span>50%</span></span>
+                                        <span>Em uso: <span>7,0 GB</span></span>
                                     </div>
 
-                                    <div class="opcaoMenuComponentes">
+                                    <div id="botaoRede" class="opcaoMenuComponentes">
                                         <h2>REDE</h2>
                                         <span>Não conectada</span>
                                     </div>
@@ -133,7 +133,7 @@
                                 <div class="conteudoPrincipalDashboard">
                                     <div class="informacoesDashboard">
                                         <div class="nomeComponenteGrafico">
-                                            <h3>CPU</h3>
+                                            <h3>DISCO</h3>
                                             <span>% UTILIZADA</span>
                                         </div>
 
@@ -141,7 +141,7 @@
                                     </div>
 
                                     <div class="areaGrafico">
-                                        <canvas id="myChart"></canvas>
+                                        <canvas id="myChartCpu"></canvas>
                                         <div class="informacoesDinamicas">
                                             <h4>Uso Atual:</h4>
 
@@ -205,5 +205,31 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="../assets/js/graficoCpu.js"></script>
+<script>
+const botaoDisco = document.getElementById('botaoDisco');
+
+botaoDisco.addEventListener('click', function() {
+    window.location.href = 'dashboard-disco.html';
+});
+
+const botaoCpu = document.getElementById('botaoCpu');
+
+botaoCpu.addEventListener('click', function() {
+    window.location.href = 'dashboard-cpu.html';
+});
+
+const botaoMemoria = document.getElementById('botaoMemoria');
+
+botaoMemoria.addEventListener('click', function() {
+    window.location.href = 'dashboard-memoria.html';
+});
+
+const botaoRede = document.getElementById('botaoRede');
+
+botaoRede.addEventListener('click', function() {
+    window.location.href = 'dashboard-rede.html';
+});
+
+</script>
 
 </html>

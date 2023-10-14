@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chefware</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../assets/css/style-dashboard.css">
+</head>
+
+<body>
+    <div class="main">
+        <div id="sidebar">
+            <div class="areaSideBar">
+                <div class="sidebar-logo">
+                    <img src="../assets/logoBRANCA.png" class="logo">
+                </div>
+
+
+                <div class="itensMenu">
+                    <div class="sidebar-item">
+                        <img src="../assets/pc.png" class="sidebar-icon">
+                        <span class="sidebar-text">Máquinas</span>
+                    </div>
+
+                    <div class="sidebar-item">
+                        <img src="../assets/escritorio 1.png" class="sidebar-icon">
+                        <span class="sidebar-text">Empresas</span>
+                    </div>
+
+                    <div class="sidebar-item">
+                        <img src="../assets/funcionarios 1.png" class="sidebar-icon">
+                        <span class="sidebar-text">Funcionários</span>
+                    </div>
+
+                    <div class="sidebar-item">
+                        <img src="../assets/relogio 1.png" class="sidebar-icon">
+                        <span class="sidebar-text">Histórico</span>
+                    </div>
+
+                    <div class="sidebar-item">
+                        <img src="../assets/ajudando 1.png" class="sidebar-icon">
+                        <span class="sidebar-text">Ajuda</span>
+                    </div>
+                </div>
+
+
+                <div class="sidebar-sair">
+                    <img src="../assets/sair 1.png" class="sidebar-icon">
+                    <span class="sidebar-text">Sair</span>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="conteudoPrincipal">
+            <div class="areaConteudo">
+                <div class="container">
+                    <div class="header">
+                        <div class="conteudoEmpresa">
+                            <span>Empresa</span>
+                            <h1>Fogo de Chão</h1>
+                        </div>
+
+                        <div class="perfil-img">
+                            <img src="../assets/julia.png" class="perfil">
+                            <span>Olá, Julia</span>
+                        </div>
+
+                    </div>
+
+                    <div class="conteudo">
+                        <h1 class="tituloGeralDashboard">Visão Máquina</h1>
+                        <div class="dashboard">
+                            <div class="cabecalho">
+                                <div class="itensCabecalho">
+                                    <h1 id="nomeMaquina">Máquina 001</h1>
+                                    <button class="botaoAcoesRapidas">Ações Rápidas</button>
+                                    <div class="indicadores">
+                                        <span class="tituloIndicadores">Indicadores</span>
+                                        <div class="legenda">
+                                            <img src="../assets/img/indicadorVermelho.svg" alt="Indicador Vermelho">
+                                            <span class="legendaIndicadores">Crítico</span>
+                                            <img src="../assets/img/indicadorAmarelo.svg" alt="Indicador Vermelho">
+                                            <span class="legendaIndicadores">Alerta</span>
+                                            <img src="../assets/img/indicadorVerde.svg" alt="Indicador Vermelho">
+                                            <span class="legendaIndicadores">Normal</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="areaBotao">
+                                    <div class="botao">
+                                        <img src="../assets/img/iconEditar.svg">
+                                    </div>
+
+                                    <div class="botao">
+                                        <img src="../assets/img/iconExcluir.svg">
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="areaDadosGraficos">
+                                <div class="menuComponentes">
+                                    <div class="areaTituloMenu">
+                                        <h3>Menu</h3>
+                                    </div>
+                                    <div id="botaoCpu" class="opcaoMenuComponentes">
+                                        <h2>CPU</h2>
+                                        <span>Em uso: <span>35%</span></span>
+                                    </div>
+
+                                    <div id="botaoDisco" class="opcaoMenuComponentes">
+                                        <h2>DISCO 01</h2>
+                                        <span>(C:)</span>
+                                    </div>
+
+                                    <div id="botaoMemoria" class="opcaoMenuComponentes">
+                                        <h2>MEMÓRIA</h2>
+                                        <span>Em uso: <span>7,0 GB</span></span>
+                                    </div>
+
+                                    <div id="botaoRede" class="opcaoMenuComponentes">
+                                        <h2>REDE</h2>
+                                        <span>Não conectada</span>
+                                    </div>
+                                </div>
+
+                                <div class="conteudoPrincipalDashboard">
+                                    <div class="informacoesDashboard">
+                                        <div class="nomeComponenteGrafico">
+                                            <h3>REDE</h3>
+                                            <span>% UTILIZADA</span>
+                                        </div>
+
+                                        <h2>RYZEN 2800 GHZ 40</h2>
+                                    </div>
+
+                                    <div class="areaGrafico">
+                                        <canvas id="myChartCpu"></canvas>
+                                        <div class="informacoesDinamicas">
+                                            <h4>Uso Atual:</h4>
+
+                                            <div class="areaDadoGrafico">
+                                                <span>35%</span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="informacoesEstaticas">
+
+                                        <span class="tituloInformacoesEstaticas">Informações Estáticas:</span>
+                                        <div class="areaDadosEstaticos">
+                                            <div class="colunaDado">
+                                                <span class="tituloDadoEstatico">Fabricante: <span
+                                                        class="dadoEstatico">GenuineIntel</span></span>
+
+                                                <span class="tituloDadoEstatico">ID: <span
+                                                        class="dadoEstatico">bfebfbff000806ea</span></span>
+                                            </div>
+
+                                            <div class="colunaDado">
+                                                <span class="tituloDadoEstatico">Identificador: <span
+                                                        class="dadoEstatico">Intel64 Family 6 Model 142 Stepping
+                                                        10</span></span>
+
+                                                <span class="tituloDadoEstatico">Frequência: <span
+                                                        class="dadoEstatico">1400000000 Hz</span></span>
+                                            </div>
+
+                                            <div class="colunaDado">
+                                                <span class="tituloDadoEstatico">Nº Pacotes Físicos: <span
+                                                        class="dadoEstatico">1</span></span>
+
+                                                <span class="tituloDadoEstatico">Nº de CPU`s Físicas: <span
+                                                        class="dadoEstatico">4</span></span>
+                                            </div>
+
+                                            <span class="tituloDadoEstatico">Nº de CPU`s Lógicas: <span
+                                                    class="dadoEstatico">8</span></span>
+                                        </div>
+
+                                        <!--  -->
+
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="../assets/js/graficoCpu.js"></script>
+<script>
+const botaoDisco = document.getElementById('botaoDisco');
+
+botaoDisco.addEventListener('click', function() {
+    window.location.href = 'dashboard-disco.html';
+});
+
+const botaoCpu = document.getElementById('botaoCpu');
+
+botaoCpu.addEventListener('click', function() {
+    window.location.href = 'dashboard-cpu.html';
+});
+
+const botaoMemoria = document.getElementById('botaoMemoria');
+
+botaoMemoria.addEventListener('click', function() {
+    window.location.href = 'dashboard-memoria.html';
+});
+
+const botaoRede = document.getElementById('botaoRede');
+
+botaoRede.addEventListener('click', function() {
+    window.location.href = 'dashboard-rede.html';
+});
+
+</script>
+
+</html>
