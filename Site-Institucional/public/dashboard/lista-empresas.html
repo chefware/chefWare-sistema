@@ -7,57 +7,53 @@
     <title>Chefware</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="../assets/css/style-lista-empresa.css">
+    <link rel="stylesheet" href="./css/style-lista-empresas.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
     </style>
 </head>
 
 <body>
+    <script type="text/javascript">
+        window.addEventListener("scroll", function () {
+          var header = document.querySelector("header");
+          header.classList.toggle("sticky", window.scrollY > 0);
+        })
+      </script>
     <div class="main">
         <div id="sidebar">
             <div class="areaSideBar">
                 <div class="sidebar-logo">
                     <img src="../assets/logoBRANCA.png" class="logo">
                 </div>
-
-
                 <div class="itensMenu">
                     <div class="sidebar-item">
                         <img src="../assets/pc.png" class="sidebar-icon">
                         <span class="sidebar-text">Máquinas</span>
                     </div>
-
                     <div class="sidebar-item">
                         <img src="../assets/escritorio 1.png" class="sidebar-icon">
                         <span class="sidebar-text">Empresas</span>
                     </div>
-
                     <div class="sidebar-item">
                         <img src="../assets/funcionarios 1.png" class="sidebar-icon">
                         <span class="sidebar-text">Funcionários</span>
                     </div>
-
                     <div class="sidebar-item">
                         <img src="../assets/relogio 1.png" class="sidebar-icon">
                         <span class="sidebar-text">Histórico</span>
                     </div>
-
                     <div class="sidebar-item">
                         <img src="../assets/ajudando 1.png" class="sidebar-icon">
                         <span class="sidebar-text">Ajuda</span>
                     </div>
                 </div>
-
-
                 <div class="sidebar-sair">
                     <img src="../assets/sair 1.png" class="sidebar-icon">
                     <span class="sidebar-text">Sair</span>
                 </div>
             </div>
-
-
         </div>
-
         <div class="conteudoPrincipal">
             <div class="areaConteudo">
                 <div class="container">
@@ -75,7 +71,350 @@
                     </div>
 
                     <div class="conteudo">
-                        <!-- aqui vai o seu conteudo -->
+                        <div>
+                            <div class="areaTitulo">
+                                <div class="titulo">
+                                    Máquinas
+                                </div>
+                                <div class="busca">
+                                    <input type="text" placeholder="Insira o nome da máquina">
+                                    <button class="lupa"><img src="../assets/busca.png" alt=""></button>
+                                    <button class="filtro"><img src="../assets/filtro.png" alt=""></button>
+                                </div>
+                                    <button class="adicionar">
+                                        <img src="../assets/adicionar.png" alt="">
+                                        Nova máquina
+                                    </button>
+                            </div>
+                            <div class="conteudoMaquinas">
+                                <div class="linhaMaquinas">
+                                    <div class="cardMaquina">
+                                        <div class="alerta">
+                                            
+                                        </div>
+                                        <div class="informacoes">
+                                            <div class="tituloMaquina">
+                                                <h4>Máquina 01</h4>
+                                                <img src="../assets/maquina.png">
+                                            </div>
+                                            <div class="info">
+                                                <div class="componentes">
+                                                    <p>Componentens em alertas:</p>
+                                                    <div class="listaComponentes">
+                                                        <li class="componenteEspecifico">
+                                                            Memória
+                                                        </li>
+                                                        <li class="componenteEspecifico">
+                                                            CPU
+                                                        </li>
+                                                        <li class="componenteEspecifico">
+                                                            Disco
+                                                        </li>
+                                                    </div>
+                                                </div>
+                                                <div class="situacao">
+                                                    <div class="grave">
+                                                        Situação:  
+                                                        <span class="colorSituacao"> Grave </span>
+                                                    </div>
+                                                    <div class="local">
+                                                        Local: Cozinha
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="cardMaquina">
+                                        <div class="alertaVerde">
+                                            
+                                        </div>
+                                        <div class="informacoes">
+                                            <div class="tituloMaquina">
+                                                <h4>Máquina 01</h4>
+                                                <img src="../assets/maquina.png">
+                                            </div>
+                                            <div class="info">
+                                                <div class="componentes">
+                                                    <p>Componentens em alertas:</p>
+                                                    <div class="listaComponentes">
+                                                        <li class="componenteEspecifico">
+                                                            Memória
+                                                        </li>
+                                                        <li class="componenteEspecifico">
+                                                            CPU
+                                                        </li>
+                                                        <li class="componenteEspecifico">
+                                                            Disco
+                                                        </li>
+                                                    </div>
+                                                </div>
+                                                <div class="situacao">
+                                                    <div class="grave">
+                                                        Situação:  
+                                                        <span class="colorSituacaoVerde"> Normal </span>
+                                                    </div>
+                                                    <div class="local">
+                                                        Local: Cozinha
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="cardMaquina">
+                                        <div class="alertaAmarelo">
+                                            
+                                        </div>
+                                        <div class="informacoes">
+                                            <div class="tituloMaquina">
+                                                <h4>Máquina 01</h4>
+                                                <img src="../assets/maquina.png">
+                                            </div>
+                                            <div class="info">
+                                                <div class="componentes">
+                                                    <p>Componentens em alertas:</p>
+                                                    <div class="listaComponentes">
+                                                        <li class="componenteEspecifico">
+                                                            Memória
+                                                        </li>
+                                                        <li class="componenteEspecifico">
+                                                            CPU
+                                                        </li>
+                                                        <li class="componenteEspecifico">
+                                                            Disco
+                                                        </li>
+                                                    </div>
+                                                </div>
+                                                <div class="situacao">
+                                                    <div class="grave">
+                                                        Situação:  
+                                                        <span class="colorSituacaoAmarelo"> Alerta </span>
+                                                    </div>
+                                                    <div class="local">
+                                                        Local: Cozinha
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="cardMaquina">
+                                        <div class="alerta">
+                                            
+                                        </div>
+                                        <div class="informacoes">
+                                            <div class="tituloMaquina">
+                                                <h4>Máquina 01</h4>
+                                                <img src="../assets/maquina.png">
+                                            </div>
+                                            <div class="info">
+                                                <div class="componentes">
+                                                    <p>Componentens em alertas:</p>
+                                                    <div class="listaComponentes">
+                                                        <li class="componenteEspecifico">
+                                                            Memória
+                                                        </li>
+                                                        <li class="componenteEspecifico">
+                                                            CPU
+                                                        </li>
+                                                        <li class="componenteEspecifico">
+                                                            Disco
+                                                        </li>
+                                                    </div>
+                                                </div>
+                                                <div class="situacao">
+                                                    <div class="grave">
+                                                        Situação:  
+                                                        <span class="colorSituacao"> Grave </span>
+                                                    </div>
+                                                    <div class="local">
+                                                        Local: Cozinha
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="cardMaquina">
+                                        <div class="alerta">
+                                            
+                                        </div>
+                                        <div class="informacoes">
+                                            <div class="tituloMaquina">
+                                                <h4>Máquina 01</h4>
+                                                <img src="../assets/maquina.png">
+                                            </div>
+                                            <div class="info">
+                                                <div class="componentes">
+                                                    <p>Componentens em alertas:</p>
+                                                    <div class="listaComponentes">
+                                                        <li class="componenteEspecifico">
+                                                            Memória
+                                                        </li>
+                                                        <li class="componenteEspecifico">
+                                                            CPU
+                                                        </li>
+                                                        <li class="componenteEspecifico">
+                                                            Disco
+                                                        </li>
+                                                    </div>
+                                                </div>
+                                                <div class="situacao">
+                                                    <div class="grave">
+                                                        Situação:  
+                                                        <span class="colorSituacao"> Grave </span>
+                                                    </div>
+                                                    <div class="local">
+                                                        Local: Cozinha
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="cardMaquina">
+                                        <div class="alerta">
+                                            
+                                        </div>
+                                        <div class="informacoes">
+                                            <div class="tituloMaquina">
+                                                <h4>Máquina 01</h4>
+                                                <img src="../assets/maquina.png">
+                                            </div>
+                                            <div class="info">
+                                                <div class="componentes">
+                                                    <p>Componentens em alertas:</p>
+                                                    <div class="listaComponentes">
+                                                        <li class="componenteEspecifico">
+                                                            Memória
+                                                        </li>
+                                                        <li class="componenteEspecifico">
+                                                            CPU
+                                                        </li>
+                                                        <li class="componenteEspecifico">
+                                                            Disco
+                                                        </li>
+                                                    </div>
+                                                </div>
+                                                <div class="situacao">
+                                                    <div class="grave">
+                                                        Situação:  
+                                                        <span class="colorSituacao"> Grave </span>
+                                                    </div>
+                                                    <div class="local">
+                                                        Local: Cozinha
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="cardMaquina">
+                                        <div class="alerta">
+                                            
+                                        </div>
+                                        <div class="informacoes">
+                                            <div class="tituloMaquina">
+                                                <h4>Máquina 01</h4>
+                                                <img src="../assets/maquina.png">
+                                            </div>
+                                            <div class="info">
+                                                <div class="componentes">
+                                                    <p>Componentens em alertas:</p>
+                                                    <div class="listaComponentes">
+                                                        <li class="componenteEspecifico">
+                                                            Memória
+                                                        </li>
+                                                        <li class="componenteEspecifico">
+                                                            CPU
+                                                        </li>
+                                                        <li class="componenteEspecifico">
+                                                            Disco
+                                                        </li>
+                                                    </div>
+                                                </div>
+                                                <div class="situacao">
+                                                    <div class="grave">
+                                                        Situação:  
+                                                        <span class="colorSituacao"> Grave </span>
+                                                    </div>
+                                                    <div class="local">
+                                                        Local: Cozinha
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="cardMaquina">
+                                        <div class="alerta">
+                                            
+                                        </div>
+                                        <div class="informacoes">
+                                            <div class="tituloMaquina">
+                                                <h4>Máquina 01</h4>
+                                                <img src="../assets/maquina.png">
+                                            </div>
+                                            <div class="info">
+                                                <div class="componentes">
+                                                    <p>Componentens em alertas:</p>
+                                                    <div class="listaComponentes">
+                                                        <li class="componenteEspecifico">
+                                                            Memória
+                                                        </li>
+                                                        <li class="componenteEspecifico">
+                                                            CPU
+                                                        </li>
+                                                        <li class="componenteEspecifico">
+                                                            Disco
+                                                        </li>
+                                                    </div>
+                                                </div>
+                                                <div class="situacao">
+                                                    <div class="grave">
+                                                        Situação:  
+                                                        <span class="colorSituacao"> Grave </span>
+                                                    </div>
+                                                    <div class="local">
+                                                        Local: Cozinha
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="cardMaquina">
+                                        <div class="alerta">
+                                            
+                                        </div>
+                                        <div class="informacoes">
+                                            <div class="tituloMaquina">
+                                                <h4>Máquina 01</h4>
+                                                <img src="../assets/maquina.png">
+                                            </div>
+                                            <div class="info">
+                                                <div class="componentes">
+                                                    <p>Componentens em alertas:</p>
+                                                    <div class="listaComponentes">
+                                                        <li class="componenteEspecifico">
+                                                            Memória
+                                                        </li>
+                                                        <li class="componenteEspecifico">
+                                                            CPU
+                                                        </li>
+                                                        <li class="componenteEspecifico">
+                                                            Disco
+                                                        </li>
+                                                    </div>
+                                                </div>
+                                                <div class="situacao">
+                                                    <div class="grave">
+                                                        Situação:  
+                                                        <span class="colorSituacao"> Grave </span>
+                                                    </div>
+                                                    <div class="local">
+                                                        Local: Cozinha
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                    </div>
                 </div>
             </div>
