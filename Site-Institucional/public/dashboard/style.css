@@ -23,6 +23,7 @@ body {
     align-items: center;
     position: absolute;
     justify-content: space-between;
+    z-index: 2;
 }
 
 #sidebar:hover {
