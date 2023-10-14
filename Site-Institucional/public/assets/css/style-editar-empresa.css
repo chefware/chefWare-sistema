@@ -1,0 +1,76 @@
+.conteudo{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.h2-titulo-form{
+    margin: 0;
+    padding: 0;
+    margin-bottom: 1%;
+    color: #040454;
+}
+
+.form-editar{
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 45%;
+}   
+
+.campo{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2%;
+    height: 10vh;
+}
+
+.campo-horizontal .campo{
+    width: 80%;
+}
+
+.label-editar{
+    margin: 0;
+    padding: 0;
+    color: #040454;
+    font-size: 1.01em;
+}
+
+.input-form-editar{
+    height: 100%;
+    width: 100%;
+    border-radius: 5px;
+    border: solid #5C5C5C 1px;
+}
+
+.campo-horizontal{
+    display: flex;
+    justify-content: space-between;
+    height: 10vh;
+    width: 100%;
+    margin-bottom: 2.5%;
+}
+
+#campo-estado,#campo-numero-endereco{
+    width: 15%;
+}
+
+#botao-editar{
+    background-color: #040454;
+    border: none;
+    cursor: pointer;
+    color: white;
+    border-radius: 5px;
+}
+
+#botao-cancelar{
+    background-color: #CBCBCB;
+    color: black;
+    border: solid #040454 1px;
+    cursor: pointer;
+    border-radius: 5px;
+}
