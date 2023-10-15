@@ -7,12 +7,19 @@
     <title>Chefware</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="../assets/css/style-lista-funcionario.css">
+    <link rel="stylesheet" href="./css/style-lista-funcionarios.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
     </style>
 </head>
 
 <body>
+    <script type="text/javascript">
+        window.addEventListener("scroll", function () {
+          var header = document.querySelector("header");
+          header.classList.toggle("sticky", window.scrollY > 0);
+        })
+      </script>
     <div class="main">
         <div id="sidebar">
             <div class="areaSideBar">
@@ -75,7 +82,232 @@
                     </div>
 
                     <div class="conteudo">
-                        <!-- aqui vai o seu conteudo -->
+                        <div class="areaTitulo">
+                            <div class="titulo">
+                                Funcionários
+                            </div>
+                            <div class="busca">
+                                <input type="text" placeholder="Insira o nome do funcionário">
+                                <button class="lupa"><img src="../assets/busca.png" alt=""></button>
+                                <button class="filtro"><img src="../assets/filtro.png" alt=""></button>
+                            </div>
+                                <button class="adicionar">
+                                    <img src="../assets/adicionar.png" alt="">
+                                    Novo funcionário
+                                </button>
+                        </div>
+                        <div class="listaFuncionarios">
+                            <div class="cardFuncionario">
+                                <div class="informacoes">
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            Identificação
+                                        </span>
+                                        <span class="resultDados">
+                                            0123456
+                                        </span>
+                                    </div>
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            Nome
+                                        </span>
+                                        <span class="resultDados">
+                                            Felipe Dourado
+                                        </span>
+                                    </div>
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            Cargo
+                                        </span>
+                                        <span class="resultDados">
+                                            Gerente
+                                        </span>
+                                    </div>
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            Privilégio
+                                        </span>
+                                        <span class="resultDados">
+                                            Admin
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="acoes">
+                                    <a href="#"><img src="../assets/editar.png"></a>
+                                    <a href="#"><img src="../assets/excluir.png"></a>
+                                </div>
+                            </div>
+                            <div class="cardFuncionario">
+                                <div class="informacoes">
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            Identificação
+                                        </span>
+                                        <span class="resultDados">
+                                            0123456
+                                        </span>
+                                    </div>
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            Nome
+                                        </span>
+                                        <span class="resultDados">
+                                            Felipe Dourado
+                                        </span>
+                                    </div>
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            Cargo
+                                        </span>
+                                        <span class="resultDados">
+                                            Gerente
+                                        </span>
+                                    </div>
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            Privilégio
+                                        </span>
+                                        <span class="resultDados">
+                                            Admin
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="acoes">
+                                    <a href="#"><img src="../assets/editar.png"></a>
+                                    <a href="#"><img src="../assets/excluir.png"></a>
+                                </div>
+                            </div>
+                            <div class="cardFuncionario">
+                                <div class="informacoes">
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            Identificação
+                                        </span>
+                                        <span class="resultDados">
+                                            0123456
+                                        </span>
+                                    </div>
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            Nome
+                                        </span>
+                                        <span class="resultDados">
+                                            Felipe Dourado
+                                        </span>
+                                    </div>
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            Cargo
+                                        </span>
+                                        <span class="resultDados">
+                                            Gerente
+                                        </span>
+                                    </div>
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            Privilégio
+                                        </span>
+                                        <span class="resultDados">
+                                            Admin
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="acoes">
+                                    <a href="#"><img src="../assets/editar.png"></a>
+                                    <a href="#"><img src="../assets/excluir.png"></a>
+                                </div>
+                            </div>
+                            <div class="cardFuncionario">
+                                <div class="informacoes">
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            Identificação
+                                        </span>
+                                        <span class="resultDados">
+                                            0123456
+                                        </span>
+                                    </div>
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            Nome
+                                        </span>
+                                        <span class="resultDados">
+                                            Felipe Dourado
+                                        </span>
+                                    </div>
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            Cargo
+                                        </span>
+                                        <span class="resultDados">
+                                            Gerente
+                                        </span>
+                                    </div>
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            Privilégio
+                                        </span>
+                                        <span class="resultDados">
+                                            Admin
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="acoes">
+                                    <a href="#"><img src="../assets/editar.png"></a>
+                                    <a href="#"><img src="../assets/excluir.png"></a>
+                                </div>
+                            </div>
+                            <div class="cardFuncionario">
+                                <div class="informacoes">
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            Identificação
+                                        </span>
+                                        <span class="resultDados">
+                                            0123456
+                                        </span>
+                                    </div>
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            Nome
+                                        </span>
+                                        <span class="resultDados">
+                                            Felipe Dourado
+                                        </span>
+                                    </div>
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            Cargo
+                                        </span>
+                                        <span class="resultDados">
+                                            Gerente
+                                        </span>
+                                    </div>
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            Privilégio
+                                        </span>
+                                        <span class="resultDados">
+                                            Admin
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="acoes">
+                                    <a href="#"><img src="../assets/editar.png"></a>
+                                    <a href="#"><img src="../assets/excluir.png"></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="page">
+                            <div class="pagination">
+                                <button class="prev-page"><img src="../assets/voltar-icon.png" alt=""></button>
+                                <button class="page-num">1</button>
+                                <button class="page-num">2</button>
+                                <button class="page-num">...</button>
+                                <button class="page-num">23</button>
+                                <button class="next-page"><img src="../assets/avancar-icon.png" alt=""></button>
+                            </div>
+                        </div>
                    </div>
                 </div>
             </div>
