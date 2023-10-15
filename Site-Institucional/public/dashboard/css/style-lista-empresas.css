@@ -18,14 +18,16 @@
 
 .busca input {
     width: 100%;
-    border-radius: 5px;
-    padding: 5px;
-    border: solid 1px gray;
+    border-radius: 8px;
+    border: 1px solid #D1D1D1;
+    font-size: 1rem;
+    padding-left: 1%;
 }
 
-.busca input:hover {
-    background-color: rgb(232, 227, 227);
-}
+.busca input :focus, input:focus, select:focus {
+    border: 1px solid #D1D1D1;
+    outline: 0;
+} 
 
 .busca .lupa {
     background-color: #040454;
@@ -59,16 +61,19 @@
 }
 
 .adicionar {
-    background-color: #040454;
+    width: 8%;
     margin-top: 1%;
-    padding: 8px;
-    color: white;
-    font-weight: bold;
-    display: flex;
     align-items: center;
+    display: flex;
     justify-content: center;
-    border-radius: 5px;
+    height: 4vh;
+    border-radius: 8px;
+    border: 1px solid #D1D1D1;
+    background-color: #040454;
+    color: white;
     cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
 }
 
 .adicionar:hover {
@@ -84,20 +89,21 @@
 }
 
 
-.listaMaquinas {
+.listaEmpresas {
     width: 100%;
+    height: 75%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    align-items: center;    
+
 }
 
-.cardMaquina {
+.cardEmpresa {
     width: 95%;
+    height: 18%;
     border: solid 1px gray;
-    border-radius: 5px;
-    padding: 10px 5px 10px 5px;
-    margin-top: 2%;
+    border-radius: 10px;
+    margin-top: 1%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -107,23 +113,23 @@
     display: flex;
     flex-direction: row;
     width: 85%;
+    padding-left: 2%;
 }
 
 .dados {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
     width: 20%;
 }
 
 .titleDados {
-    font-size: 12px;
+    font-size: 1rem;
     color: gray;
 }
 
 .resultDados {
-    font-size: 20px;
+    font-size: 1.4rem;
     color: #040454;
     font-weight: bold;
 }
