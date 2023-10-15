@@ -111,7 +111,7 @@
     background-color: red;
     position: absolute;
     border-radius: 5px 0 0 5px;
-    z-index: -999;
+    z-index: 0;
 }
 
 .alertaVerde {
@@ -120,7 +120,7 @@
     background-color: #00B828;
     position: absolute;
     border-radius: 5px 0 0 5px;
-    z-index: -999;
+    z-index: 0;
 }
 
 .alertaAmarelo {
@@ -128,7 +128,7 @@
     height: 23%;
     position: absolute;
     border-radius: 5px 0 0 5px;
-    z-index: -999;
+    z-index: 0;
     background-color: #FFC700;
 }
 .informacoes {
