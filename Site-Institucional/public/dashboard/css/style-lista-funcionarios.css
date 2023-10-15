@@ -1,0 +1,145 @@
+.areaTitulo {
+    width: 100%;
+    padding-left: 2%;   
+}
+
+.titulo {
+    font-weight: 700;
+    font-size: 22px;
+    color: #040454;
+}
+
+.busca {
+    width: 95%;
+    margin-top: 1%;
+    display: flex;
+    flex-direction: row;
+}
+
+.busca input {
+    width: 100%;
+    border-radius: 5px;
+    padding: 5px;
+    border: solid 1px gray;
+}
+
+.busca input:hover {
+    background-color: rgb(232, 227, 227);
+}
+
+.busca .lupa {
+    background-color: #040454;
+    border-radius: 5px;
+    border: none;
+    padding: 0 10px 0 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lupa:hover {
+    background-color: #030337;
+}
+
+.busca .filtro {
+    background-color: white;
+    border-radius: 5px;
+    border: solid 1px gray;
+    padding: 0 7px 0 7px;
+    cursor: pointer;
+    margin-left: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.filtro:hover{
+    background-color: rgb(232, 227, 227);
+}
+
+.adicionar {
+    background-color: #040454;
+    margin-top: 1%;
+    padding: 8px;
+    color: white;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.adicionar:hover {
+    background-color: #030337;
+}
+
+.adicionar img {
+    margin-right: 5px;
+}
+
+.adicionar img:hover {
+    background-color: #030337;
+}
+
+
+.listaFuncionarios {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.cardFuncionario {
+    width: 95%;
+    border: solid 1px gray;
+    border-radius: 5px;
+    padding: 10px 5px 10px 5px;
+    margin-top: 2%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.informacoes {
+    display: flex;
+    flex-direction: row;
+    width: 85%;
+}
+
+.dados {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 20%;
+}
+
+.titleDados {
+    font-size: 12px;
+    color: gray;
+}
+
+.resultDados {
+    font-size: 20px;
+    color: #040454;
+    font-weight: bold;
+}
+
+.acoes {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.acoes a {
+    margin-right: 15px;
+    margin-top: 5px;
+}
+
+.acoes a img:hover{
+    background-color: rgb(232, 227, 227);
+}
