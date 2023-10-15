@@ -1,0 +1,211 @@
+.areaTitulo {
+    width: 100%;
+    padding-left: 2%;   
+}
+
+.titulo {
+    font-weight: 700;
+    font-size: 22px;
+    color: #040454;
+}
+
+.busca {
+    width: 95%;
+    margin-top: 1%;
+    display: flex;
+    flex-direction: row;
+}
+
+.busca input {
+    width: 100%;
+    border-radius: 5px;
+    padding: 5px;
+    border: solid 1px gray;
+}
+
+.busca input:hover {
+    background-color: rgb(232, 227, 227);
+}
+
+.busca .lupa {
+    background-color: #040454;
+    border-radius: 5px;
+    border: none;
+    padding: 0 10px 0 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lupa:hover {
+    background-color: #030337;
+}
+
+.busca .filtro {
+    background-color: white;
+    border-radius: 5px;
+    border: solid 1px gray;
+    padding: 0 7px 0 7px;
+    cursor: pointer;
+    margin-left: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.filtro:hover{
+    background-color: rgb(232, 227, 227);
+}
+
+.adicionar {
+    background-color: #040454;
+    margin-top: 1%;
+    padding: 8px;
+    color: white;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.adicionar:hover {
+    background-color: #030337;
+}
+
+.adicionar img {
+    margin-right: 5px;
+}
+
+.adicionar img:hover {
+    background-color: #030337;
+}
+
+
+
+.conteudoMaquinas {
+    width: 100%;
+    padding-left: 2%;
+    margin-top: 2%;
+}
+
+.linhaMaquinas {
+    width: 100%;
+}
+
+.cardMaquina {
+    width: 28%;
+    border: solid 1px gray;
+    border-radius: 5px;
+    z-index: 999;
+    float: left;
+    margin: 0 5% 1% 0;
+    cursor: pointer;
+}
+
+.alerta {
+    width: 1%;
+    height: 23%;
+    background-color: red;
+    position: absolute;
+    border-radius: 5px 0 0 5px;
+    z-index: -999;
+}
+
+.alertaVerde {
+    width: 1%;
+    height: 23%;
+    background-color: #00B828;
+    position: absolute;
+    border-radius: 5px 0 0 5px;
+    z-index: -999;
+}
+
+.alertaAmarelo {
+    width: 1%;
+    height: 23%;
+    position: absolute;
+    border-radius: 5px 0 0 5px;
+    z-index: -999;
+    background-color: #FFC700;
+}
+.informacoes {
+    width: 95%;
+    display: flex;
+    flex-direction: row;
+}
+
+.tituloMaquina {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 40%;
+    margin: 5px 0 15px 10px;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+}
+
+.componentes {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.componentes p {
+    font-size: 12px;
+    font-weight: bold;
+    padding-top: 5px;
+}
+
+.listaComponentes {
+    width: 100%;
+    font-size: 12px;
+}
+
+.componenteEspecifico {
+    width: 50%;
+    float: left;
+    color: gray;
+}
+
+.situacao {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2%;
+}
+
+.grave {
+    font-size: 12px;
+    font-weight: bold;
+    display: flex;
+    flex-direction: row;
+    margin-top: 5%;
+}
+
+.grave .colorSituacao {
+    color: red;
+    padding-left: 1%;
+}
+
+.grave .colorSituacaoVerde {
+    color: #00B828;
+    padding-left: 1%;
+}
+
+.grave .colorSituacaoAmarelo {
+    color: #FFC700;
+    padding-left: 1%;
+}
+
+.local {
+    font-size: 12px;
+    font-weight: bold;
+    margin-top: 5%;
+}
