@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chefware</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="../assets/css/style-lista-empresa.css">
+    <link rel="stylesheet" href="../assets/css/style-lista-funcionario.css">
     <link rel="stylesheet" href="./css/style-lista-empresas.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
@@ -26,34 +26,45 @@
                 <div class="sidebar-logo">
                     <img src="../assets/logoBRANCA.png" class="logo">
                 </div>
+
+
                 <div class="itensMenu">
                     <div class="sidebar-item">
                         <img src="../assets/pc.png" class="sidebar-icon">
                         <span class="sidebar-text">Máquinas</span>
                     </div>
+
                     <div class="sidebar-item">
                         <img src="../assets/escritorio 1.png" class="sidebar-icon">
                         <span class="sidebar-text">Empresas</span>
                     </div>
+
                     <div class="sidebar-item">
                         <img src="../assets/funcionarios 1.png" class="sidebar-icon">
                         <span class="sidebar-text">Funcionários</span>
                     </div>
+
                     <div class="sidebar-item">
                         <img src="../assets/relogio 1.png" class="sidebar-icon">
                         <span class="sidebar-text">Histórico</span>
                     </div>
+
                     <div class="sidebar-item">
                         <img src="../assets/ajudando 1.png" class="sidebar-icon">
                         <span class="sidebar-text">Ajuda</span>
                     </div>
                 </div>
+
+
                 <div class="sidebar-sair">
                     <img src="../assets/sair 1.png" class="sidebar-icon">
                     <span class="sidebar-text">Sair</span>
                 </div>
             </div>
+
+
         </div>
+
         <div class="conteudoPrincipal">
             <div class="areaConteudo">
                 <div class="container">
@@ -71,348 +82,230 @@
                     </div>
 
                     <div class="conteudo">
-                        <div>
-                            <div class="areaTitulo">
-                                <div class="titulo">
-                                    Máquinas
-                                </div>
-                                <div class="busca">
-                                    <input type="text" placeholder="Insira o nome da máquina">
-                                    <button class="lupa"><img src="../assets/busca.png" alt=""></button>
-                                    <button class="filtro"><img src="../assets/filtro.png" alt=""></button>
-                                </div>
-                                    <button class="adicionar">
-                                        <img src="../assets/adicionar.png" alt="">
-                                        Nova máquina
-                                    </button>
+                        <div class="areaTitulo">
+                            <div class="titulo">
+                                Empresas
                             </div>
-                            <div class="conteudoMaquinas">
-                                <div class="linhaMaquinas">
-                                    <div class="cardMaquina">
-                                        <div class="alerta">
-                                            
-                                        </div>
-                                        <div class="informacoes">
-                                            <div class="tituloMaquina">
-                                                <h4>Máquina 01</h4>
-                                                <img src="../assets/maquina.png">
-                                            </div>
-                                            <div class="info">
-                                                <div class="componentes">
-                                                    <p>Componentens em alertas:</p>
-                                                    <div class="listaComponentes">
-                                                        <li class="componenteEspecifico">
-                                                            Memória
-                                                        </li>
-                                                        <li class="componenteEspecifico">
-                                                            CPU
-                                                        </li>
-                                                        <li class="componenteEspecifico">
-                                                            Disco
-                                                        </li>
-                                                    </div>
-                                                </div>
-                                                <div class="situacao">
-                                                    <div class="grave">
-                                                        Situação:  
-                                                        <span class="colorSituacao"> Grave </span>
-                                                    </div>
-                                                    <div class="local">
-                                                        Local: Cozinha
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                            <div class="busca">
+                                <input type="text" placeholder="Insira o nome da empresa">
+                                <button class="lupa"><img src="../assets/busca.png" alt=""></button>
+                                <button class="filtro"><img src="../assets/filtro.png" alt=""></button>
+                            </div>
+                                <button class="adicionar">
+                                    <img src="../assets/adicionar.png" alt="">
+                                    Nova empresa
+                                </button>
+                        </div>
+                        <div class="listaMaquinas">
+                            <div class="cardMaquina">
+                                <div class="informacoes">
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            Identificação
+                                        </span>
+                                        <span class="resultDados">
+                                            0123456
+                                        </span>
                                     </div>
-                                    <div class="cardMaquina">
-                                        <div class="alertaVerde">
-                                            
-                                        </div>
-                                        <div class="informacoes">
-                                            <div class="tituloMaquina">
-                                                <h4>Máquina 01</h4>
-                                                <img src="../assets/maquina.png">
-                                            </div>
-                                            <div class="info">
-                                                <div class="componentes">
-                                                    <p>Componentens em alertas:</p>
-                                                    <div class="listaComponentes">
-                                                        <li class="componenteEspecifico">
-                                                            Memória
-                                                        </li>
-                                                        <li class="componenteEspecifico">
-                                                            CPU
-                                                        </li>
-                                                        <li class="componenteEspecifico">
-                                                            Disco
-                                                        </li>
-                                                    </div>
-                                                </div>
-                                                <div class="situacao">
-                                                    <div class="grave">
-                                                        Situação:  
-                                                        <span class="colorSituacaoVerde"> Normal </span>
-                                                    </div>
-                                                    <div class="local">
-                                                        Local: Cozinha
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            Nome
+                                        </span>
+                                        <span class="resultDados">
+                                            Julia Rufino
+                                        </span>
                                     </div>
-                                    <div class="cardMaquina">
-                                        <div class="alertaAmarelo">
-                                            
-                                        </div>
-                                        <div class="informacoes">
-                                            <div class="tituloMaquina">
-                                                <h4>Máquina 01</h4>
-                                                <img src="../assets/maquina.png">
-                                            </div>
-                                            <div class="info">
-                                                <div class="componentes">
-                                                    <p>Componentens em alertas:</p>
-                                                    <div class="listaComponentes">
-                                                        <li class="componenteEspecifico">
-                                                            Memória
-                                                        </li>
-                                                        <li class="componenteEspecifico">
-                                                            CPU
-                                                        </li>
-                                                        <li class="componenteEspecifico">
-                                                            Disco
-                                                        </li>
-                                                    </div>
-                                                </div>
-                                                <div class="situacao">
-                                                    <div class="grave">
-                                                        Situação:  
-                                                        <span class="colorSituacaoAmarelo"> Alerta </span>
-                                                    </div>
-                                                    <div class="local">
-                                                        Local: Cozinha
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            CNPJ
+                                        </span>
+                                        <span class="resultDados">
+                                            00.000.001/0001-00
+                                        </span>
                                     </div>
-                                    <div class="cardMaquina">
-                                        <div class="alerta">
-                                            
-                                        </div>
-                                        <div class="informacoes">
-                                            <div class="tituloMaquina">
-                                                <h4>Máquina 01</h4>
-                                                <img src="../assets/maquina.png">
-                                            </div>
-                                            <div class="info">
-                                                <div class="componentes">
-                                                    <p>Componentens em alertas:</p>
-                                                    <div class="listaComponentes">
-                                                        <li class="componenteEspecifico">
-                                                            Memória
-                                                        </li>
-                                                        <li class="componenteEspecifico">
-                                                            CPU
-                                                        </li>
-                                                        <li class="componenteEspecifico">
-                                                            Disco
-                                                        </li>
-                                                    </div>
-                                                </div>
-                                                <div class="situacao">
-                                                    <div class="grave">
-                                                        Situação:  
-                                                        <span class="colorSituacao"> Grave </span>
-                                                    </div>
-                                                    <div class="local">
-                                                        Local: Cozinha
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="cardMaquina">
-                                        <div class="alerta">
-                                            
-                                        </div>
-                                        <div class="informacoes">
-                                            <div class="tituloMaquina">
-                                                <h4>Máquina 01</h4>
-                                                <img src="../assets/maquina.png">
-                                            </div>
-                                            <div class="info">
-                                                <div class="componentes">
-                                                    <p>Componentens em alertas:</p>
-                                                    <div class="listaComponentes">
-                                                        <li class="componenteEspecifico">
-                                                            Memória
-                                                        </li>
-                                                        <li class="componenteEspecifico">
-                                                            CPU
-                                                        </li>
-                                                        <li class="componenteEspecifico">
-                                                            Disco
-                                                        </li>
-                                                    </div>
-                                                </div>
-                                                <div class="situacao">
-                                                    <div class="grave">
-                                                        Situação:  
-                                                        <span class="colorSituacao"> Grave </span>
-                                                    </div>
-                                                    <div class="local">
-                                                        Local: Cozinha
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="cardMaquina">
-                                        <div class="alerta">
-                                            
-                                        </div>
-                                        <div class="informacoes">
-                                            <div class="tituloMaquina">
-                                                <h4>Máquina 01</h4>
-                                                <img src="../assets/maquina.png">
-                                            </div>
-                                            <div class="info">
-                                                <div class="componentes">
-                                                    <p>Componentens em alertas:</p>
-                                                    <div class="listaComponentes">
-                                                        <li class="componenteEspecifico">
-                                                            Memória
-                                                        </li>
-                                                        <li class="componenteEspecifico">
-                                                            CPU
-                                                        </li>
-                                                        <li class="componenteEspecifico">
-                                                            Disco
-                                                        </li>
-                                                    </div>
-                                                </div>
-                                                <div class="situacao">
-                                                    <div class="grave">
-                                                        Situação:  
-                                                        <span class="colorSituacao"> Grave </span>
-                                                    </div>
-                                                    <div class="local">
-                                                        Local: Cozinha
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="cardMaquina">
-                                        <div class="alerta">
-                                            
-                                        </div>
-                                        <div class="informacoes">
-                                            <div class="tituloMaquina">
-                                                <h4>Máquina 01</h4>
-                                                <img src="../assets/maquina.png">
-                                            </div>
-                                            <div class="info">
-                                                <div class="componentes">
-                                                    <p>Componentens em alertas:</p>
-                                                    <div class="listaComponentes">
-                                                        <li class="componenteEspecifico">
-                                                            Memória
-                                                        </li>
-                                                        <li class="componenteEspecifico">
-                                                            CPU
-                                                        </li>
-                                                        <li class="componenteEspecifico">
-                                                            Disco
-                                                        </li>
-                                                    </div>
-                                                </div>
-                                                <div class="situacao">
-                                                    <div class="grave">
-                                                        Situação:  
-                                                        <span class="colorSituacao"> Grave </span>
-                                                    </div>
-                                                    <div class="local">
-                                                        Local: Cozinha
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="cardMaquina">
-                                        <div class="alerta">
-                                            
-                                        </div>
-                                        <div class="informacoes">
-                                            <div class="tituloMaquina">
-                                                <h4>Máquina 01</h4>
-                                                <img src="../assets/maquina.png">
-                                            </div>
-                                            <div class="info">
-                                                <div class="componentes">
-                                                    <p>Componentens em alertas:</p>
-                                                    <div class="listaComponentes">
-                                                        <li class="componenteEspecifico">
-                                                            Memória
-                                                        </li>
-                                                        <li class="componenteEspecifico">
-                                                            CPU
-                                                        </li>
-                                                        <li class="componenteEspecifico">
-                                                            Disco
-                                                        </li>
-                                                    </div>
-                                                </div>
-                                                <div class="situacao">
-                                                    <div class="grave">
-                                                        Situação:  
-                                                        <span class="colorSituacao"> Grave </span>
-                                                    </div>
-                                                    <div class="local">
-                                                        Local: Cozinha
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="cardMaquina">
-                                        <div class="alerta">
-                                            
-                                        </div>
-                                        <div class="informacoes">
-                                            <div class="tituloMaquina">
-                                                <h4>Máquina 01</h4>
-                                                <img src="../assets/maquina.png">
-                                            </div>
-                                            <div class="info">
-                                                <div class="componentes">
-                                                    <p>Componentens em alertas:</p>
-                                                    <div class="listaComponentes">
-                                                        <li class="componenteEspecifico">
-                                                            Memória
-                                                        </li>
-                                                        <li class="componenteEspecifico">
-                                                            CPU
-                                                        </li>
-                                                        <li class="componenteEspecifico">
-                                                            Disco
-                                                        </li>
-                                                    </div>
-                                                </div>
-                                                <div class="situacao">
-                                                    <div class="grave">
-                                                        Situação:  
-                                                        <span class="colorSituacao"> Grave </span>
-                                                    </div>
-                                                    <div class="local">
-                                                        Local: Cozinha
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            Máquinas monitoradas
+                                        </span>
+                                        <span class="resultDados">
+                                            29
+                                        </span>
                                     </div>
                                 </div>
+                                <div class="acoes">
+                                    <a href="#"><img src="../assets/editar.png"></a>
+                                    <a href="#"><img src="../assets/excluir.png"></a>
+                                </div>
+                            </div>
+                            <div class="cardMaquina">
+                                <div class="informacoes">
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            Identificação
+                                        </span>
+                                        <span class="resultDados">
+                                            0123456
+                                        </span>
+                                    </div>
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            Nome
+                                        </span>
+                                        <span class="resultDados">
+                                            Julia Rufino
+                                        </span>
+                                    </div>
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            CNPJ
+                                        </span>
+                                        <span class="resultDados">
+                                            00.000.001/0001-00
+                                        </span>
+                                    </div>
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            Máquinas monitoradas
+                                        </span>
+                                        <span class="resultDados">
+                                            10
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="acoes">
+                                    <a href="#"><img src="../assets/editar.png"></a>
+                                    <a href="#"><img src="../assets/excluir.png"></a>
+                                </div>
+                            </div>
+                            <div class="cardMaquina">
+                                <div class="informacoes">
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            Identificação
+                                        </span>
+                                        <span class="resultDados">
+                                            0123456
+                                        </span>
+                                    </div>
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            Nome
+                                        </span>
+                                        <span class="resultDados">
+                                            Julia Rufino
+                                        </span>
+                                    </div>
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            CNPJ
+                                        </span>
+                                        <span class="resultDados">
+                                            00.000.001/0001-00
+                                        </span>
+                                    </div>
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            Máquinas adicionadas
+                                        </span>
+                                        <span class="resultDados">
+                                            15
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="acoes">
+                                    <a href="#"><img src="../assets/editar.png"></a>
+                                    <a href="#"><img src="../assets/excluir.png"></a>
+                                </div>
+                            </div>
+                            <div class="cardMaquina">
+                                <div class="informacoes">
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            Identificação
+                                        </span>
+                                        <span class="resultDados">
+                                            0123456
+                                        </span>
+                                    </div>
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            Nome
+                                        </span>
+                                        <span class="resultDados">
+                                            Julia Rufino
+                                        </span>
+                                    </div>
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            CNPJ
+                                        </span>
+                                        <span class="resultDados">
+                                            00.000.001/0001-00
+                                        </span>
+                                    </div>
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            Máquinas adicionadas
+                                        </span>
+                                        <span class="resultDados">
+                                            25
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="acoes">
+                                    <a href="#"><img src="../assets/editar.png"></a>
+                                    <a href="#"><img src="../assets/excluir.png"></a>
+                                </div>
+                            </div>
+                            <div class="cardMaquina">
+                                <div class="informacoes">
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            Identificação
+                                        </span>
+                                        <span class="resultDados">
+                                            0123456
+                                        </span>
+                                    </div>
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            Nome
+                                        </span>
+                                        <span class="resultDados">
+                                            Julia Rufino
+                                        </span>
+                                    </div>
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            CNPJ
+                                        </span>
+                                        <span class="resultDados">
+                                            00.000.001/0001-00
+                                        </span>
+                                    </div>
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            Máquinas adicionadas
+                                        </span>
+                                        <span class="resultDados">
+                                            14
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="acoes">
+                                    <a href="#"><img src="../assets/editar.png"></a>
+                                    <a href="#"><img src="../assets/excluir.png"></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="page">
+                            <div class="pagination">
+                                <button class="prev-page"><img src="../assets/voltar-icon.png" alt=""></button>
+                                <button class="page-num">1</button>
+                                <button class="page-num">2</button>
+                                <button class="page-num">...</button>
+                                <button class="page-num">23</button>
+                                <button class="next-page"><img src="../assets/avancar-icon.png" alt=""></button>
                             </div>
                         </div>
                    </div>
@@ -421,5 +314,9 @@
             
         </div>
     </div>
+
+
+
 </body>
+
 </html>
