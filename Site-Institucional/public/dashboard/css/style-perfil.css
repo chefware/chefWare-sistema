@@ -1,0 +1,47 @@
+.conteudo {
+    display: flex;
+    flex-direction: column;
+    color: #040454;
+    font-size: 2rem;
+    text-align: center;
+    margin-top: 1%;
+}
+.conteudo-perfil {
+    width: 100%;
+    height: 93%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    flex-direction: row;
+}
+.informacoes-perfil {
+    width: 40%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: self-start;
+
+}
+.informacoes-box {
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: left;
+}
+.text-box {
+    display: flex;
+    flex-direction: column;
+}
+.text-box span {
+    font-size: 1.3rem;
+}
+.text-perfil-info {
+    color: black;
+}
+.alterar-foto {
+    background-color: green;
+    width: 40%;
+    height: 100%;
+}
