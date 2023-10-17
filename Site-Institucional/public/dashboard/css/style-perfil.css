@@ -2,9 +2,11 @@
     display: flex;
     flex-direction: column;
     color: #040454;
-    font-size: 2rem;
+    font-size: 2.5rem;
     text-align: center;
     margin-top: 1%;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
 }
 .conteudo-perfil {
     width: 100%;
@@ -35,13 +37,50 @@
     flex-direction: column;
 }
 .text-box span {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
 }
 .text-perfil-info {
     color: black;
 }
 .alterar-foto {
-    background-color: green;
     width: 40%;
     height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.alterar-foto-box{
+    width: 60%;
+    height: 75%;
+    display: flex;
+    border: 1px solid #5C5C5C;
+    border-radius: 20px;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+.alterar-foto-box img {
+    width: 270px;
+    height: 265px;
+}
+.alterar-foto-text {
+    font-size: 1.2rem;
+    color: #A0A0A0;
+}
+.nome-perfil{
+    font-size:  3rem;
+    font-weight: 700;
+    color: #040454;
+    margin-bottom: 20%;
+}
+.botao-perfil {
+    width: 65%;
+    height: 8%;
+    background-color: white;
+    border: 1px solid #040454;
+    border-radius: 15px;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #000000;
+    cursor: pointer;
 }
