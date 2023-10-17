@@ -11,6 +11,7 @@
 
 <body>
     <div class="main">
+        <!-- Menu lateral -->
         <div id="sidebar">
             <div class="areaSideBar">
                 <div class="sidebar-logo">
@@ -50,15 +51,16 @@
                     <img src="../assets/sair 1.png" class="sidebar-icon">
                     <span class="sidebar-text">Sair</span>
                 </div>
+
             </div>
-
-
         </div>
 
+        <!-- Área sistema -->
         <div class="conteudoPrincipal">
             <div class="areaConteudo">
                 <div class="container">
                     <div class="header">
+
                         <div class="conteudoEmpresa">
                             <span>Empresa</span>
                             <h1>Fogo de Chão</h1>
@@ -72,12 +74,16 @@
                     </div>
 
                     <div class="conteudo">
+
                         <h1 class="tituloGeralDashboard">Visão Máquina</h1>
+
                         <div class="dashboard">
                             <div class="cabecalho">
                                 <div class="itensCabecalho">
+
                                     <h1 id="nomeMaquina">Máquina 001</h1>
                                     <button class="botaoAcoesRapidas">Ações Rápidas</button>
+
                                     <div class="indicadores">
                                         <span class="tituloIndicadores">Indicadores</span>
                                         <div class="legenda">
@@ -89,10 +95,12 @@
                                             <span class="legendaIndicadores">Normal</span>
                                         </div>
                                     </div>
+
                                 </div>
 
 
                                 <div class="areaBotao">
+
                                     <div class="botao">
                                         <img src="../assets/img/iconEditar.svg">
                                     </div>
@@ -100,15 +108,17 @@
                                     <div class="botao">
                                         <img src="../assets/img/iconExcluir.svg">
                                     </div>
-                                </div>
 
+                                </div>
                             </div>
 
                             <div class="areaDadosGraficos">
                                 <div class="menuComponentes">
+
                                     <div class="areaTituloMenu">
                                         <h3>Menu</h3>
                                     </div>
+
                                     <div id="botaoCpu" class="opcaoMenuComponentes">
                                         <h2>CPU</h2>
                                         <span>Em uso: <span>35%</span></span>
@@ -128,21 +138,27 @@
                                         <h2>REDE</h2>
                                         <span>Não conectada</span>
                                     </div>
+
                                 </div>
 
                                 <div class="conteudoPrincipalDashboard">
                                     <div class="informacoesDashboard">
+
                                         <div class="nomeComponenteGrafico">
                                             <h3>CPU</h3>
                                             <span>% UTILIZADA</span>
                                         </div>
 
                                         <h2>RYZEN 2800 GHZ 40</h2>
+
                                     </div>
 
                                     <div class="areaGrafico">
+
                                         <canvas id="myChartCpu"></canvas>
+
                                         <div class="informacoesDinamicas">
+
                                             <h4>Uso Atual:</h4>
 
                                             <div class="areaDadoGrafico">
@@ -185,19 +201,14 @@
                                                     class="dadoEstatico">8</span></span>
                                         </div>
 
-                                        <!--  -->
-
                                     </div>
 
                                 </div>
-
-
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -206,29 +217,69 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="../assets/js/graficoCpu.js"></script>
 <script>
-const botaoDisco = document.getElementById('botaoDisco');
+    const ctxCpu = document.getElementById('myChartCpu');
 
-botaoDisco.addEventListener('click', function() {
-    window.location.href = 'dashboard-disco.html';
-});
+    new Chart(ctxCpu, {
+        type: 'line',
+        data: {
+            labels: ['18:00:00', '18:01:00', '18:02:00', '18:03:00', '18:04:00', '18:05:00', '18:06:00', '18:07:00'],
+            datasets: [{
+                label: '% de uso',
+                data: [62, 50, 97, 43, 56, 65, 30, 35],
+                borderWidth: 1,
+                backgroundColor: (context) => {
+                    const background = [
+                        "#040454",
+                        "#555592"
+                    ]
 
-const botaoCpu = document.getElementById('botaoCpu');
+                    if (!context.chart.chartArea) {
+                        return;
+                    }
 
-botaoCpu.addEventListener('click', function() {
-    window.location.href = 'dashboard-cpu.html';
-});
+                    const { ctx, data, chartArea: { top, bottom } } = context.chart;
+                    const gradientBackground = ctx.createLinearGradient(0, top, 0, bottom);
+                    gradientBackground.addColorStop(.5, background[0]);
+                    gradientBackground.addColorStop(1, background[1]);
 
-const botaoMemoria = document.getElementById('botaoMemoria');
+                    return gradientBackground;
+                },
+                fill: true,
+                cubicInterpolationMode: 'monotone'
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
 
-botaoMemoria.addEventListener('click', function() {
-    window.location.href = 'dashboard-memoria.html';
-});
+    const botaoDisco = document.getElementById('botaoDisco');
 
-const botaoRede = document.getElementById('botaoRede');
+    botaoDisco.addEventListener('click', function () {
+        window.location.href = 'dashboard-disco.html';
+    });
 
-botaoRede.addEventListener('click', function() {
-    window.location.href = 'dashboard-rede.html';
-});
+    const botaoCpu = document.getElementById('botaoCpu');
+
+    botaoCpu.addEventListener('click', function () {
+        window.location.href = 'dashboard-cpu.html';
+    });
+
+    const botaoMemoria = document.getElementById('botaoMemoria');
+
+    botaoMemoria.addEventListener('click', function () {
+        window.location.href = 'dashboard-memoria.html';
+    });
+
+    const botaoRede = document.getElementById('botaoRede');
+
+    botaoRede.addEventListener('click', function () {
+        window.location.href = 'dashboard-rede.html';
+    });
 
 </script>
 

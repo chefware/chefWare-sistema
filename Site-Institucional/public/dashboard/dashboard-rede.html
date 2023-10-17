@@ -141,7 +141,7 @@
                                     </div>
 
                                     <div class="areaGrafico">
-                                        <canvas id="myChartCpu"></canvas>
+                                        <canvas id="myChartRede"></canvas>
                                         <div class="informacoesDinamicas">
                                             <h4>Uso Atual:</h4>
 
@@ -185,8 +185,6 @@
                                                     class="dadoEstatico">8</span></span>
                                         </div>
 
-                                        <!--  -->
-
                                     </div>
 
                                 </div>
@@ -206,29 +204,68 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="../assets/js/graficoCpu.js"></script>
 <script>
-const botaoDisco = document.getElementById('botaoDisco');
+    const ctxRede = document.getElementById('myChartRede');
 
-botaoDisco.addEventListener('click', function() {
-    window.location.href = 'dashboard-disco.html';
-});
+    new Chart(ctxRede, {
+        type: 'line',
+        data: {
+            labels: ['18:00:00', '18:01:00', '18:02:00', '18:03:00', '18:04:00', '18:05:00', '18:06:00', '18:07:00'],
+            datasets: [{
+                label: '% de uso',
+                data: [20, 32, 13, 19, 37, 50, 62, 39],
+                borderWidth: 1,
+                backgroundColor: (context) => {
+                    const background = [
+                        "#040454",
+                        "#555592"
+                    ]
 
-const botaoCpu = document.getElementById('botaoCpu');
+                    if (!context.chart.chartArea) {
+                        return;
+                    }
 
-botaoCpu.addEventListener('click', function() {
-    window.location.href = 'dashboard-cpu.html';
-});
+                    const { ctx, data, chartArea: { top, bottom } } = context.chart;
+                    const gradientBackground = ctx.createLinearGradient(0, top, 0, bottom);
+                    gradientBackground.addColorStop(.5, background[0]);
+                    gradientBackground.addColorStop(1, background[1]);
 
-const botaoMemoria = document.getElementById('botaoMemoria');
+                    return gradientBackground;
+                },
+                fill: true,
+                cubicInterpolationMode: 'monotone'
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    const botaoDisco = document.getElementById('botaoDisco');
 
-botaoMemoria.addEventListener('click', function() {
-    window.location.href = 'dashboard-memoria.html';
-});
+    botaoDisco.addEventListener('click', function () {
+        window.location.href = 'dashboard-disco.html';
+    });
 
-const botaoRede = document.getElementById('botaoRede');
+    const botaoCpu = document.getElementById('botaoCpu');
 
-botaoRede.addEventListener('click', function() {
-    window.location.href = 'dashboard-rede.html';
-});
+    botaoCpu.addEventListener('click', function () {
+        window.location.href = 'dashboard-cpu.html';
+    });
+
+    const botaoMemoria = document.getElementById('botaoMemoria');
+
+    botaoMemoria.addEventListener('click', function () {
+        window.location.href = 'dashboard-memoria.html';
+    });
+
+    const botaoRede = document.getElementById('botaoRede');
+
+    botaoRede.addEventListener('click', function () {
+        window.location.href = 'dashboard-rede.html';
+    });
 
 </script>
 

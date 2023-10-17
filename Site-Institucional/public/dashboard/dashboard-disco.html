@@ -137,16 +137,16 @@
                                             <span>% UTILIZADA</span>
                                         </div>
 
-                                        <h2>RYZEN 2800 GHZ 40</h2>
+                                        <h2>APPLE SSD AP0128N</h2>
                                     </div>
 
                                     <div class="areaGrafico">
-                                        <canvas id="myChartCpu"></canvas>
+                                        <canvas id="myChartDisco"></canvas>
                                         <div class="informacoesDinamicas">
                                             <h4>Uso Atual:</h4>
 
                                             <div class="areaDadoGrafico">
-                                                <span>35%</span>
+                                                <span>71%</span>
                                             </div>
 
                                         </div>
@@ -206,29 +206,70 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="../assets/js/graficoCpu.js"></script>
 <script>
-const botaoDisco = document.getElementById('botaoDisco');
 
-botaoDisco.addEventListener('click', function() {
-    window.location.href = 'dashboard-disco.html';
-});
+    const ctxDisco = document.getElementById('myChartDisco');
 
-const botaoCpu = document.getElementById('botaoCpu');
+    new Chart(ctxDisco, {
+        type: 'line',
+        data: {
+            labels: ['18:00:00', '18:01:00', '18:02:00', '18:03:00', '18:04:00', '18:05:00', '18:06:00', '18:07:00'],
+            datasets: [{
+                label: '% de uso',
+                data: [20, 12, 46, 40, 60, 20, 70, 71],
+                borderWidth: 1,
+                backgroundColor: (context) => {
+                    const background = [
+                        "#040454",
+                        "#555592"
+                    ]
 
-botaoCpu.addEventListener('click', function() {
-    window.location.href = 'dashboard-cpu.html';
-});
+                    if (!context.chart.chartArea) {
+                        return;
+                    }
 
-const botaoMemoria = document.getElementById('botaoMemoria');
+                    const { ctx, data, chartArea: { top, bottom } } = context.chart;
+                    const gradientBackground = ctx.createLinearGradient(0, top, 0, bottom);
+                    gradientBackground.addColorStop(.5, background[0]);
+                    gradientBackground.addColorStop(1, background[1]);
 
-botaoMemoria.addEventListener('click', function() {
-    window.location.href = 'dashboard-memoria.html';
-});
+                    return gradientBackground;
+                },
+                fill: true,
+                cubicInterpolationMode: 'monotone'
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
 
-const botaoRede = document.getElementById('botaoRede');
+    const botaoDisco = document.getElementById('botaoDisco');
 
-botaoRede.addEventListener('click', function() {
-    window.location.href = 'dashboard-rede.html';
-});
+    botaoDisco.addEventListener('click', function () {
+        window.location.href = 'dashboard-disco.html';
+    });
+
+    const botaoCpu = document.getElementById('botaoCpu');
+
+    botaoCpu.addEventListener('click', function () {
+        window.location.href = 'dashboard-cpu.html';
+    });
+
+    const botaoMemoria = document.getElementById('botaoMemoria');
+
+    botaoMemoria.addEventListener('click', function () {
+        window.location.href = 'dashboard-memoria.html';
+    });
+
+    const botaoRede = document.getElementById('botaoRede');
+
+    botaoRede.addEventListener('click', function () {
+        window.location.href = 'dashboard-rede.html';
+    });
 
 </script>
 
