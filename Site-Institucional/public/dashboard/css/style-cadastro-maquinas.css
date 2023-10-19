@@ -1,0 +1,117 @@
+.conteudo{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.h2-titulo-form{
+    margin: 0;
+    padding: 0;
+    margin-bottom: 3%;
+    color: #040454;
+}
+
+.form-cadastrar{
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 45%;
+}   
+
+.campo{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.5%;
+    height: 10vh;
+    width: 100%;
+}
+
+.campo-horizontal .campo{
+    width: 80%;
+    margin-bottom: 0;
+}
+
+.label-cadastrar{
+    margin: 0;
+    padding: 0;
+    color: #040454;
+    font-size: 1em;
+}
+
+.input-form-cadastrar{
+    border-radius: 5px;
+    border: solid #5C5C5C 1px;
+    padding: .5rem;
+    height: 50%;
+}
+
+.input-form-cadastrar::placeholder{
+    color: #040454;
+    font-weight: 400;
+}
+
+.campo-horizontal{
+    display: flex;
+    justify-content: space-between;
+    height: 10vh;
+    width: 100%;
+    margin-bottom: 1.5%;
+}
+
+.sl-edicao{
+    height: 100%;
+    color: #040454;
+}
+
+select{
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: url('../img/sinal-de-seta-para-baixo-para-navegar 5.png') no-repeat center right;
+    background-position: right 10% top 50%;
+    background-size: 20%;
+    padding-right: 20%;
+}
+
+#campo-estado,#campo-numero-endereco{
+    width: 15%;
+}
+
+.campo-botoes{
+    margin-bottom: 0;
+    margin-top: 2.5%;
+}
+
+.bt_edicao{
+    border-radius: 5px;
+    cursor: pointer;
+    width: 45%;
+    height: 70%;
+    font-size: 1em;
+    font-weight: 700;
+    transition: .4s;
+}
+
+#botao-cadastrar{
+    background-color: #040454;
+    border: none;
+    color: white;
+}
+
+#botao-cadastrar:hover{
+    background-color: #345CAC;
+}
+
+#botao-cancelar{
+    background-color: #CBCBCB;
+    color: black;
+    border: solid black 1px;
+}
+
+#botao-cancelar:hover{
+    background-color: #eee;
+}
