@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chefware</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./css/style-cadastrar-funcionario.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>    
+</head>
+
+<body>
+    <div class="main">
+        <div id="sidebar">
+            <div class="areaSideBar">
+                <div class="sidebar-logo">
+                    <img src="../assets/logoBRANCA.png" class="logo">
+                </div>
+
+
+                <div class="itensMenu">
+                    <div class="sidebar-item">
+                        <img src="../assets/pc.png" class="sidebar-icon">
+                        <span class="sidebar-text">Máquinas</span>
+                    </div>
+
+                    <div class="sidebar-item">
+                        <img src="../assets/escritorio 1.png" class="sidebar-icon">
+                        <span class="sidebar-text">Empresas</span>
+                    </div>
+
+                    <div class="sidebar-item">
+                        <img src="../assets/funcionarios 1.png" class="sidebar-icon">
+                        <span class="sidebar-text">Funcionários</span>
+                    </div>
+
+                    <div class="sidebar-item">
+                        <img src="../assets/relogio 1.png" class="sidebar-icon">
+                        <span class="sidebar-text">Histórico</span>
+                    </div>
+
+                    <div class="sidebar-item">
+                        <img src="../assets/ajudando 1.png" class="sidebar-icon">
+                        <span class="sidebar-text">Ajuda</span>
+                    </div>
+                </div>
+
+
+                <div class="sidebar-sair">
+                    <img src="../assets/sair 1.png" class="sidebar-icon">
+                    <span class="sidebar-text">Sair</span>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="conteudoPrincipal">
+            <div class="areaConteudo">
+                <div class="container">
+                    <div class="header">
+                        <div class="conteudoEmpresa">
+                            <span>Empresa</span>
+                            <h1>Fogo de Chão</h1>
+                        </div>
+    
+                        <div class="perfil-img">
+                            <img src="../assets/julia.png" class="perfil">
+                            <span>Olá, Julia</span>
+                        </div>
+
+                    </div>
+
+                    <div class="conteudo">
+                        <h2 class="h2-titulo-form">Cadastrar Funcionário</h2>
+                        <div class="form-editar">
+
+                            <div class="campo">
+                                <h4 class="label-editar">Código de identificação:</h4>
+                                <input type="text" class="input-form-editar" placeholder="Código de identificação">
+                            </div>
+
+                            <div class="campo">
+                                <h4 class="label-editar">Nome:</h4>
+                                <input type="text" class="input-form-editar" placeholder="Nome funcionário">
+                            </div>
+
+                            <div class="campo">
+                                <h4 class="label-editar">CPF:</h4>
+                                <input id="input_cpf" type="text" class="input-form-editar" placeholder="000.000.000-00"  onkeypress="$(this).mask('000.000.000-00')">
+                            </div>
+
+
+                            <div class="campo">
+                                <h4 class="label-editar">E-mail:</h4>
+                                <input type="text" class="input-form-editar" placeholder="chefware@gmail.com">
+                            </div>
+
+                            <div class="campo">
+                                <h4 class="label-editar">Senha:</h4>
+                                <input type="password" class="input-form-editar" placeholder="********">
+                            </div>
+
+                            <div class="campo" id="campo-estado">
+                                <h4 class="label-editar">Cargo:</h4>
+                                <select class="input-form-editar sl-edicao" id="sl-estado">
+                                    <option value="">---</option>
+                                    <option value="gerente">Gerente</option>
+                                    <option value="func">Funcionário</option>
+                                </select>
+                            </div>
+                            <div class="campo" id="campo-estado">
+                                <h4 class="label-editar">Privilégio:</h4>
+                                <select class="input-form-editar sl-edicao" id="sl-estado">
+                                    <option value="">---</option>
+                                    <option value="admin">Administrador</option>
+                                    <option value="comum">Comum</option>
+                                </select>
+                            </div>
+                            <div class="campo-botoes campo-horizontal">
+                                <button class="bt_edicao" id="botao-cancelar">Cancelar</button>
+                                <button class="bt_edicao" id="botao-editar">Cadastrar</button>
+                            </div>
+                        </div>
+                   </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</body>
+</html>
+
+<script>
+     $("#input_cpf").keypress(function () {
+				$(this).mask('000.000.000-00');
+	});
+</script>
