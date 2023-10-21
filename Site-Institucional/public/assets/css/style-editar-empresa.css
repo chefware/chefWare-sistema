@@ -82,6 +82,14 @@ select{
     width: 15%;
 }
 
+.campo.maior{
+    height: 20vh;
+}
+
+textarea.input-form-editar{
+    height: 100%;
+}
+
 .campo-botoes{
     margin-bottom: 0;
     margin-top: 2.5%;
