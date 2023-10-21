@@ -126,7 +126,7 @@
 
                                     <div id="botaoRede" class="opcaoMenuComponentes">
                                         <h2>REDE</h2>
-                                        <span>Não conectada</span>
+                                        <span>Conectada</span>
                                     </div>
                                 </div>
 
@@ -137,16 +137,22 @@
                                             <span>% UTILIZADA</span>
                                         </div>
 
-                                        <h2>RYZEN 2800 GHZ 40</h2>
+                                        <h2>En0001</h2>
                                     </div>
 
                                     <div class="areaGrafico">
                                         <canvas id="myChartRede"></canvas>
                                         <div class="informacoesDinamicas">
-                                            <h4>Uso Atual:</h4>
+                                            <h4>Pacotes enviados:</h4>
 
                                             <div class="areaDadoGrafico">
-                                                <span>35%</span>
+                                                <span>150 B</span>
+                                            </div>
+
+                                            <h4>Pacotes recebidos:</h4>
+
+                                            <div class="areaDadoGrafico">
+                                                <span>202 B</span>
                                             </div>
 
                                         </div>
@@ -157,32 +163,27 @@
                                         <span class="tituloInformacoesEstaticas">Informações Estáticas:</span>
                                         <div class="areaDadosEstaticos">
                                             <div class="colunaDado">
-                                                <span class="tituloDadoEstatico">Fabricante: <span
-                                                        class="dadoEstatico">GenuineIntel</span></span>
+                                                <span class="tituloDadoEstatico">Nome: <span
+                                                        class="dadoEstatico">En0001</span></span>
 
-                                                <span class="tituloDadoEstatico">ID: <span
-                                                        class="dadoEstatico">bfebfbff000806ea</span></span>
+                                                <span class="tituloDadoEstatico">Nome de exibição: <span
+                                                        class="dadoEstatico">Wi-fi</span>
+                                                    </span>
                                             </div>
 
                                             <div class="colunaDado">
-                                                <span class="tituloDadoEstatico">Identificador: <span
-                                                        class="dadoEstatico">Intel64 Family 6 Model 142 Stepping
-                                                        10</span></span>
+                                                <span class="tituloDadoEstatico">Endereço IPv4: 
+                                                    <span class="dadoEstatico">111.122.11.6</span>
+                                                </span>
 
-                                                <span class="tituloDadoEstatico">Frequência: <span
-                                                        class="dadoEstatico">1400000000 Hz</span></span>
+                                                <span class="tituloDadoEstatico">Endereço IPv6: <span
+                                                        class="dadoEstatico">fe80:1:1:0:21f:4ba1:cc39:ba50</span></span>
                                             </div>
 
                                             <div class="colunaDado">
-                                                <span class="tituloDadoEstatico">Nº Pacotes Físicos: <span
-                                                        class="dadoEstatico">1</span></span>
-
-                                                <span class="tituloDadoEstatico">Nº de CPU`s Físicas: <span
-                                                        class="dadoEstatico">4</span></span>
+                                                <span class="tituloDadoEstatico">Endereço MAC: <span
+                                                        class="dadoEstatico">a2:12:e6:6d:a8:5f</span></span>
                                             </div>
-
-                                            <span class="tituloDadoEstatico">Nº de CPU`s Lógicas: <span
-                                                    class="dadoEstatico">8</span></span>
                                         </div>
 
                                     </div>
@@ -211,27 +212,20 @@
         data: {
             labels: ['18:00:00', '18:01:00', '18:02:00', '18:03:00', '18:04:00', '18:05:00', '18:06:00', '18:07:00'],
             datasets: [{
-                label: '% de uso',
+                label: 'Pacotes enviados',
                 data: [20, 32, 13, 19, 37, 50, 62, 39],
                 borderWidth: 1,
-                backgroundColor: (context) => {
-                    const background = [
-                        "#040454",
-                        "#555592"
-                    ]
-
-                    if (!context.chart.chartArea) {
-                        return;
-                    }
-
-                    const { ctx, data, chartArea: { top, bottom } } = context.chart;
-                    const gradientBackground = ctx.createLinearGradient(0, top, 0, bottom);
-                    gradientBackground.addColorStop(.5, background[0]);
-                    gradientBackground.addColorStop(1, background[1]);
-
-                    return gradientBackground;
-                },
+                backgroundColor: 'rgba(4, 4, 84, 0.2)',
+                borderColor: '#040454',
                 fill: true,
+                cubicInterpolationMode: 'monotone'
+            }, 
+            {
+                label: 'Pacotes recebidos',
+                data: [70, 40, 15, 30, 45, 60, 55, 40],
+                borderWidth: 1, 
+                borderColor: '#00aa47',
+                fill: false,
                 cubicInterpolationMode: 'monotone'
             }]
         },
