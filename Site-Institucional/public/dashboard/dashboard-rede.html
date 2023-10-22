@@ -121,7 +121,7 @@
 
                                     <div id="botaoMemoria" class="opcaoMenuComponentes">
                                         <h2>MEMÓRIA</h2>
-                                        <span>Em uso: <span>7,0 GB</span></span>
+                                        <span>Em uso: <span>7,0/8,0 GB</span></span>
                                     </div>
 
                                     <div id="botaoRede" class="opcaoMenuComponentes">
@@ -152,7 +152,7 @@
                                             <h4>Pacotes recebidos:</h4>
 
                                             <div class="areaDadoGrafico">
-                                                <span>202 B</span>
+                                                <span>120 B</span>
                                             </div>
 
                                         </div>
@@ -213,7 +213,7 @@
             labels: ['18:00:00', '18:01:00', '18:02:00', '18:03:00', '18:04:00', '18:05:00', '18:06:00', '18:07:00'],
             datasets: [{
                 label: 'Pacotes enviados',
-                data: [20, 32, 13, 19, 37, 50, 62, 39],
+                data: [200, 130, 100, 80, 110, 105, 82, 150],
                 borderWidth: 1,
                 backgroundColor: 'rgba(4, 4, 84, 0.2)',
                 borderColor: '#040454',
@@ -222,7 +222,7 @@
             }, 
             {
                 label: 'Pacotes recebidos',
-                data: [70, 40, 15, 30, 45, 60, 55, 40],
+                data: [70, 40, 75, 30, 45, 60, 55, 120],
                 borderWidth: 1, 
                 borderColor: '#00aa47',
                 fill: false,
@@ -232,7 +232,8 @@
         options: {
             scales: {
                 y: {
-                    beginAtZero: true
+                    beginAtZero: true,
+                    max: 250
                 }
             }
         }
