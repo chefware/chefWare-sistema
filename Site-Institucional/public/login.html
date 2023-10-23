@@ -57,17 +57,15 @@ function logar() {
       var user = document.getElementById("inp_user").value;
       var password = document.getElementById("inp_password").value;
       var feedback_div = document.getElementById("feedback_user");
-      var correctUser = "fernanda";
-      var correctPassword = "caramico";
-      var correctUser2 = "gustavo";
-      var correctPassword2 = "ribeiro";
+      var correctUser = "julia";
+      var correctPassword = "rufino";
 
       if (correctUser == "" || correctPassword == "") {
         feedback_div.innerHTML = `Campos não podem ser nulos`
         return false;
       } else {
         if (correctUser == user && correctPassword == password) {
-          window.location.href = "./index.html";
+          window.location.href = "/Site-Institucional/public/dashboard/dashboard-cpu.html";
           sessionStorage.setItem("user", user);
         } else {
           feedback_div.innerHTML = `Usuário ou senha incorretos.`
@@ -82,7 +80,7 @@ window.addEventListener("keyup", capturarTecla)
         logar();
       }
 
-  
+
   }
 
 </script>
