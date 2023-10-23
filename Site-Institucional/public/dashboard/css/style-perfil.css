@@ -37,7 +37,7 @@
     flex-direction: column;
 }
 .text-box span {
-    font-size: 1.5rem;
+    font-size: 1.1rem;
 }
 .text-perfil-info {
     color: black;
@@ -64,11 +64,11 @@
     height: 265px;
 }
 .alterar-foto-text {
-    font-size: 1.2rem;
+    font-size: 1rem;
     color: #A0A0A0;
 }
 .nome-perfil{
-    font-size:  3rem;
+    font-size:  2.5rem;
     font-weight: 700;
     color: #040454;
     margin-bottom: 20%;
@@ -79,7 +79,7 @@
     background-color: white;
     border: 1px solid #040454;
     border-radius: 15px;
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 500;
     color: #000000;
     cursor: pointer;
