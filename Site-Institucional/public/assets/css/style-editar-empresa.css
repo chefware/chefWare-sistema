@@ -7,9 +7,10 @@
 }
 
 .h2-titulo-form{
+    font-size: 1.2em;
     margin: 0;
     padding: 0;
-    margin-bottom: 3%;
+    margin-bottom: 2%;
     color: #040454;
 }
 
@@ -26,7 +27,7 @@
     display: flex;
     flex-direction: column;
     margin-bottom: 1.5%;
-    height: 10vh;
+    height: 9vh;
     width: 100%;
 }
 
@@ -39,7 +40,7 @@
     margin: 0;
     padding: 0;
     color: #040454;
-    font-size: 1em;
+    font-size: .9em;
 }
 
 .input-form-editar{
@@ -71,14 +72,22 @@ select{
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    background: url('../img/sinal-de-seta-para-baixo-para-navegar 5.png') no-repeat center right;
-    background-position: right 10% top 50%;
-    background-size: 20%;
+    background: url('../img/sinal-de-seta-para-baixo-para-navegar 5.png') no-repeat right;
+    background-position: right 5px top 50%;
+    background-size: 1vw;
     padding-right: 20%;
 }
 
-#campo-estado,#campo-numero-endereco{
+.campo.campo-menor{
     width: 15%;
+}
+
+.campo.maior{
+    height: 20vh;
+}
+
+textarea.input-form-editar{
+    height: 100%;
 }
 
 .campo-botoes{
@@ -90,7 +99,7 @@ select{
     border-radius: 5px;
     cursor: pointer;
     width: 45%;
-    height: 70%;
+    height: 60%;
     font-size: 1em;
     font-weight: 700;
     transition: .4s;
