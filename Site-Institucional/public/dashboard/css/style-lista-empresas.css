@@ -1,6 +1,6 @@
 .areaTitulo {
     width: 100%;
-    padding-left: 2%;   
+    padding-left: 2%;
 }
 
 .titulo {
@@ -20,14 +20,14 @@
     width: 100%;
     border-radius: 8px;
     border: 1px solid #D1D1D1;
-    font-size: 1rem;
+    font-size: 0.8rem;
     padding-left: 1%;
 }
 
 .busca input :focus, input:focus, select:focus {
     border: 1px solid #D1D1D1;
     outline: 0;
-} 
+}
 
 .busca .lupa {
     background-color: #040454;
@@ -72,7 +72,7 @@
     background-color: #040454;
     color: white;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 0.7rem;
     font-weight: 500;
 }
 
@@ -94,7 +94,7 @@
     height: 75%;
     display: flex;
     flex-direction: column;
-    align-items: center;    
+    align-items: center;
 
 }
 
@@ -124,12 +124,12 @@
 }
 
 .titleDados {
-    font-size: 1rem;
+    font-size: 0.8rem;
     color: gray;
 }
 
 .resultDados {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     color: #040454;
     font-weight: bold;
 }

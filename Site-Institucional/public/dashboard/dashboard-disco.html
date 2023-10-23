@@ -19,17 +19,17 @@
 
 
                 <div class="itensMenu">
-                    <div class="sidebar-item">
+                    <div class="sidebar-item" id="itemMenuMaquina">
                         <img src="../assets/pc.png" class="sidebar-icon">
                         <span class="sidebar-text">Máquinas</span>
                     </div>
 
-                    <div class="sidebar-item">
+                    <div class="sidebar-item" id="itemMenuEmpresa">
                         <img src="../assets/escritorio 1.png" class="sidebar-icon">
                         <span class="sidebar-text">Empresas</span>
                     </div>
 
-                    <div class="sidebar-item">
+                    <div class="sidebar-item" id="itemMenuFuncionario">
                         <img src="../assets/funcionarios 1.png" class="sidebar-icon">
                         <span class="sidebar-text">Funcionários</span>
                     </div>
@@ -121,12 +121,12 @@
 
                                     <div id="botaoMemoria" class="opcaoMenuComponentes">
                                         <h2>MEMÓRIA</h2>
-                                        <span>Em uso: <span>7,0 GB</span></span>
+                                        <span>Em uso: <span>7,0/8,0 GB</span></span>
                                     </div>
 
                                     <div id="botaoRede" class="opcaoMenuComponentes">
                                         <h2>REDE</h2>
-                                        <span>Não conectada</span>
+                                        <span>Conectada</span>
                                     </div>
                                 </div>
 
@@ -143,10 +143,15 @@
                                     <div class="areaGrafico">
                                         <canvas id="myChartDisco"></canvas>
                                         <div class="informacoesDinamicas">
-                                            <h4>Uso Atual:</h4>
+                                            <h4>Em uso:</h4>
 
+                                            <div class="areaDadoGrafico alerta">
+                                                <span>90 GB</span>
+                                            </div>
+
+                                            <h4>Disponível:</h4>
                                             <div class="areaDadoGrafico">
-                                                <span>71%</span>
+                                                <span>30 GB</span>
                                             </div>
 
                                         </div>
@@ -157,32 +162,25 @@
                                         <span class="tituloInformacoesEstaticas">Informações Estáticas:</span>
                                         <div class="areaDadosEstaticos">
                                             <div class="colunaDado">
-                                                <span class="tituloDadoEstatico">Fabricante: <span
-                                                        class="dadoEstatico">GenuineIntel</span></span>
+                                                <span class="tituloDadoEstatico">Nome: <span
+                                                        class="dadoEstatico">Disco 01</span></span>
 
-                                                <span class="tituloDadoEstatico">ID: <span
-                                                        class="dadoEstatico">bfebfbff000806ea</span></span>
+                                                <span class="tituloDadoEstatico">Modelo: <span
+                                                        class="dadoEstatico">APPLE SSD AP0128N</span></span>
                                             </div>
 
                                             <div class="colunaDado">
-                                                <span class="tituloDadoEstatico">Identificador: <span
-                                                        class="dadoEstatico">Intel64 Family 6 Model 142 Stepping
-                                                        10</span></span>
+                                                <span class="tituloDadoEstatico">Tamanho total: <span
+                                                        class="dadoEstatico">120 GB</span></span>
 
-                                                <span class="tituloDadoEstatico">Frequência: <span
-                                                        class="dadoEstatico">1400000000 Hz</span></span>
+                                                <span class="tituloDadoEstatico">Leituras: <span
+                                                        class="dadoEstatico">188185255936 Bytes</span></span>
                                             </div>
 
                                             <div class="colunaDado">
-                                                <span class="tituloDadoEstatico">Nº Pacotes Físicos: <span
-                                                        class="dadoEstatico">1</span></span>
-
-                                                <span class="tituloDadoEstatico">Nº de CPU`s Físicas: <span
-                                                        class="dadoEstatico">4</span></span>
+                                                <span class="tituloDadoEstatico">Escritas: <span
+                                                        class="dadoEstatico">114506878976 Bytes</span></span>
                                             </div>
-
-                                            <span class="tituloDadoEstatico">Nº de CPU`s Lógicas: <span
-                                                    class="dadoEstatico">8</span></span>
                                         </div>
 
                                         <!--  -->
@@ -214,8 +212,8 @@
         data: {
             labels: ['18:00:00', '18:01:00', '18:02:00', '18:03:00', '18:04:00', '18:05:00', '18:06:00', '18:07:00'],
             datasets: [{
-                label: '% de uso',
-                data: [20, 12, 46, 40, 60, 20, 70, 71],
+                label: 'GB em uso',
+                data: [20, 12, 46, 40, 60, 20, 70, 90],
                 borderWidth: 1,
                 backgroundColor: (context) => {
                     const background = [
@@ -241,7 +239,8 @@
         options: {
             scales: {
                 y: {
-                    beginAtZero: true
+                    beginAtZero: true,
+                    max: 120
                 }
             }
         }
@@ -269,6 +268,24 @@
 
     botaoRede.addEventListener('click', function () {
         window.location.href = 'dashboard-rede.html';
+    });
+
+    const itemMenuMaquina = document.getElementById('itemMenuMaquina');
+
+    itemMenuMaquina.addEventListener('click', function() {
+        window.location.href = 'lista-maquinas.html';
+    });
+
+    const itemMenuEmpresa = document.getElementById('itemMenuEmpresa');
+
+    itemMenuEmpresa.addEventListener('click', function() {
+        window.location.href = 'lista-empresas.html';
+    });
+
+    const itemMenuFuncionario = document.getElementById('itemMenuFuncionario');
+
+    itemMenuFuncionario.addEventListener('click', function() {
+        window.location.href = 'lista-funcionario.html';
     });
 
 </script>

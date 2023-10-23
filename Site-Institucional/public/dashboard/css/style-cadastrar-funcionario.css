@@ -7,10 +7,9 @@
 }
 
 .h2-titulo-form{
-    font-size: 1.2em;
     margin: 0;
     padding: 0;
-    margin-bottom: 2%;
+    margin-bottom: 3%;
     color: #040454;
 }
 
@@ -27,7 +26,7 @@
     display: flex;
     flex-direction: column;
     margin-bottom: 1.5%;
-    height: 9vh;
+    height: 10vh;
     width: 100%;
 }
 
@@ -40,7 +39,7 @@
     margin: 0;
     padding: 0;
     color: #040454;
-    font-size: .9em;
+    font-size: 1em;
 }
 
 .input-form-editar{
@@ -72,22 +71,14 @@ select{
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    background: url('../img/sinal-de-seta-para-baixo-para-navegar 5.png') no-repeat right;
-    background-position: right 5px top 50%;
-    background-size: 1vw;
+    background: url('../../assets/img/sinal-de-seta-para-baixo-para-navegar\ 5.png') no-repeat center right;
+    background-position: right 5% top 50%;
+    background-size: 2%;
     padding-right: 20%;
 }
 
-.campo.campo-menor{
-    width: 15%;
-}
-
-.campo.maior{
-    height: 20vh;
-}
-
-textarea.input-form-editar{
-    height: 100%;
+#campo-estado {
+    width: 100%;
 }
 
 .campo-botoes{
@@ -99,7 +90,7 @@ textarea.input-form-editar{
     border-radius: 5px;
     cursor: pointer;
     width: 45%;
-    height: 60%;
+    height: 70%;
     font-size: 1em;
     font-weight: 700;
     transition: .4s;

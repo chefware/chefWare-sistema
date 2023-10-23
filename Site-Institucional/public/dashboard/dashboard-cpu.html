@@ -20,17 +20,17 @@
 
 
                 <div class="itensMenu">
-                    <div class="sidebar-item">
+                    <div class="sidebar-item" id="itemMenuMaquina">
                         <img src="../assets/pc.png" class="sidebar-icon">
                         <span class="sidebar-text">Máquinas</span>
                     </div>
 
-                    <div class="sidebar-item">
+                    <div class="sidebar-item" id="itemMenuEmpresa">
                         <img src="../assets/escritorio 1.png" class="sidebar-icon">
                         <span class="sidebar-text">Empresas</span>
                     </div>
 
-                    <div class="sidebar-item">
+                    <div class="sidebar-item" id="itemMenuFuncionario">
                         <img src="../assets/funcionarios 1.png" class="sidebar-icon">
                         <span class="sidebar-text">Funcionários</span>
                     </div>
@@ -131,12 +131,12 @@
 
                                     <div id="botaoMemoria" class="opcaoMenuComponentes">
                                         <h2>MEMÓRIA</h2>
-                                        <span>Em uso: <span>7,0 GB</span></span>
+                                        <span>Em uso: <span>7,0/8,0 GB</span></span>
                                     </div>
 
                                     <div id="botaoRede" class="opcaoMenuComponentes">
                                         <h2>REDE</h2>
-                                        <span>Não conectada</span>
+                                        <span>Conectada</span>
                                     </div>
 
                                 </div>
@@ -149,7 +149,7 @@
                                             <span>% UTILIZADA</span>
                                         </div>
 
-                                        <h2>RYZEN 2800 GHZ 40</h2>
+                                        <h2>Intel® Core™ i3-6100</h2>
 
                                     </div>
 
@@ -279,6 +279,24 @@
 
     botaoRede.addEventListener('click', function () {
         window.location.href = 'dashboard-rede.html';
+    });
+
+    const itemMenuMaquina = document.getElementById('itemMenuMaquina');
+
+    itemMenuMaquina.addEventListener('click', function() {
+        window.location.href = 'lista-maquinas.html';
+    });
+
+    const itemMenuEmpresa = document.getElementById('itemMenuEmpresa');
+
+    itemMenuEmpresa.addEventListener('click', function() {
+        window.location.href = 'lista-empresas.html';
+    });
+
+    const itemMenuFuncionario = document.getElementById('itemMenuFuncionario');
+
+    itemMenuFuncionario.addEventListener('click', function() {
+        window.location.href = 'lista-funcionario.html';
     });
 
 </script>

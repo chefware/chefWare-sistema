@@ -27,15 +27,15 @@
                     <img src="../assets/logoBRANCA.png" class="logo">
                 </div>
                 <div class="itensMenu">
-                    <div class="sidebar-item">
+                    <div class="sidebar-item" id="itemMenuMaquina">
                         <img src="../assets/pc.png" class="sidebar-icon">
                         <span class="sidebar-text">Máquinas</span>
                     </div>
-                    <div class="sidebar-item">
+                    <div class="sidebar-item" id="itemMenuEmpresa">
                         <img src="../assets/escritorio 1.png" class="sidebar-icon">
                         <span class="sidebar-text">Empresas</span>
                     </div>
-                    <div class="sidebar-item">
+                    <div class="sidebar-item" id="itemMenuFuncionario">
                         <img src="../assets/funcionarios 1.png" class="sidebar-icon">
                         <span class="sidebar-text">Funcionários</span>
                     </div>
@@ -87,7 +87,7 @@
                         </div>
                         <div class="conteudoMaquinas">
                             <div class="linhaMaquinas">
-                                <div class="cardMaquina">
+                                <div class="cardMaquina" id="cardMaquina">
                                     <div class="alerta">
 
                                     </div>
@@ -102,9 +102,6 @@
                                                 <div class="listaComponentes">
                                                     <li class="componenteEspecifico">
                                                         Memória
-                                                    </li>
-                                                    <li class="componenteEspecifico">
-                                                        CPU
                                                     </li>
                                                     <li class="componenteEspecifico">
                                                         Disco
@@ -425,3 +422,29 @@
 </body>
 
 </html>
+
+<script>
+const cardMaquina = document.getElementById('cardMaquina');
+
+cardMaquina.addEventListener('click', function() {
+    window.location.href = 'dashboard-cpu.html';
+});
+
+const itemMenuMaquina = document.getElementById('itemMenuMaquina');
+
+itemMenuMaquina.addEventListener('click', function() {
+    window.location.href = 'lista-maquinas.html';
+});
+
+const itemMenuEmpresa = document.getElementById('itemMenuEmpresa');
+
+itemMenuEmpresa.addEventListener('click', function() {
+    window.location.href = 'lista-empresas.html';
+});
+
+const itemMenuFuncionario = document.getElementById('itemMenuFuncionario');
+
+itemMenuFuncionario.addEventListener('click', function() {
+    window.location.href = 'lista-funcionario.html';
+});
+</script>
