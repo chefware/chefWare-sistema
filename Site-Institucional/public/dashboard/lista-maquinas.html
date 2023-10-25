@@ -87,7 +87,7 @@
                         </div>
                         <div class="conteudoMaquinas">
                             <div class="linhaMaquinas">
-                                <div class="cardMaquina" id="cardMaquina">
+                                <div class="cardMaquina">
                                     <div class="alerta">
 
                                     </div>
@@ -424,11 +424,13 @@
 </html>
 
 <script>
-const cardMaquina = document.getElementById('cardMaquina');
+const cardMaquina = document.querySelectorAll('.cardMaquina');
 
-cardMaquina.addEventListener('click', function() {
-    window.location.href = 'dashboard-cpu.html';
-});
+cardMaquina.forEach((card) => {
+    card.addEventListener('click', () => {
+        window.location.href = 'dashboard-cpu.html';
+    })
+})
 
 const itemMenuMaquina = document.getElementById('itemMenuMaquina');
 
