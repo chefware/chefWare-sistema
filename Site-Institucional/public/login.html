@@ -57,19 +57,17 @@ function logar() {
       var user = document.getElementById("inp_user").value;
       var password = document.getElementById("inp_password").value;
       var feedback_div = document.getElementById("feedback_user");
-      var correctUser = "julia";
-      var correctPassword = "rufino";
+      var correctUser = "manuel";
+      var correctPassword = "caneta";
 
       if (correctUser == "" || correctPassword == "") {
         feedback_div.innerHTML = `Campos não podem ser nulos`
-        return false;
       } else {
         if (correctUser == user && correctPassword == password) {
-          window.location.href = "/Site-Institucional/public/dashboard/dashboard-cpu.html";
+          window.location.href = "./dashboard/lista-maquinas.html";
           sessionStorage.setItem("user", user);
         } else {
           feedback_div.innerHTML = `Usuário ou senha incorretos.`
-          return false;
         }
       }
     }
@@ -80,7 +78,7 @@ window.addEventListener("keyup", capturarTecla)
         logar();
       }
 
-
+  
   }
 
 </script>
