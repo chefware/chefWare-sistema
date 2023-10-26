@@ -69,9 +69,8 @@
                             <h1>Fogo de Chão</h1>
                         </div>
     
-                        <div class="perfil-img">
-                            <img src="../assets/julia.png" class="perfil">
-                            <span>Olá, Julia</span>
+                        <div id="perfil" class="perfil-img">
+                            <img src="../assets/img/gerenteManoel.png" class="perfil">
                         </div>
 
                     </div>
@@ -151,4 +150,12 @@
     itemMenuFuncionario.addEventListener('click', function() {
         window.location.href = 'lista-funcionario.html';
     });
+
+    var perfil = document.getElementById("perfil");
+
+    var user = sessionStorage.getItem("user");
+
+    if (user != null) {
+        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${user}</span></span>`;
+    }
 </script>

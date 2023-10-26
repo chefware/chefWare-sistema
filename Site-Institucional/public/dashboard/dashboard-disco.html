@@ -65,9 +65,8 @@
                             <h1>Fogo de Chão</h1>
                         </div>
 
-                        <div class="perfil-img">
-                            <img src="../assets/julia.png" class="perfil">
-                            <span>Olá, Julia</span>
+                        <div id="perfil" class="perfil-img">
+                            <img src="../assets/img/gerenteManoel.png" class="perfil">
                         </div>
 
                     </div>
@@ -77,7 +76,7 @@
                         <div class="dashboard">
                             <div class="cabecalho">
                                 <div class="itensCabecalho">
-                                    <h1 id="nomeMaquina">Máquina 001</h1>
+                                    <h1 id="nomeMaquina">Máquina 01</h1>
                                     <button class="botaoAcoesRapidas">Ações Rápidas</button>
                                     <div class="indicadores">
                                         <span class="tituloIndicadores">Indicadores</span>
@@ -163,8 +162,8 @@
                                         <span class="tituloInformacoesEstaticas">Informações Estáticas:</span>
                                         <div class="areaDadosEstaticos">
                                             <div class="colunaDado">
-                                                <span class="tituloDadoEstatico">Nome: <span
-                                                        class="dadoEstatico">Disco 01</span></span>
+                                                <span class="tituloDadoEstatico">Nome: <span class="dadoEstatico">Disco
+                                                        01</span></span>
 
                                                 <span class="tituloDadoEstatico">Modelo: <span
                                                         class="dadoEstatico">APPLE SSD AP0128N</span></span>
@@ -273,21 +272,29 @@
 
     const itemMenuMaquina = document.getElementById('itemMenuMaquina');
 
-    itemMenuMaquina.addEventListener('click', function() {
+    itemMenuMaquina.addEventListener('click', function () {
         window.location.href = 'lista-maquinas.html';
     });
 
     const itemMenuEmpresa = document.getElementById('itemMenuEmpresa');
 
-    itemMenuEmpresa.addEventListener('click', function() {
+    itemMenuEmpresa.addEventListener('click', function () {
         window.location.href = 'lista-empresas.html';
     });
 
     const itemMenuFuncionario = document.getElementById('itemMenuFuncionario');
 
-    itemMenuFuncionario.addEventListener('click', function() {
+    itemMenuFuncionario.addEventListener('click', function () {
         window.location.href = 'lista-funcionario.html';
     });
+
+    var perfil = document.getElementById("perfil");
+
+    var user = sessionStorage.getItem("user");
+
+    if (user != null) {
+        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${user}</span></span>`;
+    }
 
 </script>
 

@@ -12,7 +12,7 @@
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
 </head>
 
 <body>
@@ -69,10 +69,9 @@
                             <span>Empresa</span>
                             <h1>Fogo de Chão</h1>
                         </div>
-    
-                        <div class="perfil-img">
+
+                        <div id="perfil" class="perfil-img">
                             <img src="../assets/julia.png" class="perfil">
-                            <span>Olá, Julia</span>
                         </div>
 
                     </div>
@@ -93,7 +92,8 @@
 
                             <div class="campo">
                                 <h4 class="label-editar">CPF:</h4>
-                                <input id="input_cpf" type="text" class="input-form-editar" placeholder="000.000.000-00"  onkeypress="$(this).mask('000.000.000-00')">
+                                <input id="input_cpf" type="text" class="input-form-editar" placeholder="000.000.000-00"
+                                    onkeypress="$(this).mask('000.000.000-00')">
                             </div>
 
 
@@ -128,17 +128,26 @@
                                 <button class="bt_edicao" id="botao-editar">Cadastrar</button>
                             </div>
                         </div>
-                   </div>
+                    </div>
                 </div>
             </div>
-            
+
         </div>
     </div>
 </body>
+
 </html>
 
 <script>
-     $("#input_cpf").keypress(function () {
-				$(this).mask('000.000.000-00');
-	});
+    $("#input_cpf").keypress(function () {
+        $(this).mask('000.000.000-00');
+    });
+
+    var perfil = document.getElementById("perfil");
+
+    var user = sessionStorage.getItem("user");
+
+    if (user != null) {
+        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${user}</span></span>`;
+    }
 </script>

@@ -17,10 +17,10 @@
 <body>
     <script type="text/javascript">
         window.addEventListener("scroll", function () {
-          var header = document.querySelector("header");
-          header.classList.toggle("sticky", window.scrollY > 0);
+            var header = document.querySelector("header");
+            header.classList.toggle("sticky", window.scrollY > 0);
         })
-      </script>
+    </script>
     <div class="main">
         <div id="sidebar">
             <div class="areaSideBar">
@@ -74,10 +74,9 @@
                             <span>Empresa</span>
                             <h1>Fogo de Chão</h1>
                         </div>
-    
-                        <div class="perfil-img">
-                            <img src="../assets/julia.png" class="perfil">
-                            <span>Olá, Julia</span>
+
+                        <div id="perfil" class="perfil-img">
+                            <img src="../assets/img/gerenteManoel.png" class="perfil">
                         </div>
 
                     </div>
@@ -92,10 +91,10 @@
                                 <button class="lupa"><img src="../assets/busca.png" alt=""></button>
                                 <button class="filtro"><img src="../assets/filtro.png" alt=""></button>
                             </div>
-                                <button class="adicionar">
-                                    <img src="../assets/adicionar.png" alt="">
-                                    Nova empresa
-                                </button>
+                            <button class="adicionar">
+                                <img src="../assets/adicionar.png" alt="">
+                                Nova empresa
+                            </button>
                         </div>
                         <div class="listaEmpresas">
                             <div class="cardEmpresa">
@@ -269,10 +268,10 @@
                                 <button class="next-page"><img src="../assets/avancar-icon.png" alt=""></button>
                             </div>
                         </div>
-                   </div>
+                    </div>
                 </div>
             </div>
-            
+
         </div>
     </div>
 
@@ -285,19 +284,27 @@
 <script>
     const itemMenuMaquina = document.getElementById('itemMenuMaquina');
 
-    itemMenuMaquina.addEventListener('click', function() {
+    itemMenuMaquina.addEventListener('click', function () {
         window.location.href = 'lista-maquinas.html';
     });
 
     const itemMenuEmpresa = document.getElementById('itemMenuEmpresa');
 
-    itemMenuEmpresa.addEventListener('click', function() {
+    itemMenuEmpresa.addEventListener('click', function () {
         window.location.href = 'lista-empresas.html';
     });
 
     const itemMenuFuncionario = document.getElementById('itemMenuFuncionario');
 
-    itemMenuFuncionario.addEventListener('click', function() {
+    itemMenuFuncionario.addEventListener('click', function () {
         window.location.href = 'lista-funcionario.html';
     });
+
+    var perfil = document.getElementById("perfil");
+
+    var user = sessionStorage.getItem("user");
+
+    if (user != null) {
+        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${user}</span></span>`;
+    }
 </script>

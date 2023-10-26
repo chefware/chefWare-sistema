@@ -66,10 +66,9 @@
                             <span>Empresa</span>
                             <h1>Fogo de Chão</h1>
                         </div>
-    
-                        <div class="perfil-img">
-                            <img src="../assets/julia.png" class="perfil">
-                            <span>Olá, Julia</span>
+
+                        <div id="perfil" class="perfil-img">
+                            <img src="../assets/img/gerenteManoel.png" class="perfil">
                         </div>
 
                     </div>
@@ -98,7 +97,7 @@
                                 <h4 class="label-editar">Local:</h4>
                                 <input type="text" class="input-form-editar" placeholder="Cozinha">
                             </div>
-                            
+
                             <div class="campo maior">
                                 <h4 class="label-editar">Descrição dos componentes:</h4>
                                 <textarea class="input-form-editar" cols="30" rows="30"></textarea>
@@ -109,10 +108,21 @@
                                 <button class="bt_edicao" id="botao-editar">Editar</button>
                             </div>
                         </div>
-                   </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </body>
+
 </html>
+
+<script>
+    var perfil = document.getElementById("perfil");
+
+    var user = sessionStorage.getItem("user");
+
+    if (user != null) {
+        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${user}</span></span>`;
+    }
+</script>
