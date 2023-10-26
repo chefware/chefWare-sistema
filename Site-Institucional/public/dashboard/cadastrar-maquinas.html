@@ -67,10 +67,9 @@
                             <span>Empresa</span>
                             <h1>Fogo de Chão</h1>
                         </div>
-    
-                        <div class="perfil-img">
+
+                        <div id="perfil" class="perfil-img">
                             <img src="../assets/julia.png" class="perfil">
-                            <span>Olá, Julia</span>
                         </div>
 
                     </div>
@@ -110,10 +109,10 @@
                                 <button class="bt_edicao" id="botao-cadastrar">Cadastrar</button>
                             </div>
                         </div>
-                   </div>
+                    </div>
                 </div>
             </div>
-            
+
         </div>
     </div>
 
@@ -123,8 +122,16 @@
 
 </html>
 <script>
-        const perfilDiv = document.querySelector('.perfil-img');
-        perfilDiv.addEventListener('click', function() {
-            window.location.href = 'dashboard-perfil.html';
-    });7
+    const perfilDiv = document.querySelector('.perfil-img');
+    perfilDiv.addEventListener('click', function () {
+        window.location.href = 'dashboard-perfil.html';
+    }); 7
+
+    var perfil = document.getElementById("perfil");
+
+    var user = sessionStorage.getItem("user");
+
+    if (user != null) {
+        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${user}</span></span>`;
+    }
 </script>

@@ -67,10 +67,9 @@
                             <span>Empresa</span>
                             <h1>Fogo de Chão</h1>
                         </div>
-    
-                        <div class="perfil-img">
-                            <img src="../assets/julia.png" class="perfil">
-                            <span>Olá, Julia</span>
+
+                        <div id="perfil" class="perfil-img">
+                            <img src="../assets/img/gerenteManoel.png" class="perfil">
                         </div>
 
                     </div>
@@ -103,20 +102,23 @@
                             <div class="campo-horizontal">
                                 <div class="campo">
                                     <h4 class="label-editar">Logradouro:</h4>
-                                    <input type="text" id="input-logradouro" class="input-form-editar" placeholder="Nome da rua">
+                                    <input type="text" id="input-logradouro" class="input-form-editar"
+                                        placeholder="Nome da rua">
                                 </div>
 
                                 <div class="campo campo-menor" id="campo-numero-endereco">
                                     <h4 class="label-editar">N°:</h4>
-                                    <input type="text" id="input-numero-endereco" class="input-form-editar" placeholder="00">
+                                    <input type="text" id="input-numero-endereco" class="input-form-editar"
+                                        placeholder="00">
                                 </div>
                             </div>
-                            
+
 
                             <div class="campo-horizontal">
                                 <div class="campo">
                                     <h4 class="label-editar">Bairro:</h4>
-                                    <input type="text" id="input-bairro" class="input-form-editar" placeholder="Nome do bairro">
+                                    <input type="text" id="input-bairro" class="input-form-editar"
+                                        placeholder="Nome do bairro">
                                 </div>
 
                                 <div class="campo campo-menor" id="campo-estado">
@@ -132,10 +134,10 @@
                                 <button class="bt_edicao" id="botao-editar">Editar</button>
                             </div>
                         </div>
-                   </div>
+                    </div>
                 </div>
             </div>
-            
+
         </div>
     </div>
 
@@ -144,3 +146,13 @@
 </body>
 
 </html>
+
+<script>
+    var perfil = document.getElementById("perfil");
+
+    var user = sessionStorage.getItem("user");
+
+    if (user != null) {
+        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${user}</span></span>`;
+    }
+</script>

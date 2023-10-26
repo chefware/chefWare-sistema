@@ -183,6 +183,10 @@ body {
     align-items: center;
 }
 
+.perfil-img img {
+    border-radius: 50%;
+}
+
 .perfil-img span {
     color: #454444;
     font-weight: 400;
