@@ -1,25 +1,16 @@
-import app from "../../app";
+import express from 'express';
+import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
-app.get('/lista-funcionarios', async (req, res) => {
-    const Funcionario = await prisma.Funcionario.findMany({})
-    res.json(Funcionario)
-})
+const funcionariosController = express.Router();
 
-app.post('/funcionarios', async (req, res) => {
+funcionariosController.get('/', async (req, res) => {
+    try{
+        const funcionarios = await prisma.funcionario.findMany();
+        res.status(200).json(funcionarios);
+    }catch(error){
+        res.json({error: error.message});
+    }
+});
 
-    const {id, nome, email, senha, cpf, cargo, privilegio, fkEmpresa} = req.body
-    const Funcionario = await prisma.Funcionario.create({
-        data: {
-            id,
-            nome,
-            cpf,
-            email,
-            senha,
-            cargo,
-            privilegio,
-            fkEmpresa
-        }
-    })    
-    res.json(createFunc)
-})
+export default funcionariosController;
