@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  chefware-db:
+    image: mysql:latest
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: chefwareadmin
+      MYSQL_USER: admin
+      MYSQL_DATABASE: chefware
+
+volumes:
+  db_data:
