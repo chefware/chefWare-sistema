@@ -13,4 +13,51 @@ funcionariosController.get('/', async (req, res) => {
     }
 });
 
+funcionariosController.post('/', async (req, res) => {
+    try{
+        const { nome, email, senha, cpf, cargo, privilegio, fkEmpresa } = req.body;
+        const funcionarioCriado = await prisma.Funcionario.create({
+            data: {
+              nome,
+              email,
+              senha,
+              cpf,
+              cargo,
+              privilegio,
+              fkEmpresa,
+            },
+          });
+
+        res.status(201).json(funcionarioCriado);
+    }catch(error){
+        res.json({error: error.message});
+
+    }
+});
+
+funcionariosController.put('/:id', async (req, res) => {
+    try{
+        const { id } = req.params;
+        const { nome, email, senha, cargo, privilegio } = req.body;
+        const funcionarioAtualizado = await prisma.Funcionario.update({
+            where: {
+              id: Number(id),
+            },
+            data: {
+              nome,
+              email,
+              senha,
+              cpf,
+              cargo,
+              privilegio,
+              fkEmpresa,
+            },
+          });
+
+        res.status(200).json(funcionarioAtualizado);
+    }catch(error){
+        res.json({error: error.message});
+    }
+    });
+
 export default funcionariosController;
