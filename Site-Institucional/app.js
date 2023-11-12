@@ -1,5 +1,6 @@
 import express from 'express';
 import funcionariosController from './backend/Funcionarios/funcionariosController.js';
+import maquinasController from './backend/Maquinas/maquinasController.js';
 import empresasController from './backend/Empresas/empresasController.js';
 import maquinasController from './backend/Maquinas/maquinasController.js';
 

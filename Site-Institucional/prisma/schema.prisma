@@ -28,8 +28,8 @@ model Maquina {
   modelo       String?
   local        String?
   descComponentes String?
-  Empresa_idEmpresa Int
-  empresa      Empresa       @relation(fields: [Empresa_idEmpresa], references: [idEmpresa])
+  fkEmpresa Int
+  empresa      Empresa       @relation(fields: [fkEmpresa], references: [idEmpresa])
   especificacoes Especificacoes[]
   dados        Dados[]
   historicos   Historico[]
