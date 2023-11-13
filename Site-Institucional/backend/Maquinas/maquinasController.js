@@ -6,7 +6,8 @@ const maquinasController = express.Router()
 
 maquinasController.get('/', async (req, res) => {
     try {
-        const maquinas = await prisma.maquina.findMany()
+        const maquinas = await prisma.maquina.findMany({
+        })
         res.status(200).json(maquinas)
     } catch (error) {
         res.status(400).json(e)
