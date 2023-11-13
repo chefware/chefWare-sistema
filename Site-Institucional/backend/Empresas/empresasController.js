@@ -35,27 +35,43 @@ empresasController.get('/:id', async (req, res) => {
 
 empresasController.post('/', async (req, res) => {
     try {
-        const {
-            nome,
-            cnpj,
-            endereco,
-            telefone
-        } = req.body;
-
+        const { nome, cnpj, telefone, endereco } = req.body;
         const empresaCriada = await prisma.empresa.create({
             data: {
                 nome,
                 cnpj,
-                endereco,
                 telefone
             }
         });
 
-        res.status(201).json(empresaCriada);
+        let enderecoCriado = null;
+        if (endereco) {
+            enderecoCriado = await prisma.endereco.create({
+                data: {
+                    ...endereco,
+                    fkEmpresa: empresaCriada.idEmpresa
+                }
+            });
+        }
+        res.status(201).json({ empresa: empresaCriada, endereco: enderecoCriado });
     } catch (e) {
         res.status(500).json(e);
     }
-});
+})
+
+// Exemplo de requisição POST
+// {
+//     "nome": "Nova Empresa Ltda",
+//     "cnpj": "12345678901234",
+//     "telefone": "11987654321",
+//     "endereco": {
+//         "logradouro": "Rua Exemplo, 123",
+//         "cep": "01234567",
+//         "bairro": "Centro",
+//         "numero": "123",
+//         "estado": "SP"
+//     }
+// }
 
 empresasController.put('/:id', async (req, res) => {
     const idEmpresa = Number(req.params.id);
@@ -100,4 +116,4 @@ empresasController.delete('/:id', async (req, res) => {
     }
 });
 
-export default empresasControllerController;
+export default empresasController;

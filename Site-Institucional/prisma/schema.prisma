@@ -1,6 +1,3 @@
-// This is your Prisma schema file.
-// Learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,28 +8,26 @@ datasource db {
 }
 
 model Empresa {
-  idEmpresa   Int      @id @default(autoincrement())
-  nome        String?
-  cnpj        String?
-  telefone    String?
-  maquinas    Maquina[]
-  funcionarios Funcionario[]
-  enderecos    Endereco[]
-  telefones   Telefone[]
+  idEmpresa     Int            @id @default(autoincrement())
+  nome          String?
+  cnpj          String?
+  telefone      String?
+  maquinas      Maquina[]
+  funcionarios  Funcionario[]
+  enderecos     Endereco[]
 }
 
 model Maquina {
-  id           Int           @id @default(autoincrement())
-  numSerie     String?
-  nome         String?
-  modelo       String?
-  local        String?
+  id              Int                @id @default(autoincrement())
+  numSerie        String?
+  nome            String?
+  modelo          String?
+  local           String?
   descComponentes String?
-  fkEmpresa Int
-  empresa      Empresa       @relation(fields: [fkEmpresa], references: [idEmpresa])
-  especificacoes Especificacoes[]
-  dados        Dados[]
-  historicos   Historico[]
+  fkEmpresa       Int
+  empresa         Empresa            @relation(fields: [fkEmpresa], references: [idEmpresa])
+  especificacoes  Especificacoes[]
+  historicos      Historico[]        // Adicionando relação inversa com Historico
 }
 
 model Funcionario {
@@ -58,57 +53,52 @@ model Endereco {
   empresa    Empresa  @relation(fields: [fkEmpresa], references: [idEmpresa])
 }
 
-model Telefone {
-  id       Int      @id @default(autoincrement())
-  numero   String?
-  Empresa_idEmpresa Int
-  empresa  Empresa  @relation(fields: [Empresa_idEmpresa], references: [idEmpresa])
+model TipoComponente {
+  idtipoComponente  Int               @id @default(autoincrement())
+  nome              String?
+  componentes       Componente[]
+  especificacoes    Especificacoes[]  // Adicionando relação inversa com Especificacoes
+  historicos        Historico[]       // Adicionando relação inversa com Historico
 }
 
 model Componente {
-  idComponente    Int      @id @default(autoincrement())
-  marca           String?
-  compatibilidade String?
-  dataVencimento  String?
-  especificacoes  Especificacoes[]
-  dados           Dados[]
-  historicos      Historico[]
+  idComponente     Int               @id @default(autoincrement())
+  marca            String?
+  compatibilidade  String?
+  dataVencimento   String?
+  fkTipoComponente Int
+  tipoComponente   TipoComponente    @relation(fields: [fkTipoComponente], references: [idtipoComponente])
+  especificacoes   Especificacoes[]
+  historicos       Historico[]       // Adicionando relação inversa com Historico
 }
 
 model Especificacoes {
-  idEspecificacoes Int       @id @default(autoincrement())
-  fkMaquina        Int
-  fkComponente     Int
-  tipo             String?
-  maquina          Maquina   @relation(fields: [fkMaquina], references: [id])
-  componente       Componente @relation(fields: [fkComponente], references: [idComponente])
-  dados            Dados[]
-  historicos       Historico[]
-}
-
-model Dados {
-  idDados         Int      @id @default(autoincrement())
-  descricao        String?
-  valor            String?
-  unidadeMedida    String?
-  fkEspecificacoes Int
-  fkMaquina        Int
-  fkComponente     Int
-  maquina          Maquina     @relation(fields: [fkMaquina], references: [id])
-  especificacoes   Especificacoes @relation(fields: [fkEspecificacoes], references: [idEspecificacoes])
-  componente       Componente     @relation(fields: [fkComponente], references: [idComponente])
+  idEspecificacoes  Int
+  fkTipoComponente  Int
+  fkMaquina         Int
+  fkComponente      Int
+  descricao         String?
+  dadosEstaticos    String?
+  unidadeMedida     String?
+  maquina           Maquina          @relation(fields: [fkMaquina], references: [id])
+  componente        Componente       @relation(fields: [fkComponente], references: [idComponente])
+  tipoComponente    TipoComponente   @relation(fields: [fkTipoComponente], references: [idtipoComponente])
+  @@id([idEspecificacoes, fkTipoComponente, fkMaquina, fkComponente])
+  @@index([fkTipoComponente, fkMaquina, fkComponente], name: "idx_tipo_maquina_componente")
 }
 
 model Historico {
-  idHistorico      Int      @id @default(autoincrement())
+  idHistorico      Int              @id @default(autoincrement())
+  fkTipoComponente Int
   fkMaquina        Int
-  fkEspecificacoes Int
   fkComponente     Int
   dataHora         DateTime?
   nome             String?
   leitura          String?
   unidadeMedida    String?
-  maquina          Maquina       @relation(fields: [fkMaquina], references: [id])
-  especificacoes   Especificacoes @relation(fields: [fkEspecificacoes], references: [idEspecificacoes])
-  componente       Componente     @relation(fields: [fkComponente], references: [idComponente])
+  maquina          Maquina          @relation(fields: [fkMaquina], references: [id])
+  componente       Componente       @relation(fields: [fkComponente], references: [idComponente])
+  tipoComponente   TipoComponente   @relation(fields: [fkTipoComponente], references: [idtipoComponente])
 }
+
+

@@ -2,7 +2,6 @@ import express from 'express';
 import funcionariosController from './backend/Funcionarios/funcionariosController.js';
 import maquinasController from './backend/Maquinas/maquinasController.js';
 import empresasController from './backend/Empresas/empresasController.js';
-import maquinasController from './backend/Maquinas/maquinasController.js';
 
 const app = express();
 const link = 'http://localhost:3000';
@@ -13,6 +12,7 @@ app.use(express.json());
 app.use('/funcionarios', funcionariosController);
 app.use('/empresas', empresasController);
 app.use('/maquinas', maquinasController);
+app.use('/empresas', empresasController);
 
 app.listen(3000, () => console.log(`Servidor rodando em ${link}`));
 

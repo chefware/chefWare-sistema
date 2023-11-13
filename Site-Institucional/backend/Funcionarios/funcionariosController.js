@@ -5,22 +5,22 @@ const prisma = new PrismaClient();
 const funcionariosController = express.Router();
 
 funcionariosController.post('/login', async (req, res) => {
-    try{
-        const { email, senha } = req.body;
-        const funcionario = await prisma.Funcionario.findFirst({
-            where: {
-                email: email,
-                senha: senha,
-            },
-        });
-        if(funcionario){
-            res.status(200).json(funcionario);
-        }else{
-            res.status(404).json({message: "Funcionario não encontrado"});
-        }
-    }catch(error){
-        res.json({error: error.message});
-    }
+  try{
+      const { email, senha } = req.body;
+      const funcionario = await prisma.Funcionario.findFirst({
+          where: {
+              email: email,
+              senha: senha,
+          },
+      });
+      if(funcionario){
+          res.status(200).json(funcionario);
+      }else{
+          res.status(404).json({message: "Funcionario não encontrado"});
+      }
+  }catch(error){
+      res.json({error: error.message});
+  }
 });
 
 funcionariosController.get('/', async (req, res) => {
