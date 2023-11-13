@@ -130,7 +130,11 @@
     if (user != null) {
         perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${user}</span></span>`;
     }
-
+    
+    const botaoAdicionarEmpresa = document.querySelector('.adicionar');
+    botaoAdicionarEmpresa.addEventListener('click', function() {
+        window.location.href = 'cadastrar-maquinas.html';
+    })
 
     listaEmpresas()
 
