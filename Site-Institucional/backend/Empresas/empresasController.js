@@ -7,29 +7,41 @@ const empresasController = express.Router();
 empresasController.get('/', async (req, res) => {
     try {
         const empresas = await prisma.empresa.findMany();
-        res.status(200).json(empresas);
+        const empresasComEndereco = await Promise.all(empresas.map(async (empresa) => {
+            const endereco = await prisma.endereco.findFirst({
+                where: {
+                    fkEmpresa: empresa.idEmpresa
+                }
+            });
+            return {
+                ...empresa,
+                endereco
+            }
+        }));
+        res.status(200).json(empresasComEndereco);
     } catch (error) {
         res.status(400).json(e);
     }
 });
 
 empresasController.get('/:id', async (req, res) => {
+    console.log(req.params.id);
     const idEmpresa = Number(req.params.id);
     try {
-        const empresas = await prisma.empresa.findUnique({
+        const empresa = await prisma.empresa.findUnique({
             where: {
-                id: idEmpresa
+                idEmpresa: idEmpresa
             }
         });
 
-        if(empresas){
-            res.status(200).json(empresas);
+        if(empresa){
+            res.status(200).json(empresa);
         } else {
-            res.status(200).json("Não existe empresa com esse id");
+            res.status(404).json("Não existe empresa com esse id");
         }
 
     } catch (error) {
-        res.status(400).json(e);
+        res.status(400).json(error);
     }
 });
 
@@ -73,33 +85,48 @@ empresasController.post('/', async (req, res) => {
 //     }
 // }
 
-empresasController.put('/:id', async (req, res) => {
+empresasController.patch('/:id', async (req, res) => {
     const idEmpresa = Number(req.params.id);
-    try {
-        const {
-            nome,
-            cnpj,
-            endereco,
-            telefone
-        } = req.body;
+    const { nome, cnpj, telefone, endereco } = req.body;
 
+    try {
         const empresaAtualizada = await prisma.empresa.update({
             where: {
-                id: idEmpresa
+                idEmpresa: idEmpresa,
             },
             data: {
                 nome,
                 cnpj,
-                endereco,
-                telefone
-            }
+                telefone,
+                enderecos: {
+                    upsert: {
+                        create: {
+                            logradouro: endereco.logradouro,
+                            cep: endereco.cep,
+                            bairro: endereco.bairro,
+                            numero: endereco.numero,
+                            estado: endereco.estado,
+                            empresa: {
+                                connect: { idEmpresa: idEmpresa },
+                            },
+                        },
+                        update: {
+                            logradouro: endereco.logradouro,
+                            cep: endereco.cep,
+                            bairro: endereco.bairro,
+                            numero: endereco.numero,
+                            estado: endereco.estado,
+                        },
+                    },
+                },
+            },
         });
 
         res.status(200).json(empresaAtualizada);
     } catch (e) {
-        res.status(500).json(e);
+        res.status(409).json(e);
     }
-});
+})
 
 empresasController.delete('/:id', async (req, res) => {
     const idEmpresa = Number(req.params.id);
