@@ -94,4 +94,5 @@ funcionariosController.delete('/:id', async (req, res) => {
     }
 });
 
+
 export default funcionariosController;
