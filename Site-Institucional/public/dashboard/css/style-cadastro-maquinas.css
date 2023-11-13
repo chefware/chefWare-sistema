@@ -1,4 +1,4 @@
-.conteudo{
+.conteudo {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -6,23 +6,23 @@
     justify-content: center;
 }
 
-.h2-titulo-form{
+.h2-titulo-form {
     margin: 0;
     padding: 0;
     margin-bottom: 3%;
     color: #040454;
 }
 
-.form-cadastrar{
+.form-cadastrar {
     display: flex;
     flex-direction: column;
     margin: 0;
     padding: 0;
     height: 100%;
     width: 45%;
-}   
+}
 
-.campo{
+.campo {
     display: flex;
     flex-direction: column;
     margin-bottom: 1.5%;
@@ -33,36 +33,37 @@
 .campo.campo-descricao {
     height: 20vh;
 }
+
 textarea {
     width: 100;
     height: 80%;
 }
 
-.campo-horizontal .campo{
+.campo-horizontal .campo {
     width: 80%;
     margin-bottom: 0;
 }
 
-.label-cadastrar{
+.label-cadastrar {
     margin: 0;
     padding: 0;
     color: #040454;
     font-size: 1em;
 }
 
-.input-form-cadastrar{
+.input-form-cadastrar {
     border-radius: 5px;
     border: solid #5C5C5C 1px;
     padding: .5rem;
     height: 70%;
 }
 
-.input-form-cadastrar::placeholder{
+.input-form-cadastrar::placeholder {
     color: #040454;
     font-weight: 400;
 }
 
-.campo-horizontal{
+.campo-horizontal {
     display: flex;
     justify-content: space-between;
     height: 10vh;
@@ -70,12 +71,12 @@ textarea {
     margin-bottom: 1.5%;
 }
 
-.sl-edicao{
+.sl-edicao {
     height: 100%;
     color: #040454;
 }
 
-select{
+select {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -85,16 +86,17 @@ select{
     padding-right: 20%;
 }
 
-#campo-estado,#campo-numero-endereco{
+#campo-estado,
+#campo-numero-endereco {
     width: 15%;
 }
 
-.campo-botoes{
+.campo-botoes {
     margin-bottom: 0;
     margin-top: 1%;
 }
 
-.bt_edicao{
+.bt_edicao {
     border-radius: 5px;
     cursor: pointer;
     width: 45%;
@@ -104,22 +106,92 @@ select{
     transition: .4s;
 }
 
-#botao-cadastrar{
+#botao-cadastrar {
     background-color: #040454;
     border: none;
     color: white;
 }
 
-#botao-cadastrar:hover{
+#botao-cadastrar:hover {
     background-color: #345CAC;
 }
 
-#botao-cancelar{
+#botao-cancelar {
     background-color: #CBCBCB;
     color: black;
     border: solid black 1px;
 }
 
-#botao-cancelar:hover{
+#botao-cancelar:hover {
     background-color: #eee;
+}
+
+#snackbar {
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    background-color: green;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    bottom: 30px;
+    font-size: 17px;
+}
+
+#snackbar.show {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
+
+    to {
+        bottom: 30px;
+        opacity: 1;
+    }
+}
+
+@keyframes fadein {
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
+
+    to {
+        bottom: 30px;
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes fadeout {
+    from {
+        bottom: 30px;
+        opacity: 1;
+    }
+
+    to {
+        bottom: 0;
+        opacity: 0;
+    }
+}
+
+@keyframes fadeout {
+    from {
+        bottom: 30px;
+        opacity: 1;
+    }
+
+    to {
+        bottom: 0;
+        opacity: 0;
+    }
 }

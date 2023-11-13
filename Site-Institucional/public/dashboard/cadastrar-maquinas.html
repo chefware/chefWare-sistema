@@ -11,6 +11,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 
 <body>
@@ -20,36 +21,32 @@
                 <div class="sidebar-logo">
                     <img src="../assets/logoBRANCA.png" class="logo">
                 </div>
-
-
                 <div class="itensMenu">
-                    <div class="sidebar-item">
+                    <div class="sidebar-item" id="itemMenuMaquina">
                         <img src="../assets/pc.png" class="sidebar-icon">
                         <span class="sidebar-text">Máquinas</span>
                     </div>
-
-                    <div class="sidebar-item">
+                    <div class="sidebar-item" id="itemMenuEmpresa">
                         <img src="../assets/escritorio 1.png" class="sidebar-icon">
                         <span class="sidebar-text">Empresas</span>
                     </div>
-
-                    <div class="sidebar-item">
+                    <div class="sidebar-item" id="itemMenuFuncionario">
                         <img src="../assets/funcionarios 1.png" class="sidebar-icon">
                         <span class="sidebar-text">Funcionários</span>
                     </div>
-
                     <div class="sidebar-item">
                         <img src="../assets/relogio 1.png" class="sidebar-icon">
                         <span class="sidebar-text">Histórico</span>
                     </div>
-
                     <div class="sidebar-item">
                         <img src="../assets/ajudando 1.png" class="sidebar-icon">
                         <span class="sidebar-text">Ajuda</span>
                     </div>
                 </div>
-
-
+                <div class="sidebar-sair">
+                    <img src="../assets/sair 1.png" class="sidebar-icon">
+                    <span class="sidebar-text">Sair</span>
+                </div>
                 <div class="sidebar-sair">
                     <img src="../assets/sair 1.png" class="sidebar-icon">
                     <span class="sidebar-text">Sair</span>
@@ -80,58 +77,106 @@
 
                             <div class="campo">
                                 <h4 class="label-cadastrar">Número de série:</h4>
-                                <input type="text" class="input-form-cadastrar" placeholder="0123456">
+                                <input type="text" class="input-form-cadastrar" placeholder="0123456"
+                                    id="input_numSerie">
                             </div>
 
                             <div class="campo">
                                 <h4 class="label-cadastrar">Nome:</h4>
-                                <input type="text" class="input-form-cadastrar" placeholder="Máquina 01">
+                                <input type="text" class="input-form-cadastrar" placeholder="Máquina 01"
+                                    id="input_nome">
                             </div>
 
                             <div class="campo">
                                 <h4 class="label-cadastrar">Modelo:</h4>
-                                <input type="text" class="input-form-cadastrar" placeholder="Intell 83948">
+                                <input type="text" class="input-form-cadastrar" placeholder="Intell 83948"
+                                    id="input_modelo">
                             </div>
 
 
                             <div class="campo">
                                 <h4 class="label-cadastrar">Local:</h4>
-                                <input type="text" class="input-form-cadastrar" placeholder="Cozinha">
+                                <input type="text" class="input-form-cadastrar" placeholder="Cozinha" id="input_local">
                             </div>
 
                             <div class="campo campo-descricao">
                                 <h4 class="label-cadastrar">Descrição dos Componentes:</h4>
-                                <textarea></textarea>
+                                <textarea id="input_descricao">
+
+                                </textarea>
                             </div>
 
                             <div class="campo-botoes campo-horizontal">
-                                <button class="bt_edicao" id="botao-cancelar">Cancelar</button>
-                                <button class="bt_edicao" id="botao-cadastrar">Cadastrar</button>
+                                <button class="bt_edicao" id="botao-cancelar"
+                                    onclick="cancelar()">Cancelar</button>
+                                <button class="bt_edicao" id="botao-cadastrar" onclick="cadastrar()">Cadastrar</button>
+                            </div>
+                            <div id="snackbar">
+                                Cadastrado com sucesso
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
-
-
-
 </body>
 
 </html>
 <script>
-    const perfilDiv = document.querySelector('.perfil-img');
-    perfilDiv.addEventListener('click', function () {
-        window.location.href = 'dashboard-perfil.html';
-    }); 7
+    async function cadastrar() {
+        try {
+            var result = document.getElementById("snackbar");
+            const numSerie = input_numSerie.value
+            const nome = input_nome.value
+            const modelo = input_modelo.value
+            const local = input_local.value
+            const descComponentes = input_descricao.value;
+            const fkEmpresa = 1 
+            const data = {
+                numSerie,
+                nome,
+                modelo,
+                local,
+                descComponentes,
+                fkEmpresa
+            }
 
-    var perfil = document.getElementById("perfil");
+            const response = await axios.post('/maquinas', data);
+            if (response.status === 201) {
+                const maquinaCriada = response.data;
+                console.log('Máquina cadastrada com sucesso:', maquinaCriada);
 
-    var user = sessionStorage.getItem("user");
-
-    if (user != null) {
-        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${user}</span></span>`;
+                result.className = "show";
+                setTimeout(function () { x.className = result.className.replace("show", ""); }, 1500);
+                setTimeout(function () { window.location.href = 'lista-maquinas.html' }, 2000);
+            } else {
+                console.error('Erro ao cadastrar máquina:', response.status, response.statusText)
+            }
+        } catch (error) {
+            console.log(error)
+        }
     }
+
+    function cancelar(){
+        window.location.href = 'lista-maquinas.html'
+    }
+
+    const itemMenuMaquina = document.getElementById('itemMenuMaquina');
+
+    itemMenuMaquina.addEventListener('click', function () {
+        window.location.href = 'lista-maquinas.html';
+    });
+
+    const itemMenuEmpresa = document.getElementById('itemMenuEmpresa');
+
+    itemMenuEmpresa.addEventListener('click', function () {
+        window.location.href = 'lista-empresas.html';
+    });
+
+    const itemMenuFuncionario = document.getElementById('itemMenuFuncionario');
+
+    itemMenuFuncionario.addEventListener('click', function () {
+        window.location.href = 'lista-funcionario.html';
+    });
 </script>
