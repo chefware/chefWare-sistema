@@ -28,7 +28,7 @@ maquinasController.get('/:id', async (req, res) => {
         } else {
             res.status(200).json("Não existe empresa com esse id")
         }
-        
+
     } catch (error) {
         res.status(400).json(e)
     }
@@ -64,13 +64,13 @@ maquinasController.post('/', async (req, res) => {
 
 maquinasController.patch('/:id', async (req, res) => {
     const idEmpresa = Number(req.params.id)
-    const { 
-        numSerie, 
-        nome, 
-        modelo, 
-        local, 
+    const {
+        numSerie,
+        nome,
+        modelo,
+        local,
         descComponentes,
-        fkEmpresa 
+        fkEmpresa
     } = req.body
     try {
 
