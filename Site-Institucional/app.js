@@ -12,7 +12,6 @@ app.use(express.json());
 app.use('/funcionarios', funcionariosController);
 app.use('/empresas', empresasController);
 app.use('/maquinas', maquinasController);
-app.use('/empresas', empresasController);
 
 app.listen(3000, () => console.log(`Servidor rodando em ${link}`));
 
