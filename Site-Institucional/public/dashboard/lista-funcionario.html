@@ -91,7 +91,7 @@
                                 <button class="lupa"><img src="../assets/busca.png" alt=""></button>
                                 <button class="filtro"><img src="../assets/filtro.png" alt=""></button>
                             </div>
-                            <button class="adicionar">
+                            <button id="botaoAdicionarFunc" class="adicionar">
                                 <img src="../assets/adicionar.png" alt="">
                                 Novo funcionário
                             </button>
@@ -338,6 +338,11 @@
 
     itemMenuFuncionario.addEventListener('click', function () {
         window.location.href = 'lista-funcionario.html';
+    });
+
+    const botaoAdicionarFunc = document.querySelector('#botaoAdicionarFunc');
+    botaoAdicionarFunc.addEventListener('click', function () {
+        window.location.href = 'editar-funcionario.html';
     });
 
     var perfil = document.getElementById("perfil");
