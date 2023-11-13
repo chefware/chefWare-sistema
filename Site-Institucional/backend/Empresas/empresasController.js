@@ -87,39 +87,24 @@ empresasController.post('/', async (req, res) => {
 
 empresasController.patch('/:id', async (req, res) => {
     const idEmpresa = Number(req.params.id);
-    const { nome, cnpj, telefone, endereco } = req.body;
-
     try {
+        const {
+            nome,
+            cnpj,
+            endereco,
+            telefone
+        } = req.body;
+
         const empresaAtualizada = await prisma.empresa.update({
             where: {
-                idEmpresa: idEmpresa,
+                id: idEmpresa
             },
             data: {
                 nome,
                 cnpj,
-                telefone,
-                enderecos: {
-                    upsert: {
-                        create: {
-                            logradouro: endereco.logradouro,
-                            cep: endereco.cep,
-                            bairro: endereco.bairro,
-                            numero: endereco.numero,
-                            estado: endereco.estado,
-                            empresa: {
-                                connect: { idEmpresa: idEmpresa },
-                            },
-                        },
-                        update: {
-                            logradouro: endereco.logradouro,
-                            cep: endereco.cep,
-                            bairro: endereco.bairro,
-                            numero: endereco.numero,
-                            estado: endereco.estado,
-                        },
-                    },
-                },
-            },
+                endereco,
+                telefone
+            }
         });
 
         res.status(200).json(empresaAtualizada);
