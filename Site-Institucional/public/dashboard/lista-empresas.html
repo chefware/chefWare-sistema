@@ -12,6 +12,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 
 <body>
@@ -97,14 +98,57 @@
                             </button>
                         </div>
                         <div class="listaEmpresas">
-                            <div class="cardEmpresa">
+
+                            <div class="page">
+                                <div class="pagination">
+                                    <button class="prev-page"><img src="../assets/voltar-icon.png" alt=""></button>
+                                    <button class="page-num">1</button>
+                                    <button class="page-num">2</button>
+                                    <button class="page-num">...</button>
+                                    <button class="page-num">23</button>
+                                    <button class="next-page"><img src="../assets/avancar-icon.png" alt=""></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+
+</body>
+
+</html>
+
+<script>
+    var perfil = document.getElementById("perfil");
+
+    var user = sessionStorage.getItem("user");
+
+    if (user != null) {
+        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${user}</span></span>`;
+    }
+
+
+    listaEmpresas()
+
+    async function listaEmpresas() {
+        try {
+            const response = await axios.get('/empresas');
+            if (response.status === 200) {
+                const dados = response.data;
+                console.log('Dados recebidos: ', dados);
+                dados.map((empresa) => {
+                    listaEmpresas.innerHTML = `<div class="cardEmpresa">
                                 <div class="informacoes">
                                     <div class="dados">
                                         <span class="titleDados">
                                             Identificação
                                         </span>
                                         <span class="resultDados">
-                                            0123456
+                                            ${empresa.id}
                                         </span>
                                     </div>
                                     <div class="dados">
@@ -112,7 +156,7 @@
                                             Nome
                                         </span>
                                         <span class="resultDados">
-                                            Julia Rufino
+                                            ${empresa.nome}
                                         </span>
                                     </div>
                                     <div class="dados">
@@ -120,7 +164,7 @@
                                             CNPJ
                                         </span>
                                         <span class="resultDados">
-                                            00.000.001/0001-00
+                                            ${empresa.cnpj}
                                         </span>
                                     </div>
                                     <div class="dados">
@@ -136,158 +180,14 @@
                                     <a href="#"><img src="../assets/editar.png"></a>
                                     <a href="#"><img src="../assets/excluir.png"></a>
                                 </div>
-                            </div>
-                            <div class="cardEmpresa">
-                                <div class="informacoes">
-                                    <div class="dados">
-                                        <span class="titleDados">
-                                            Identificação
-                                        </span>
-                                        <span class="resultDados">
-                                            0123456
-                                        </span>
-                                    </div>
-                                    <div class="dados">
-                                        <span class="titleDados">
-                                            Nome
-                                        </span>
-                                        <span class="resultDados">
-                                            Julia Rufino
-                                        </span>
-                                    </div>
-                                    <div class="dados">
-                                        <span class="titleDados">
-                                            CNPJ
-                                        </span>
-                                        <span class="resultDados">
-                                            00.000.001/0001-00
-                                        </span>
-                                    </div>
-                                    <div class="dados">
-                                        <span class="titleDados">
-                                            Máquinas monitoradas
-                                        </span>
-                                        <span class="resultDados">
-                                            10
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="acoes">
-                                    <a href="#"><img src="../assets/editar.png"></a>
-                                    <a href="#"><img src="../assets/excluir.png"></a>
-                                </div>
-                            </div>
-                            <div class="cardEmpresa">
-                                <div class="informacoes">
-                                    <div class="dados">
-                                        <span class="titleDados">
-                                            Identificação
-                                        </span>
-                                        <span class="resultDados">
-                                            0123456
-                                        </span>
-                                    </div>
-                                    <div class="dados">
-                                        <span class="titleDados">
-                                            Nome
-                                        </span>
-                                        <span class="resultDados">
-                                            Julia Rufino
-                                        </span>
-                                    </div>
-                                    <div class="dados">
-                                        <span class="titleDados">
-                                            CNPJ
-                                        </span>
-                                        <span class="resultDados">
-                                            00.000.001/0001-00
-                                        </span>
-                                    </div>
-                                    <div class="dados">
-                                        <span class="titleDados">
-                                            Máquinas adicionadas
-                                        </span>
-                                        <span class="resultDados">
-                                            15
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="acoes">
-                                    <a href="#"><img src="../assets/editar.png"></a>
-                                    <a href="#"><img src="../assets/excluir.png"></a>
-                                </div>
-                            </div>
-                            <div class="cardEmpresa">
-                                <div class="informacoes">
-                                    <div class="dados">
-                                        <span class="titleDados">
-                                            Identificação
-                                        </span>
-                                        <span class="resultDados">
-                                            0123456
-                                        </span>
-                                    </div>
-                                    <div class="dados">
-                                        <span class="titleDados">
-                                            Nome
-                                        </span>
-                                        <span class="resultDados">
-                                            Julia Rufino
-                                        </span>
-                                    </div>
-                                    <div class="dados">
-                                        <span class="titleDados">
-                                            CNPJ
-                                        </span>
-                                        <span class="resultDados">
-                                            00.000.001/0001-00
-                                        </span>
-                                    </div>
-                                    <div class="dados">
-                                        <span class="titleDados">
-                                            Máquinas adicionadas
-                                        </span>
-                                        <span class="resultDados">
-                                            15
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="acoes">
-                                    <a href="#"><img src="../assets/editar.png"></a>
-                                    <a href="#"><img src="../assets/excluir.png"></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="page">
-                            <div class="pagination">
-                                <button class="prev-page"><img src="../assets/voltar-icon.png" alt=""></button>
-                                <button class="page-num">1</button>
-                                <button class="page-num">2</button>
-                                <button class="page-num">...</button>
-                                <button class="page-num">23</button>
-                                <button class="next-page"><img src="../assets/avancar-icon.png" alt=""></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                            </div>`
+                })
+            } else {
+                console.error('Erro na requisição:', response.status, response.statusText);
+            }
+        } catch (error) {
 
-        </div>
-    </div>
-
-
-
-</body>
-
-</html>
-
-<script>
-    var perfil = document.getElementById("perfil");
-
-    var user = sessionStorage.getItem("user");
-
-    if (user != null) {
-        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${user}</span></span>`;
+        }
     }
 </script>
 
