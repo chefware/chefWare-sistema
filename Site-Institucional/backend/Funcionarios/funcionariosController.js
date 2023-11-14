@@ -54,10 +54,10 @@ funcionariosController.post('/', async (req, res) => {
     }
 });
 
-funcionariosController.put('/:id', async (req, res) => {
+funcionariosController.patch('/:id', async (req, res) => {
     try{
         const { id } = req.params;
-        const { nome, email, senha, cargo, privilegio } = req.body;
+        const { nome, email, senha, cpf, cargo, privilegio } = req.body;
         const funcionarioAtualizado = await prisma.Funcionario.update({
             where: {
               id: Number(id),
@@ -68,8 +68,7 @@ funcionariosController.put('/:id', async (req, res) => {
               senha,
               cpf,
               cargo,
-              privilegio,
-              fkEmpresa,
+              privilegio
             },
           });
 
