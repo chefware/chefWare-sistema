@@ -139,13 +139,13 @@ empresasController.delete('/:id', async (req, res) => {
     try {
         const empresaDeletada = await prisma.empresa.delete({
             where: {
-                id: idEmpresa
+                idEmpresa: idEmpresa
             }
         });
-
         res.status(200).json(empresaDeletada);
     } catch (e) {
         res.status(500).json(e);
+        console.log(e);
     }
 });
 
