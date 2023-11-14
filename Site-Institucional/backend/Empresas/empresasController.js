@@ -5,22 +5,35 @@ const prisma = new PrismaClient();
 const empresasController = express.Router();
 
 empresasController.get('/', async (req, res) => {
+    let take = 5;
+    let page = Number(req?.query?.page) | 0;
+    let skip = 1;
     try {
-        const empresas = await prisma.empresa.findMany();
+        const [empresas, total] = await prisma.$transaction([
+            prisma.empresa.findMany({
+                take: take,
+                skip: skip
+            }),
+            prisma.empresa.count()
+        ]);
         const empresasComEndereco = await Promise.all(empresas.map(async (empresa) => {
             const endereco = await prisma.endereco.findFirst({
                 where: {
                     fkEmpresa: empresa.idEmpresa
                 }
             });
-            return {
+            return { 
                 ...empresa,
-                endereco
+                endereco,
+                totalPaginas: Math.ceil(total / take),
+                paginaAtual: page,
+                totalEmpresas: total
             }
         }));
         res.status(200).json(empresasComEndereco);
     } catch (error) {
-        res.status(400).json(e);
+        res.status(400).json(error);
+        console.log(error);
     }
 });
 
