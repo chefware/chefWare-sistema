@@ -5,22 +5,35 @@ const prisma = new PrismaClient();
 const empresasController = express.Router();
 
 empresasController.get('/', async (req, res) => {
+    let take = 5;
+    let page = Number(req?.query?.page) | 0;
+    let skip = 1;
     try {
-        const empresas = await prisma.empresa.findMany();
+        const [empresas, total] = await prisma.$transaction([
+            prisma.empresa.findMany({
+                take: take,
+                skip: skip
+            }),
+            prisma.empresa.count()
+        ]);
         const empresasComEndereco = await Promise.all(empresas.map(async (empresa) => {
             const endereco = await prisma.endereco.findFirst({
                 where: {
                     fkEmpresa: empresa.idEmpresa
                 }
             });
-            return {
+            return { 
                 ...empresa,
-                endereco
+                endereco,
+                totalPaginas: Math.ceil(total / take),
+                paginaAtual: page,
+                totalEmpresas: total
             }
         }));
         res.status(200).json(empresasComEndereco);
     } catch (error) {
-        res.status(400).json(e);
+        res.status(400).json(error);
+        console.log(error);
     }
 });
 
@@ -88,43 +101,64 @@ empresasController.post('/', async (req, res) => {
 empresasController.patch('/:id', async (req, res) => {
     const idEmpresa = Number(req.params.id);
     try {
-        const {
-            nome,
-            cnpj,
-            endereco,
-            telefone
-        } = req.body;
-
+        const { nome, cnpj, telefone, endereco } = req.body;
         const empresaAtualizada = await prisma.empresa.update({
             where: {
-                id: idEmpresa
+                idEmpresa: idEmpresa
             },
             data: {
                 nome,
                 cnpj,
-                endereco,
                 telefone
             }
         });
 
-        res.status(200).json(empresaAtualizada);
-    } catch (e) {
-        res.status(409).json(e);
+        let enderecoAtualizado = null;
+
+        if (endereco) {
+            const enderecoExistente = await prisma.endereco.findFirst({
+                where: {
+                    fkEmpresa: idEmpresa
+                }
+            });
+
+            if (enderecoExistente) {
+                enderecoAtualizado = await prisma.endereco.update({
+                    where: {
+                        idEndereco: enderecoExistente.idEndereco
+                    },
+                    data: {
+                        ...endereco
+                    }
+                });
+            } else {
+            }
+        }
+
+        res.status(200).json({ empresa: empresaAtualizada, endereco: enderecoAtualizado });
+    } catch (error) {
+        console.error("Erro ao atualizar empresa:", error);
+
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+            res.status(400).json({ error: "Erro de validação do Prisma" });
+        } else {
+            res.status(500).json({ error: "Erro interno do servidor" });
+        }
     }
-})
+});
 
 empresasController.delete('/:id', async (req, res) => {
     const idEmpresa = Number(req.params.id);
     try {
         const empresaDeletada = await prisma.empresa.delete({
             where: {
-                id: idEmpresa
+                idEmpresa: idEmpresa
             }
         });
-
         res.status(200).json(empresaDeletada);
     } catch (e) {
         res.status(500).json(e);
+        console.log(e);
     }
 });
 

@@ -50,7 +50,7 @@ model Endereco {
   numero     String?
   estado     String?
   fkEmpresa  Int
-  empresa    Empresa  @relation(fields: [fkEmpresa], references: [idEmpresa])
+  empresa    Empresa  @relation(fields: [fkEmpresa], references: [idEmpresa], onDelete: Cascade)
 }
 
 model TipoComponente {
