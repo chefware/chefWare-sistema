@@ -32,6 +32,19 @@ funcionariosController.get('/', async (req, res) => {
     }
 });
 
+funcionariosController.get('/:id', async (req, res) => {
+    try{
+        const funcionario = await prisma.funcionario.findUnique({
+            where: {
+                id: Number(req.params.id),
+            },
+        });
+        res.status(200).json(funcionario);
+    }catch(error){
+        res.json({error: error.message});
+    }
+});
+
 funcionariosController.post('/', async (req, res) => {
     try{
         const { nome, email, senha, cpf, cargo, privilegio, fkEmpresa } = req.body;
