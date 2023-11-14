@@ -167,12 +167,13 @@
                 nome,
                 cnpj,
                 telefone,
-                cep,
-                logradouro,
-                numero,
-                bairro,
-                estado,
-                data
+                 endereco :{
+                    logradouro,
+                    cep,
+                    bairro,
+                    numero,
+                    estado
+                 }
             }
 
         const response = await axios.post('/empresas', data);
