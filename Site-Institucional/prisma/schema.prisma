@@ -25,6 +25,7 @@ model Maquina {
   local           String?
   descComponentes String?
   fkEmpresa       Int
+  hostName        String?
   empresa         Empresa            @relation(fields: [fkEmpresa], references: [idEmpresa])
   especificacoes  Especificacoes[]
   historicos      Historico[]        // Adicionando relação inversa com Historico
