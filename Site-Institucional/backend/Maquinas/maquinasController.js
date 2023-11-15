@@ -10,7 +10,7 @@ maquinasController.get('/', async (req, res) => {
         })
         res.status(200).json(maquinas)
     } catch (error) {
-        res.status(400).json(e)
+        res.status(400).json(error)
     }
 })
 
@@ -30,7 +30,7 @@ maquinasController.get('/:id', async (req, res) => {
         }
 
     } catch (error) {
-        res.status(400).json(e)
+        res.status(400).json(error)
     }
 })
 
@@ -42,7 +42,8 @@ maquinasController.post('/', async (req, res) => {
             modelo,
             local,
             descComponentes,
-            fkEmpresa
+            fkEmpresa,
+            hostName
         } = req.body
 
         const maquinaCriada = await prisma.maquina.create({
@@ -52,7 +53,8 @@ maquinasController.post('/', async (req, res) => {
                 modelo,
                 local,
                 descComponentes,
-                fkEmpresa
+                fkEmpresa,
+                hostName
             }
         })
 

@@ -84,6 +84,12 @@
                             </div>
 
                             <div class="campo">
+                                <h4 class="label-cadastrar">HostName:</h4>
+                                <input type="text" class="input-form-cadastrar" placeholder="Máquina 01"
+                                    id="input_hostName">
+                            </div>
+
+                            <div class="campo">
                                 <h4 class="label-cadastrar">Modelo:</h4>
                                 <input type="text" class="input-form-cadastrar" placeholder="Intell 83948"
                                     id="input_modelo">
@@ -125,6 +131,7 @@
             var result = document.getElementById("snackbar");
             const numSerie = input_numSerie.value
             const nome = input_nome.value
+            const hostName = input_hostName.value
             const modelo = input_modelo.value
             const local = input_local.value
             const descComponentes = input_descricao.value;
@@ -135,7 +142,8 @@
                 modelo,
                 local,
                 descComponentes,
-                fkEmpresa
+                fkEmpresa,
+                hostName
             }
 
             const response = await axios.post('/maquinas', data);
