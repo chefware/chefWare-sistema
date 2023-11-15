@@ -27,7 +27,7 @@ model Maquina {
   fkEmpresa       Int
   empresa         Empresa            @relation(fields: [fkEmpresa], references: [idEmpresa])
   especificacoes  Especificacoes[]
-  historicos      Historico[]        // Adicionando relação inversa com Historico
+  historicos      Historico[]
 }
 
 model Funcionario {
@@ -38,6 +38,7 @@ model Funcionario {
   cpf        String?
   cargo      String?
   privilegio String?
+  foto Bytes?
   fkEmpresa  Int
   empresa    Empresa  @relation(fields: [fkEmpresa], references: [idEmpresa])
 }
@@ -57,8 +58,8 @@ model TipoComponente {
   idtipoComponente  Int               @id @default(autoincrement())
   nome              String?
   componentes       Componente[]
-  especificacoes    Especificacoes[]  // Adicionando relação inversa com Especificacoes
-  historicos        Historico[]       // Adicionando relação inversa com Historico
+  especificacoes    Especificacoes[]
+  historicos        Historico[]
 }
 
 model Componente {
@@ -69,7 +70,7 @@ model Componente {
   fkTipoComponente Int
   tipoComponente   TipoComponente    @relation(fields: [fkTipoComponente], references: [idtipoComponente])
   especificacoes   Especificacoes[]
-  historicos       Historico[]       // Adicionando relação inversa com Historico
+  historicos       Historico[]
 }
 
 model Especificacoes {
