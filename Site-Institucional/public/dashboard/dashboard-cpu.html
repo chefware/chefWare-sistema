@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="../assets/css/style-dashboard.css">
     <link rel="shortcut icon" href="../assets/logoBRANCA_icon.png" />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 
 <body>
@@ -100,7 +101,7 @@
                             <div class="cabecalho">
                                 <div class="itensCabecalho">
 
-                                    <h1 id="nomeMaquina">Máquina 01</h1>
+                                    <h1 id="nomeMaquina"></h1>
                                     <button class="botaoAcoesRapidas">Ações Rápidas</button>
 
                                     <div class="indicadores">
@@ -143,17 +144,17 @@
                                         <span>Em uso: <span>35%</span></span>
                                     </div>
 
-                                    <div id="botaoDisco" class="opcaoMenuComponentes">
+                                    <div id="botaoDisco" class="opcaoMenuComponentes" onclick="navegacaoDisco()">
                                         <h2>DISCO 01</h2>
                                         <span>(C:)</span>
                                     </div>
 
-                                    <div id="botaoMemoria" class="opcaoMenuComponentes">
+                                    <div id="botaoMemoria" class="opcaoMenuComponentes" onclick="navegacaoMemoria()">
                                         <h2>MEMÓRIA</h2>
                                         <span>Em uso: <span>7,0/8,0 GB</span></span>
                                     </div>
 
-                                    <div id="botaoRede" class="opcaoMenuComponentes">
+                                    <div id="botaoRede" class="opcaoMenuComponentes" onclick="navegacaoRede()">
                                         <h2>REDE</h2>
                                         <span>Conectada</span>
                                     </div>
@@ -164,11 +165,11 @@
                                     <div class="informacoesDashboard">
 
                                         <div class="nomeComponenteGrafico">
-                                            <h3>CPU</h3>
+                                            <h3 id="comp"></h3>
                                             <span>% UTILIZADA</span>
                                         </div>
 
-                                        <h2>Intel® Core™ i3-6100</h2>
+                                        <h2 id="modelo"></h2>
 
                                     </div>
 
@@ -181,7 +182,7 @@
                                             <h4>Uso Atual:</h4>
 
                                             <div class="areaDadoGrafico">
-                                                <span>35%</span>
+                                                <span id="uso"></span>
                                             </div>
 
                                         </div>
@@ -192,32 +193,33 @@
                                         <span class="tituloInformacoesEstaticas">Informações Estáticas:</span>
                                         <div class="areaDadosEstaticos">
                                             <div class="colunaDado">
-                                                <span class="tituloDadoEstatico">Fabricante: <span
-                                                        class="dadoEstatico">GenuineIntel</span></span>
+                                                <span class="tituloDadoEstatico">Fabricante:
+                                                    <span class="dadoEstatico" id="fabricante"></span>
+                                                </span>
 
                                                 <span class="tituloDadoEstatico">ID: <span
                                                         class="dadoEstatico">bfebfbff000806ea</span></span>
                                             </div>
 
                                             <div class="colunaDado">
-                                                <span class="tituloDadoEstatico">Identificador: <span
-                                                        class="dadoEstatico">Intel64 Family 6 Model 142 Stepping
-                                                        10</span></span>
+                                                <span class="tituloDadoEstatico">Identificador:
+                                                    <span class="dadoEstatico" id="identificador"></span>
+                                                </span>
 
-                                                <span class="tituloDadoEstatico">Frequência: <span
-                                                        class="dadoEstatico">1400000000 Hz</span></span>
+                                                <span class="tituloDadoEstatico">Frequência: <span class="dadoEstatico"
+                                                        id="frequencia"></span></span>
                                             </div>
 
                                             <div class="colunaDado">
                                                 <span class="tituloDadoEstatico">Nº Pacotes Físicos: <span
-                                                        class="dadoEstatico">1</span></span>
+                                                        class="dadoEstatico" id="fisicas"></span></span>
 
                                                 <span class="tituloDadoEstatico">Nº de CPU`s Físicas: <span
-                                                        class="dadoEstatico">4</span></span>
+                                                        class="dadoEstatico"></span></span>
                                             </div>
 
                                             <span class="tituloDadoEstatico">Nº de CPU`s Lógicas: <span
-                                                    class="dadoEstatico">8</span></span>
+                                                    class="dadoEstatico" id="logicas"></span></span>
                                         </div>
 
                                     </div>
@@ -236,9 +238,88 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="../assets/js/graficoCpu.js"></script>
 <script>
-    const ctxCpu = document.getElementById('myChartCpu');
 
-    new Chart(ctxCpu, {
+    const nome = document.getElementById('nomeMaquina');
+    const modelo = document.getElementById('modelo');
+    const fabricante = document.getElementById('fabricante')
+    const identificador = document.getElementById('identificador')
+    const frequencia = document.getElementById('frequencia')
+    const fisicas = document.getElementById('fisicas')
+    const logicas = document.getElementById('logicas')
+    const ctxCpu = document.getElementById('myChartCpu').getContext('2d')
+    const comp = document.getElementById('comp')
+    const tipoComp = "CPU"
+    const qtdUso = document.getElementById('uso')
+    var idTipoComp_grafico
+    var idComp_grafico
+
+
+    const params = new URLSearchParams(window.location.search);
+    const idMaquina = params.get('id');
+
+    tipoComponente()
+    maquinaDashboard()
+
+    async function tipoComponente() {
+        try {
+            const tipo = await axios.get(`/componentes/tipoComponente/${tipoComp}`)
+            console.log(tipo)
+            if (tipo.status === 200) {
+                comp.innerText = `${tipo.data[0].nome}`
+                componente(tipo.data[0].idtipoComponente)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function componente(idTipo) {
+        try {
+            const comp = await axios.get(`/componentes/${idTipo}`)
+            if (comp.status === 200) {
+                especificacaoCPU(comp.data[0].fkTipoComponente, comp.data[0].idComponente)
+                histórico(comp.data[0].fkTipoComponente, comp.data[0].idComponente)
+                idTipoComp_grafico = comp.data[0].fkTipoComponente
+                idComp_grafico = comp.data[0].idComponente
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function maquinaDashboard() {
+        try {
+            const maquina = await axios.get(`/dashboard/${idMaquina}`)
+            if (maquina.status === 200) {
+                const dados = maquina.data
+                nome.innerText = `${dados.nome}`
+                modelo.innerText = `${dados.modelo}`
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function especificacaoCPU(idTipo, idComp) {
+        try {
+            const especificacao = await axios.get(`/dashboard/especificacoes/${idMaquina}/${idComp}/${idTipo}`)
+            console.log(especificacao)
+            if (especificacao.status === 200) {
+                const dadosEspecificacoes = especificacao.data
+                if (dadosEspecificacoes.length > 0) {
+                    fabricante.innerText = dadosEspecificacoes[0].dadosEstaticos || '';
+                    identificador.innerText = dadosEspecificacoes[1].dadosEstaticos || '';
+                    frequencia.innerText = dadosEspecificacoes[2].dadosEstaticos || '';
+                    fisicas.innerText = dadosEspecificacoes[3].dadosEstaticos || '';
+                    logicas.innerText = dadosEspecificacoes[4].dadosEstaticos || '';
+                }
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    var grafico = new Chart(ctxCpu, {
         type: 'line',
         data: {
             labels: ['18:00:00', '18:01:00', '18:02:00', '18:03:00', '18:04:00', '18:05:00', '18:06:00',
@@ -246,7 +327,7 @@
             ],
             datasets: [{
                 label: '% de uso',
-                data: [62, 50, 97, 43, 56, 65, 30, 35],
+                data: [],
                 borderWidth: 1,
                 backgroundColor: (context) => {
                     const background = [
@@ -285,28 +366,124 @@
         }
     });
 
-    const botaoDisco = document.getElementById('botaoDisco');
+    setInterval(() => {
 
-    botaoDisco.addEventListener('click', function () {
-        window.location.href = 'dashboard-disco.html';
-    });
+        histórico(idTipoComp_grafico, idComp_grafico);
+
+    }, 5000);
+
+    function formatarDataHora(dataHora) {
+        const data = new Date(dataHora)
+
+        data.setHours(data.getHours() + 3);
+
+        const options = { hour: 'numeric', minute: 'numeric', second: 'numeric' };
+        return new Intl.DateTimeFormat('pt-BR', options).format(data);
+    }
+
+    async function histórico(idComp, idTipo) {
+        try {
+            const historico = await axios.get(`/historico/${idMaquina}/${idComp}/${idTipo}`)
+            console.log(historico)
+            if (historico.status === 200) {
+                var graficoData = {
+                    labels: [],
+                    datasets: [{
+                        label: '% de uso',
+                        data: [],
+                        borderWidth: 1,
+                        backgroundColor: (context) => {
+                            const background = [
+                                "#040454",
+                                "#555592"
+                            ]
+
+                            if (!context.chart.chartArea) {
+                                return;
+                            }
+
+                            const {
+                                ctx,
+                                data,
+                                chartArea: {
+                                    top,
+                                    bottom
+                                }
+                            } = context.chart;
+                            const gradientBackground = ctx.createLinearGradient(0, top, 0, bottom);
+                            gradientBackground.addColorStop(.5, background[0]);
+                            gradientBackground.addColorStop(1, background[1]);
+
+                            return gradientBackground;
+                        },
+                        fill: true,
+                        cubicInterpolationMode: 'monotone'
+                    }]
+                }
+                const startIndex = Math.max(0, historico.data.length - 10);
+                for (var i = startIndex; i < historico.data.length; i++) {
+                    qtdUso.innerText = `${historico.data[i].leitura} ${historico.data[i].unidadeMedida}`
+
+                    const dataHoraFormatada = formatarDataHora(historico.data[i].dataHora);
+                    graficoData.labels.push(dataHoraFormatada);
+                    graficoData.datasets[0].data.push(parseFloat(historico.data[i].leitura));
+                }
+
+                grafico.data = graficoData;
+                grafico.update();
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    function navegacaoDisco() {
+        const botaoDisco = document.getElementById('botaoDisco');
+
+        botaoDisco.addEventListener('click', function () {
+            window.location.href = `dashboard-disco.html?id=${idMaquina}`;
+        });
+    }
+
+    function navegacaoMemoria() {
+        const botaoMemoria = document.getElementById('botaoMemoria');
+
+        botaoMemoria.addEventListener('click', function () {
+            window.location.href = `dashboard-memoria.html?id=${idMaquina}`;
+        });
+    }
+
+    function navegacaoRede() {
+        const botaoRede = document.getElementById('botaoRede');
+
+        botaoRede.addEventListener('click', function () {
+            window.location.href = `dashboard-rede.html?id=${idMaquina}`;
+        });
+    }
 
     const botaoCpu = document.getElementById('botaoCpu');
 
     botaoCpu.addEventListener('click', function () {
-        window.location.href = 'dashboard-cpu.html';
+        window.location.href = `dashboard-cpu.html?id=${idMaquina}`;
     });
 
-    const botaoMemoria = document.getElementById('botaoMemoria');
 
-    botaoMemoria.addEventListener('click', function () {
-        window.location.href = 'dashboard-memoria.html';
+    const itemMenuMaquina = document.getElementById('itemMenuMaquina');
+
+    itemMenuMaquina.addEventListener('click', function () {
+        window.location.href = 'lista-maquinas.html';
     });
 
-    const botaoRede = document.getElementById('botaoRede');
+    const itemMenuEmpresa = document.getElementById('itemMenuEmpresa');
 
-    botaoRede.addEventListener('click', function () {
-        window.location.href = 'dashboard-rede.html';
+    itemMenuEmpresa.addEventListener('click', function () {
+        window.location.href = 'lista-empresas.html';
+    });
+
+    const itemMenuFuncionario = document.getElementById('itemMenuFuncionario');
+
+    itemMenuFuncionario.addEventListener('click', function () {
+        window.location.href = 'lista-funcionario.html';
     });
 
     var perfil = document.getElementById("perfil");
@@ -317,8 +494,6 @@
         perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${user}</span></span>`;
     }
 </script>
-
-<script src="../assets/js/navegacao-menu.js"></script>
 
 <script src="../assets/js/controle-pages.js"></script>
 

@@ -111,7 +111,7 @@
                 console.log('Dados recebidos:', dados);
                 linha_maquina.innerHTML = ``
                 for (var i = 0; i <= dados.length; i++) {
-                    linha_maquina.innerHTML += `<div class="cardMaquina" onclick="navegacao()">
+                    linha_maquina.innerHTML += `<div class="cardMaquina" onclick="navegacao(${dados[i].id})">
                                     <div class="alerta">
 
                                     </div>
@@ -156,8 +156,8 @@
         }
     }
 
-    function navegacao(){
-        window.location.href ='dashboard-cpu.html'
+    function navegacao(id){
+        window.location.href =`dashboard-cpu.html?id=${id}`
     }
 
     const cadastroMaquina = document.querySelectorAll('.adicionar');
