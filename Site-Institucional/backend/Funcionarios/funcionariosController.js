@@ -116,6 +116,15 @@ funcionariosController.patch('/:id', upload.single('foto'), async (req, res) => 
         const fotoPerfil = req.file;
         let fotoPerfilBuffer = null;
 
+        let updateData = {
+            nome,
+            email,
+            senha,
+            cpf,
+            cargo,
+            privilegio,
+        };
+
         if (fotoPerfil) {
             fotoPerfilBuffer = fotoPerfil.buffer;
             updateData.foto = fotoPerfilBuffer;
