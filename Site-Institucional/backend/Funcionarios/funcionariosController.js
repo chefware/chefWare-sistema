@@ -53,7 +53,7 @@ funcionariosController.post('/', upload.single('foto'), async (req, res) => {
         const fotoPerfil = req.file;
         const fkEmpresaInt = Number(fkEmpresa);
         let fotoPerfilBuffer = null;
-        
+
         if (fotoPerfil) {
             fotoPerfilBuffer = fotoPerfil.buffer;
         }
@@ -78,22 +78,32 @@ funcionariosController.post('/', upload.single('foto'), async (req, res) => {
     }
 });
 
-funcionariosController.patch('/:id', async (req, res) => {
+funcionariosController.patch('/:id', upload.single('foto'), async (req, res) => {
     try {
         const { id } = req.params;
         const { nome, email, senha, cpf, cargo, privilegio } = req.body;
+        const fotoPerfil = req.file;
+        let fotoPerfilBuffer = null;
+
+        let updateData = {
+            nome,
+            email,
+            senha,
+            cpf,
+            cargo,
+            privilegio,
+        };
+
+        if (fotoPerfil) {
+            fotoPerfilBuffer = fotoPerfil.buffer;
+            updateData.foto = fotoPerfilBuffer;
+        }
+
         const funcionarioAtualizado = await prisma.Funcionario.update({
             where: {
                 id: Number(id),
             },
-            data: {
-                nome,
-                email,
-                senha,
-                cpf,
-                cargo,
-                privilegio
-            },
+            data: updateData,
         });
 
         res.status(200).json(funcionarioAtualizado);
