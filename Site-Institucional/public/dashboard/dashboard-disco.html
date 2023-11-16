@@ -21,13 +21,13 @@
                 </div>
 
                 <div class="conteudo-modal">
-                    <button class="botao-acao"><span>Desligar</span></button>
+                    <button class="botao-acao" onclick="receberAcaoRapida('desligar')"><span>Desligar</span></button>
 
-                    <button class="botao-acao"><span>Reiniciar</span></button>
+                    <button class="botao-acao" onclick="receberAcaoRapida('reiniciar')"><span>Reiniciar</span></button>
 
-                    <button class="botao-acao"><span>Suspender</span></button>
+                    <button class="botao-acao" onclick="receberAcaoRapida('suspender')"><span>Suspender</span></button>
 
-                    <button class="botao-acao"><span>Bloquear</span></button>
+                    <button class="botao-acao" onclick="receberAcaoRapida('bloquear')"><span>Bloquear</span></button>
                 </div>
             </div>
         </div>
@@ -295,6 +295,22 @@
 
     if (user != null) {
         perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${user}</span></span>`;
+    }
+
+    function receberAcaoRapida(acao){
+        axios.post('http://10.18.34.93:8080/inovacao', {
+            comando: acao
+        },
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+        ).then(function (response) {
+            console.log(response)
+        }).catch(function (error) {
+            console.log(error)
+        })
     }
 
 </script>

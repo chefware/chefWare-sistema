@@ -22,13 +22,13 @@
                 </div>
 
                 <div class="conteudo-modal">
-                    <button class="botao-acao"><span>Desligar</span></button>
+                    <button class="botao-acao" onclick="receberAcaoRapida('desligar')"><span>Desligar</span></button>
 
-                    <button class="botao-acao"><span>Reiniciar</span></button>
+                    <button class="botao-acao" onclick="receberAcaoRapida('reiniciar')"><span>Reiniciar</span></button>
 
-                    <button class="botao-acao"><span>Suspender</span></button>
+                    <button class="botao-acao" onclick="receberAcaoRapida('suspender')"><span>Suspender</span></button>
 
-                    <button class="botao-acao"><span>Bloquear</span></button>
+                    <button class="botao-acao" onclick="receberAcaoRapida('bloquear')"><span>Bloquear</span></button>
                 </div>
             </div>
         </div>
@@ -239,8 +239,8 @@
 <script src="../assets/js/graficoCpu.js"></script>
 <script>
 
-    const nome = document.getElementById('nomeMaquina');
-    const modelo = document.getElementById('modelo');
+    const nome = document.getElementById('nomeMaquina')
+    const modelo = document.getElementById('modelo')
     const fabricante = document.getElementById('fabricante')
     const identificador = document.getElementById('identificador')
     const frequencia = document.getElementById('frequencia')
@@ -254,8 +254,8 @@
     var idComp_grafico
 
 
-    const params = new URLSearchParams(window.location.search);
-    const idMaquina = params.get('id');
+    const params = new URLSearchParams(window.location.search)
+    const idMaquina = params.get('id')
 
     tipoComponente()
     maquinaDashboard()
@@ -307,11 +307,11 @@
             if (especificacao.status === 200) {
                 const dadosEspecificacoes = especificacao.data
                 if (dadosEspecificacoes.length > 0) {
-                    fabricante.innerText = dadosEspecificacoes[0].dadosEstaticos || '';
-                    identificador.innerText = dadosEspecificacoes[1].dadosEstaticos || '';
-                    frequencia.innerText = dadosEspecificacoes[2].dadosEstaticos || '';
-                    fisicas.innerText = dadosEspecificacoes[3].dadosEstaticos || '';
-                    logicas.innerText = dadosEspecificacoes[4].dadosEstaticos || '';
+                    fabricante.innerText = dadosEspecificacoes[0].dadosEstaticos || ''
+                    identificador.innerText = dadosEspecificacoes[1].dadosEstaticos || ''
+                    frequencia.innerText = dadosEspecificacoes[2].dadosEstaticos || ''
+                    fisicas.innerText = dadosEspecificacoes[3].dadosEstaticos || ''
+                    logicas.innerText = dadosEspecificacoes[4].dadosEstaticos || ''
                 }
             }
         } catch (error) {
@@ -336,7 +336,7 @@
                     ]
 
                     if (!context.chart.chartArea) {
-                        return;
+                        return
                     }
 
                     const {
@@ -346,12 +346,12 @@
                             top,
                             bottom
                         }
-                    } = context.chart;
-                    const gradientBackground = ctx.createLinearGradient(0, top, 0, bottom);
-                    gradientBackground.addColorStop(.5, background[0]);
-                    gradientBackground.addColorStop(1, background[1]);
+                    } = context.chart
+                    const gradientBackground = ctx.createLinearGradient(0, top, 0, bottom)
+                    gradientBackground.addColorStop(.5, background[0])
+                    gradientBackground.addColorStop(1, background[1])
 
-                    return gradientBackground;
+                    return gradientBackground
                 },
                 fill: true,
                 cubicInterpolationMode: 'monotone'
@@ -364,21 +364,21 @@
                 }
             }
         }
-    });
+    })
 
     setInterval(() => {
 
-        histórico(idTipoComp_grafico, idComp_grafico);
+        histórico(idTipoComp_grafico, idComp_grafico)
 
-    }, 5000);
+    }, 5000)
 
     function formatarDataHora(dataHora) {
         const data = new Date(dataHora)
 
-        data.setHours(data.getHours() + 3);
+        data.setHours(data.getHours() + 3)
 
-        const options = { hour: 'numeric', minute: 'numeric', second: 'numeric' };
-        return new Intl.DateTimeFormat('pt-BR', options).format(data);
+        const options = { hour: 'numeric', minute: 'numeric', second: 'numeric' }
+        return new Intl.DateTimeFormat('pt-BR', options).format(data)
     }
 
     async function histórico(idComp, idTipo) {
@@ -399,7 +399,7 @@
                             ]
 
                             if (!context.chart.chartArea) {
-                                return;
+                                return
                             }
 
                             const {
@@ -409,28 +409,28 @@
                                     top,
                                     bottom
                                 }
-                            } = context.chart;
-                            const gradientBackground = ctx.createLinearGradient(0, top, 0, bottom);
-                            gradientBackground.addColorStop(.5, background[0]);
-                            gradientBackground.addColorStop(1, background[1]);
+                            } = context.chart
+                            const gradientBackground = ctx.createLinearGradient(0, top, 0, bottom)
+                            gradientBackground.addColorStop(.5, background[0])
+                            gradientBackground.addColorStop(1, background[1])
 
-                            return gradientBackground;
+                            return gradientBackground
                         },
                         fill: true,
                         cubicInterpolationMode: 'monotone'
                     }]
                 }
-                const startIndex = Math.max(0, historico.data.length - 10);
+                const startIndex = Math.max(0, historico.data.length - 10)
                 for (var i = startIndex; i < historico.data.length; i++) {
                     qtdUso.innerText = `${historico.data[i].leitura} ${historico.data[i].unidadeMedida}`
 
-                    const dataHoraFormatada = formatarDataHora(historico.data[i].dataHora);
-                    graficoData.labels.push(dataHoraFormatada);
-                    graficoData.datasets[0].data.push(parseFloat(historico.data[i].leitura));
+                    const dataHoraFormatada = formatarDataHora(historico.data[i].dataHora)
+                    graficoData.labels.push(dataHoraFormatada)
+                    graficoData.datasets[0].data.push(parseFloat(historico.data[i].leitura))
                 }
 
-                grafico.data = graficoData;
-                grafico.update();
+                grafico.data = graficoData
+                grafico.update()
             }
         } catch (error) {
             console.log(error)
@@ -438,61 +438,78 @@
     }
 
     function navegacaoDisco() {
-        const botaoDisco = document.getElementById('botaoDisco');
+        const botaoDisco = document.getElementById('botaoDisco')
 
         botaoDisco.addEventListener('click', function () {
-            window.location.href = `dashboard-disco.html?id=${idMaquina}`;
-        });
+            window.location.href = `dashboard-disco.html?id=${idMaquina}`
+        })
     }
 
     function navegacaoMemoria() {
-        const botaoMemoria = document.getElementById('botaoMemoria');
+        const botaoMemoria = document.getElementById('botaoMemoria')
 
         botaoMemoria.addEventListener('click', function () {
-            window.location.href = `dashboard-memoria.html?id=${idMaquina}`;
-        });
+            window.location.href = `dashboard-memoria.html?id=${idMaquina}`
+        })
     }
 
     function navegacaoRede() {
-        const botaoRede = document.getElementById('botaoRede');
+        const botaoRede = document.getElementById('botaoRede')
 
         botaoRede.addEventListener('click', function () {
-            window.location.href = `dashboard-rede.html?id=${idMaquina}`;
-        });
+            window.location.href = `dashboard-rede.html?id=${idMaquina}`
+        })
     }
 
-    const botaoCpu = document.getElementById('botaoCpu');
+    const botaoCpu = document.getElementById('botaoCpu')
 
     botaoCpu.addEventListener('click', function () {
-        window.location.href = `dashboard-cpu.html?id=${idMaquina}`;
-    });
+        window.location.href = `dashboard-cpu.html?id=${idMaquina}`
+    })
 
 
-    const itemMenuMaquina = document.getElementById('itemMenuMaquina');
+    const itemMenuMaquina = document.getElementById('itemMenuMaquina')
 
     itemMenuMaquina.addEventListener('click', function () {
-        window.location.href = 'lista-maquinas.html';
-    });
+        window.location.href = 'lista-maquinas.html'
+    })
 
-    const itemMenuEmpresa = document.getElementById('itemMenuEmpresa');
+    const itemMenuEmpresa = document.getElementById('itemMenuEmpresa')
 
     itemMenuEmpresa.addEventListener('click', function () {
-        window.location.href = 'lista-empresas.html';
-    });
+        window.location.href = 'lista-empresas.html'
+    })
 
-    const itemMenuFuncionario = document.getElementById('itemMenuFuncionario');
+    const itemMenuFuncionario = document.getElementById('itemMenuFuncionario')
 
     itemMenuFuncionario.addEventListener('click', function () {
-        window.location.href = 'lista-funcionario.html';
-    });
+        window.location.href = 'lista-funcionario.html'
+    })
 
-    var perfil = document.getElementById("perfil");
+    var perfil = document.getElementById("perfil")
 
-    var user = sessionStorage.getItem("user");
+    var user = sessionStorage.getItem("user")
 
     if (user != null) {
-        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${user}</span></span>`;
+        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${user}</span></span>`
     }
+
+    function receberAcaoRapida(acao){
+        axios.post('http://10.18.34.93:8080/inovacao', {
+            comando: acao
+        },
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+        ).then(function (response) {
+            console.log(response)
+        }).catch(function (error) {
+            console.log(error)
+        })
+    }
+
 </script>
 
 <script src="../assets/js/controle-pages.js"></script>
