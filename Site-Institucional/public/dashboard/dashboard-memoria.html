@@ -53,18 +53,7 @@
                         <img src="../assets/funcionarios 1.png" class="sidebar-icon">
                         <span class="sidebar-text">Funcionários</span>
                     </div>
-
-                    <div class="sidebar-item">
-                        <img src="../assets/relogio 1.png" class="sidebar-icon">
-                        <span class="sidebar-text">Histórico</span>
-                    </div>
-
-                    <div class="sidebar-item">
-                        <img src="../assets/ajudando 1.png" class="sidebar-icon">
-                        <span class="sidebar-text">Ajuda</span>
-                    </div>
                 </div>
-
 
                 <div class="sidebar-sair">
                     <img src="../assets/sair 1.png" class="sidebar-icon">
@@ -206,7 +195,9 @@
     new Chart(ctxMemoria, {
         type: 'line',
         data: {
-            labels: ['18:00:00', '18:01:00', '18:02:00', '18:03:00', '18:04:00', '18:05:00', '18:06:00', '18:07:00'],
+            labels: ['18:00:00', '18:01:00', '18:02:00', '18:03:00', '18:04:00', '18:05:00', '18:06:00',
+                '18:07:00'
+            ],
             datasets: [{
                 label: 'GB em uso',
                 data: [2, 1, 5.5, 5.4, 3.2, 7.8, 7.5, 7],
@@ -221,7 +212,14 @@
                         return;
                     }
 
-                    const { ctx, data, chartArea: { top, bottom } } = context.chart;
+                    const {
+                        ctx,
+                        data,
+                        chartArea: {
+                            top,
+                            bottom
+                        }
+                    } = context.chart;
                     const gradientBackground = ctx.createLinearGradient(0, top, 0, bottom);
                     gradientBackground.addColorStop(.5, background[0]);
                     gradientBackground.addColorStop(1, background[1]);
@@ -267,28 +265,25 @@
 
     var perfil = document.getElementById("perfil");
 
-var user = sessionStorage.getItem("user");
+    var user = sessionStorage.getItem("user");
 
-if (user != null) {
-    perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${user}</span></span>`;
-}
+    if (user != null) {
+        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${user}</span></span>`;
+    }
 
-function receberAcaoRapida(acao){
+    function receberAcaoRapida(acao) {
         axios.post('http://10.18.34.93:8080/inovacao', {
             comando: acao
-        },
-            {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
+        }, {
+            headers: {
+                'Content-Type': 'application/json'
             }
-        ).then(function (response) {
+        }).then(function (response) {
             console.log(response)
         }).catch(function (error) {
             console.log(error)
         })
     }
-
 </script>
 
 <script src="../assets/js/controle-pages.js"></script>
