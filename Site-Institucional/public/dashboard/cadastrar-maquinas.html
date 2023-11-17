@@ -34,22 +34,12 @@
                         <img src="../assets/funcionarios 1.png" class="sidebar-icon">
                         <span class="sidebar-text">Funcionários</span>
                     </div>
-                    <div class="sidebar-item">
-                        <img src="../assets/relogio 1.png" class="sidebar-icon">
-                        <span class="sidebar-text">Histórico</span>
-                    </div>
-                    <div class="sidebar-item">
-                        <img src="../assets/ajudando 1.png" class="sidebar-icon">
-                        <span class="sidebar-text">Ajuda</span>
-                    </div>
                 </div>
                 <div class="sidebar-sair">
                     <img src="../assets/sair 1.png" class="sidebar-icon">
                     <span class="sidebar-text">Sair</span>
                 </div>
             </div>
-
-
         </div>
 
         <div class="conteudoPrincipal">
@@ -109,8 +99,7 @@
                             </div>
 
                             <div class="campo-botoes campo-horizontal">
-                                <button class="bt_edicao" id="botao-cancelar"
-                                    onclick="cancelar()">Cancelar</button>
+                                <button class="bt_edicao" id="botao-cancelar" onclick="cancelar()">Cancelar</button>
                                 <button class="bt_edicao" id="botao-cadastrar" onclick="cadastrar()">Cadastrar</button>
                             </div>
                             <div id="snackbar">
@@ -135,7 +124,7 @@
             const modelo = input_modelo.value
             const local = input_local.value
             const descComponentes = input_descricao.value;
-            const fkEmpresa = 1 
+            const fkEmpresa = 1
             const data = {
                 numSerie,
                 nome,
@@ -152,8 +141,12 @@
                 console.log('Máquina cadastrada com sucesso:', maquinaCriada);
 
                 result.className = "show";
-                setTimeout(function () { x.className = result.className.replace("show", ""); }, 1500);
-                setTimeout(function () { window.location.href = 'lista-maquinas.html' }, 2000);
+                setTimeout(function () {
+                    x.className = result.className.replace("show", "");
+                }, 1500);
+                setTimeout(function () {
+                    window.location.href = 'lista-maquinas.html'
+                }, 2000);
             } else {
                 console.error('Erro ao cadastrar máquina:', response.status, response.statusText)
             }
@@ -162,7 +155,7 @@
         }
     }
 
-    function cancelar(){
+    function cancelar() {
         window.location.href = 'lista-maquinas.html'
     }
 </script>

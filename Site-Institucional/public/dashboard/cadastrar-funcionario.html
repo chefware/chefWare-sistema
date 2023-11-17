@@ -75,15 +75,9 @@
                     <div class="conteudo">
                         <h2 class="h2-titulo-form">Cadastrar Funcionário</h2>
                         <div class="form-editar">
-
-                            <div class="campo">
-                                <h4 class="label-editar">Código de identificação:</h4>
-                                <input type="text" class="input-form-editar" placeholder="Código de identificação">
-                            </div>
-
                             <div class="campo">
                                 <h4 class="label-editar">Nome:</h4>
-                                <input type="text" class="input-form-editar" placeholder="Nome funcionário">
+                                <input type="text" id="input_nome" class="input-form-editar" placeholder="Nome funcionário">
                             </div>
 
                             <div class="campo">
@@ -95,33 +89,39 @@
 
                             <div class="campo">
                                 <h4 class="label-editar">E-mail:</h4>
-                                <input type="text" class="input-form-editar" placeholder="chefware@gmail.com">
+                                <input type="text" id="input_email" class="input-form-editar" placeholder="chefware@gmail.com">
                             </div>
 
                             <div class="campo">
                                 <h4 class="label-editar">Senha:</h4>
-                                <input type="password" class="input-form-editar" placeholder="********">
+                                <input type="password" id="input_senha" class="input-form-editar" placeholder="********">
                             </div>
 
-                            <div class="campo" id="campo-estado">
+                            <div class="campo" id="campo-cargo">
                                 <h4 class="label-editar">Cargo:</h4>
-                                <select class="input-form-editar sl-edicao" id="sl-estado">
+                                <select class="input-form-editar sl-edicao" id="sl_cargo">
                                     <option value="">---</option>
                                     <option value="gerente">Gerente</option>
                                     <option value="func">Funcionário</option>
                                 </select>
                             </div>
-                            <div class="campo" id="campo-estado">
+                            <div class="campo" id="campo-privilegio">
                                 <h4 class="label-editar">Privilégio:</h4>
-                                <select class="input-form-editar sl-edicao" id="sl-estado">
+                                <select class="input-form-editar sl-edicao" id="sl_privilegio">
                                     <option value="">---</option>
                                     <option value="admin">Administrador</option>
                                     <option value="comum">Comum</option>
                                 </select>
                             </div>
+
+                            <div class="campo">
+                                <h4 class="label-editar">Foto:</h4>
+                                <input type="File" id="input_nome" class="input-form-editar" placeholder="Nome funcionário">
+                            </div>
+
                             <div class="campo-botoes campo-horizontal">
                                 <button class="bt_edicao" id="botao-cancelar">Cancelar</button>
-                                <button class="bt_edicao" id="botao-editar">Cadastrar</button>
+                                <button class="bt_edicao" id="botao-editar" onclick="cadastrar()">Cadastrar</button>
                             </div>
                         </div>
                     </div>
