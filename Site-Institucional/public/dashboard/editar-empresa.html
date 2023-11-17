@@ -11,6 +11,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 
 <body>
@@ -37,26 +38,12 @@
                         <img src="../assets/funcionarios 1.png" class="sidebar-icon">
                         <span class="sidebar-text">Funcionários</span>
                     </div>
-
-                    <div class="sidebar-item">
-                        <img src="../assets/relogio 1.png" class="sidebar-icon">
-                        <span class="sidebar-text">Histórico</span>
-                    </div>
-
-                    <div class="sidebar-item">
-                        <img src="../assets/ajudando 1.png" class="sidebar-icon">
-                        <span class="sidebar-text">Ajuda</span>
-                    </div>
                 </div>
-
-
                 <div class="sidebar-sair">
                     <img src="../assets/sair 1.png" class="sidebar-icon">
                     <span class="sidebar-text">Sair</span>
                 </div>
             </div>
-
-
         </div>
 
         <div class="conteudoPrincipal">
@@ -80,35 +67,38 @@
 
                             <div class="campo">
                                 <h4 class="label-editar">Nome:</h4>
-                                <input type="text" class="input-form-editar" placeholder="Nome da empresa">
+                                <input type="text" id="input_nome" class="input-form-editar"
+                                    placeholder="Nome da empresa">
                             </div>
 
                             <div class="campo">
                                 <h4 class="label-editar">CNPJ:</h4>
-                                <input type="text" class="input-form-editar" placeholder="00.000.000/0001-00">
+                                <input type="text" id="input_cnpj" class="input-form-editar"
+                                    placeholder="00.000.000/0001-00">
                             </div>
 
                             <div class="campo">
                                 <h4 class="label-editar">Telefone:</h4>
-                                <input type="text" class="input-form-editar" placeholder="(11) 90000-0000">
+                                <input type="text" id="input_telefone" class="input-form-editar"
+                                    placeholder="(11) 90000-0000">
                             </div>
 
 
                             <div class="campo">
                                 <h4 class="label-editar">CEP:</h4>
-                                <input type="text" class="input-form-editar" placeholder="00000-000">
+                                <input type="text" id="input_cep" class="input-form-editar" placeholder="00000-000">
                             </div>
 
                             <div class="campo-horizontal">
                                 <div class="campo">
                                     <h4 class="label-editar">Logradouro:</h4>
-                                    <input type="text" id="input-logradouro" class="input-form-editar"
+                                    <input type="text" id="input_logradouro" class="input-form-editar"
                                         placeholder="Nome da rua">
                                 </div>
 
                                 <div class="campo campo-menor" id="campo-numero-endereco">
                                     <h4 class="label-editar">N°:</h4>
-                                    <input type="text" id="input-numero-endereco" class="input-form-editar"
+                                    <input type="text" id="input_numero_endereco" class="input-form-editar"
                                         placeholder="00">
                                 </div>
                             </div>
@@ -117,13 +107,13 @@
                             <div class="campo-horizontal">
                                 <div class="campo">
                                     <h4 class="label-editar">Bairro:</h4>
-                                    <input type="text" id="input-bairro" class="input-form-editar"
+                                    <input type="text" id="input_bairro" class="input-form-editar"
                                         placeholder="Nome do bairro">
                                 </div>
 
                                 <div class="campo campo-menor" id="campo-estado">
                                     <h4 class="label-editar">Estado:</h4>
-                                    <select class="input-form-editar sl-edicao" id="sl-estado">
+                                    <select class="input-form-editar sl-edicao" id="sl_estado">
                                         <option value="SP" selected>SP</option>
                                     </select>
                                 </div>
@@ -131,7 +121,11 @@
 
                             <div class="campo-botoes campo-horizontal">
                                 <button class="bt_edicao" id="botao-cancelar">Cancelar</button>
-                                <button class="bt_edicao" id="botao-editar">Editar</button>
+                                <button class="bt_edicao" id="botao-editar" onclick="editar()">Editar</button>
+                            </div>
+
+                            <div id="snackbar">
+                                Cadastrado com sucesso
                             </div>
                         </div>
                     </div>
@@ -154,6 +148,69 @@
 
     if (user != null) {
         perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${user}</span></span>`;
+    }
+
+
+    const params = new URLSearchParams(window.location.search);
+    const idEmpresa = params.get('id');
+    empresaId();
+    async function empresaId() {
+        try {
+            const response = await axios.get(`/empresas/${idEmpresa}`);
+
+            const empresa = response.data;
+            console.log(empresa);
+            document.getElementById('input_nome').value = empresa.nome;
+            document.getElementById('input_cnpj').value = empresa.cnpj;
+            document.getElementById('input_cep').value = empresa.cep;
+            document.getElementById('input_telefone').value = empresa.telefone;
+            document.getElementById('input_logradouro').value = empresa.logradouro;
+            document.getElementById('input_numero-endereco').value = empresa.numero;
+            document.getElementById('input_bairro').value = empresa.bairro;
+            document.getElementById('sl_estado').value = empresa.estado;
+        } catch (error) {
+            console.error(error);
+        }
+
+    }
+
+    async function editar() {
+        try {
+            var result = document.getElementById("snackbar");
+            const nome = input_nome.value
+            const cnpj = input_cnpj.value
+            const telefone = input_telefone.value
+            const cep = input_cep.value
+            const logradouro = input_logradouro.value
+            const numero = input_numero_endereco.value
+            const bairro = input_bairro.value
+            const estado = sl_estado.value
+            const data = {
+                nome,
+                cnpj,
+                telefone,
+                endereco: {
+                    logradouro,
+                    cep,
+                    bairro,
+                    numero,
+                    estado
+                }
+            }
+            const response = await axios.patch(`/empresas/${idEmpresa}`, data);
+            if (response.status === 200) {
+                result.className = "show";
+                setTimeout(function () {
+                    result.className = result.className.replace("show", "");
+                }, 3000);
+                setTimeout(function () {
+                    window.location.href = 'lista-empresas.html'
+                }, 2000);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+
     }
 </script>
 
