@@ -113,7 +113,7 @@
                                         <img src="../assets/img/iconEditar.svg">
                                     </div>
 
-                                    <div class="botao">
+                                    <div class="botao" onclick="deletar()">
                                         <img src="../assets/img/iconExcluir.svg">
                                     </div>
 
@@ -238,42 +238,15 @@
     const comp = document.getElementById('comp')
     const tipoComp = "CPU"
     const qtdUso = document.getElementById('uso')
-    var idTipoComp_grafico
+    var idEsp_grafico
     var idComp_grafico
 
 
     const params = new URLSearchParams(window.location.search)
     const idMaquina = params.get('id')
 
-    tipoComponente()
     maquinaDashboard()
-
-    async function tipoComponente() {
-        try {
-            const tipo = await axios.get(`/componentes/tipoComponente/${tipoComp}`)
-            console.log(tipo)
-            if (tipo.status === 200) {
-                comp.innerText = `${tipo.data[0].nome}`
-                componente(tipo.data[0].idtipoComponente)
-            }
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    async function componente(idTipo) {
-        try {
-            const comp = await axios.get(`/componentes/${idTipo}`)
-            if (comp.status === 200) {
-                especificacaoCPU(comp.data[0].fkTipoComponente, comp.data[0].idComponente)
-                histórico(comp.data[0].fkTipoComponente, comp.data[0].idComponente)
-                idTipoComp_grafico = comp.data[0].fkTipoComponente
-                idComp_grafico = comp.data[0].idComponente
-            }
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    especificacaoCPU()
 
     async function maquinaDashboard() {
         try {
@@ -288,18 +261,46 @@
         }
     }
 
-    async function especificacaoCPU(idTipo, idComp) {
+    async function componente(id) {
         try {
-            const especificacao = await axios.get(`/dashboard/especificacoes/${idMaquina}/${idComp}/${idTipo}`)
+            const comp = await axios.get(`/componentes/${id}`)
+            if (comp.status === 200) {
+
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function especificacaoCPU() {
+        try {
+            const especificacao = await axios.get(`/dashboard/especificacoes/${idMaquina}/${tipoComp}`)
             console.log(especificacao)
             if (especificacao.status === 200) {
                 const dadosEspecificacoes = especificacao.data
-                if (dadosEspecificacoes.length > 0) {
-                    fabricante.innerText = dadosEspecificacoes[0].dadosEstaticos || ''
-                    identificador.innerText = dadosEspecificacoes[1].dadosEstaticos || ''
-                    frequencia.innerText = dadosEspecificacoes[2].dadosEstaticos || ''
-                    fisicas.innerText = dadosEspecificacoes[3].dadosEstaticos || ''
-                    logicas.innerText = dadosEspecificacoes[4].dadosEstaticos || ''
+                dados(dadosEspecificacoes[0].idEspecificacoes, dadosEspecificacoes[0].fkComponente)
+                histórico(dadosEspecificacoes[0].fkComponente)
+                componente(dadosEspecificacoes[0].fkComponente)
+                idEsp_grafico = dadosEspecificacoes[0].idEspecificacoes
+                idComp_grafico = dadosEspecificacoes[0].fkComponente
+                comp.innerText = dadosEspecificacoes[0].tipo
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function dados(idEsp, idComp){
+        try {
+            const dadosResult = await axios.get(`/dados/${idEsp}/${idMaquina}/${idComp}`)
+            if(dadosResult.status === 200){
+                const dadosEstaticos = dadosResult.data
+                if (dadosEstaticos.length > 0) {
+                    fabricante.innerText = dadosEstaticos[0].valor || ''
+                    identificador.innerText = dadosEstaticos[1].valor || ''
+                    frequencia.innerText = dadosEstaticos[2].valor || ''
+                    fisicas.innerText = dadosEstaticos[3].valor || ''
+                    logicas.innerText = dadosEstaticos[4].valor || ''
                 }
             }
         } catch (error) {
@@ -356,7 +357,7 @@
 
     setInterval(() => {
 
-        histórico(idTipoComp_grafico, idComp_grafico)
+        histórico(idComp_grafico)
 
     }, 5000)
 
@@ -369,9 +370,9 @@
         return new Intl.DateTimeFormat('pt-BR', options).format(data)
     }
 
-    async function histórico(idComp, idTipo) {
+    async function histórico(idComp) {
         try {
-            const historico = await axios.get(`/historico/${idMaquina}/${idComp}/${idTipo}`)
+            const historico = await axios.get(`/historico/${idMaquina}/${idComp}`)
             console.log(historico)
             if (historico.status === 200) {
                 var graficoData = {
@@ -419,6 +420,17 @@
 
                 grafico.data = graficoData
                 grafico.update()
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function deletar() {
+        try {
+            const result = await axios.patch(`/maquinas/deletar/${idMaquina}`)
+            if (result.status === 204) {
+                window.location.href = 'lista-maquinas.html'
             }
         } catch (error) {
             console.log(error)

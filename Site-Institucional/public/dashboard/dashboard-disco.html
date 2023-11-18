@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="../assets/css/style-dashboard.css">
     <link rel="shortcut icon" href="../assets/logoBRANCA_icon.png" />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 
 <body>
@@ -81,7 +82,7 @@
                         <div class="dashboard">
                             <div class="cabecalho">
                                 <div class="itensCabecalho">
-                                    <h1 id="nomeMaquina">Máquina 01</h1>
+                                    <h1 id="nomeMaquina"></h1>
                                     <button class="botaoAcoesRapidas">Ações Rápidas</button>
                                     <div class="indicadores">
                                         <span class="tituloIndicadores">Indicadores</span>
@@ -98,7 +99,7 @@
 
 
                                 <div class="areaBotao">
-                                    <div class="botao">
+                                    <div class="botao" onclick="deletar()">
                                         <img src="../assets/img/iconEditar.svg">
                                     </div>
 
@@ -138,11 +139,11 @@
                                 <div class="conteudoPrincipalDashboard">
                                     <div class="informacoesDashboard">
                                         <div class="nomeComponenteGrafico">
-                                            <h3>DISCO</h3>
+                                            <h3 id="comp"></h3>
                                             <span>% UTILIZADA</span>
                                         </div>
 
-                                        <h2>APPLE SSD AP0128N</h2>
+                                        <h2 id="modelo"></h2>
                                     </div>
 
                                     <div class="areaGrafico">
@@ -151,12 +152,12 @@
                                             <h4>Em uso:</h4>
 
                                             <div class="areaDadoGrafico alerta">
-                                                <span>90 GB</span>
+                                                <span id="qtdUso"></span>
                                             </div>
 
                                             <h4>Disponível:</h4>
                                             <div class="areaDadoGrafico">
-                                                <span>30 GB</span>
+                                                <span id="qtdRestante"></span>
                                             </div>
 
                                         </div>
@@ -167,34 +168,12 @@
                                         <span class="tituloInformacoesEstaticas">Informações Estáticas:</span>
                                         <div class="areaDadosEstaticos">
                                             <div class="colunaDado">
-                                                <span class="tituloDadoEstatico">Nome: <span class="dadoEstatico">Disco
-                                                        01</span></span>
-
-                                                <span class="tituloDadoEstatico">Modelo: <span
-                                                        class="dadoEstatico">APPLE SSD AP0128N</span></span>
-                                            </div>
-
-                                            <div class="colunaDado">
                                                 <span class="tituloDadoEstatico">Tamanho total: <span
-                                                        class="dadoEstatico">120 GB</span></span>
-
-                                                <span class="tituloDadoEstatico">Leituras: <span
-                                                        class="dadoEstatico">188185255936 Bytes</span></span>
-                                            </div>
-
-                                            <div class="colunaDado">
-                                                <span class="tituloDadoEstatico">Escritas: <span
-                                                        class="dadoEstatico">114506878976 Bytes</span></span>
-                                            </div>
+                                                        class="dadoEstatico" id="tamTotal"></span>
+                                                </span>
                                         </div>
-
-                                        <!--  -->
-
                                     </div>
-
                                 </div>
-
-
                             </div>
                         </div>
                     </div>
@@ -210,8 +189,78 @@
 <script src="../assets/js/graficoCpu.js"></script>
 <script>
     const ctxDisco = document.getElementById('myChartDisco');
+    const nome = document.getElementById('nomeMaquina')
+    const modelo = document.getElementById('modelo')
+    const comp = document.getElementById('comp')
+    const tamTotal = document.getElementById('tamTotal')
+    const qtdUso = document.getElementById('qtdUso')
+    const qtdRestante = document.getElementById('qtdRestante')
+    const tipoComp = "Disco"
 
-    new Chart(ctxDisco, {
+    const params = new URLSearchParams(window.location.search)
+    const idMaquina = params.get('id')
+
+    maquinaDashboard()
+    especificacaoCPU()
+
+    async function maquinaDashboard() {
+        try {
+            const maquina = await axios.get(`/dashboard/${idMaquina}`)
+            if (maquina.status === 200) {
+                const dados = maquina.data
+                nome.innerText = `${dados.nome}`
+                modelo.innerText = `${dados.modelo}`
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function componente(id) {
+        try {
+            const comp = await axios.get(`/componentes/${id}`)
+            if (comp.status === 200) {
+
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function especificacaoCPU() {
+        try {
+            const especificacao = await axios.get(`/dashboard/especificacoes/${idMaquina}/${tipoComp}`)
+            console.log(especificacao)
+            if (especificacao.status === 200) {
+                const dadosEspecificacoes = especificacao.data
+                dados(dadosEspecificacoes[0].idEspecificacoes, dadosEspecificacoes[0].fkComponente)
+                histórico(dadosEspecificacoes[0].idEspecificacoes, dadosEspecificacoes[0].fkComponente)
+                componente(dadosEspecificacoes[0].fkComponente)
+                idEsp_grafico = dadosEspecificacoes[0].idEspecificacoes
+                idComp_grafico = dadosEspecificacoes[0].fkComponente
+                comp.innerText = dadosEspecificacoes[0].tipo
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function dados(idEsp, idComp){
+        try {
+            const dadosResult = await axios.get(`/dados/${idEsp}/${idMaquina}/${idComp}`)
+            if(dadosResult.status === 200){
+                const dadosEstaticos = dadosResult.data
+                if (dadosEstaticos.length > 0) {
+                    tamTotal.innerText = dadosEstaticos[0].valor + ' ' + dadosEstaticos[0].unidadeMedida || ''
+                }
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    var grafico = new Chart(ctxDisco, {
         type: 'line',
         data: {
             labels: ['18:00:00', '18:01:00', '18:02:00', '18:03:00', '18:04:00', '18:05:00', '18:06:00',
@@ -219,7 +268,7 @@
             ],
             datasets: [{
                 label: 'GB em uso',
-                data: [20, 12, 46, 40, 60, 20, 70, 90],
+                data: [],
                 borderWidth: 1,
                 backgroundColor: (context) => {
                     const background = [
@@ -259,28 +308,115 @@
         }
     });
 
+    setInterval(() => {
+
+        histórico(idEsp_grafico, idComp_grafico)
+
+    }, 5000)
+
+    function formatarDataHora(dataHora) {
+        const data = new Date(dataHora)
+
+        data.setHours(data.getHours() + 3)
+
+        const options = { hour: 'numeric', minute: 'numeric', second: 'numeric' }
+        return new Intl.DateTimeFormat('pt-BR', options).format(data)
+    }
+
+    async function histórico(idEsp, idComp) {
+        try {
+            const historico = await axios.get(`/dados/${idEsp}/${idMaquina}/${idComp}`)
+            console.log(historico)
+            if (historico.status === 200) {
+                var graficoData = {
+                    labels: [],
+                    datasets: [{
+                        label: '% de uso',
+                        data: [],
+                        borderWidth: 1,
+                        backgroundColor: (context) => {
+                            const background = [
+                                "#040454",
+                                "#555592"
+                            ]
+
+                            if (!context.chart.chartArea) {
+                                return
+                            }
+
+                            const {
+                                ctx,
+                                data,
+                                chartArea: {
+                                    top,
+                                    bottom
+                                }
+                            } = context.chart
+                            const gradientBackground = ctx.createLinearGradient(0, top, 0, bottom)
+                            gradientBackground.addColorStop(.5, background[0])
+                            gradientBackground.addColorStop(1, background[1])
+
+                            return gradientBackground
+                        },
+                        fill: true,
+                        cubicInterpolationMode: 'monotone'
+                    }]
+                }
+                const startIndex = Math.max(0, historico.data.length - 10)
+                for (var i = startIndex; i < historico.data.length; i++) {
+                    if(historico.data[i].descricao === 'Disco Tamanho Total'){
+                        qtdUso.innerText = `${historico.data[i].valor - historico.data[i+1].valor} ${historico.data[i].unidadeMedida}`
+                    } else {
+                        qtdRestante.innerText = `${historico.data[i].valor} ${historico.data[i].unidadeMedida}`
+                        const dataHoraFormatada = formatarDataHora(historico.data[i].dataHora)
+                        graficoData.labels.push(dataHoraFormatada)
+                        graficoData.datasets[0].data.push(parseFloat(historico.data[i].valor))
+                    }
+
+                }
+
+                grafico.data = graficoData
+                grafico.update()
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function deletar() {
+        try {
+            const result = await axios.patch(`/maquinas/deletar/${idMaquina}`)
+            if (result.status === 204) {
+                window.location.href = 'lista-maquinas.html'
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
     const botaoDisco = document.getElementById('botaoDisco');
 
     botaoDisco.addEventListener('click', function () {
-        window.location.href = 'dashboard-disco.html';
+        window.location.href = `dashboard-disco.html?id=${idMaquina}`;
     });
 
     const botaoCpu = document.getElementById('botaoCpu');
 
     botaoCpu.addEventListener('click', function () {
-        window.location.href = 'dashboard-cpu.html';
+        window.location.href = `dashboard-cpu.html?id=${idMaquina}`;
     });
 
     const botaoMemoria = document.getElementById('botaoMemoria');
 
     botaoMemoria.addEventListener('click', function () {
-        window.location.href = 'dashboard-memoria.html';
+        window.location.href = `dashboard-memoria.html?id=${idMaquina}`;
     });
 
     const botaoRede = document.getElementById('botaoRede');
 
     botaoRede.addEventListener('click', function () {
-        window.location.href = 'dashboard-rede.html';
+        window.location.href = `dashboard-rede.html?id=${idMaquina}`;
     });
 
     var perfil = document.getElementById("perfil");
