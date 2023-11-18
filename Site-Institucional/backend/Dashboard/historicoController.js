@@ -4,16 +4,14 @@ const prisma = new PrismaClient()
 
 const historicoController = express.Router()
 
-historicoController.get('/:idMaquina/:idComp/:idTipo', async (req, res) => {
+historicoController.get('/:idMaquina/:idComp', async (req, res) => {
     const idMaquina = Number(req.params.idMaquina)
-    const idTipo = Number(req.params.idTipo)
     const idComp = Number(req.params.idComp)
     try {
         const historico = await prisma.historico.findMany({
             where: {
                 fkMaquina: idMaquina,
-                fkComponente: idComp, 
-                fkTipoComponente: idTipo
+                fkComponente: idComp
             }
         })
 

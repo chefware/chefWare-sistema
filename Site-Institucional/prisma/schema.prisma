@@ -8,99 +8,104 @@ datasource db {
 }
 
 model Empresa {
-  idEmpresa     Int            @id @default(autoincrement())
+  idEmpresa     Int        @id @default(autoincrement())
   nome          String?
   cnpj          String?
   telefone      String?
-  maquinas      Maquina[]
+  maquinas      Maquina[]  
   funcionarios  Funcionario[]
   enderecos     Endereco[]
 }
 
 model Maquina {
-  id              Int                @id @default(autoincrement())
+  idMaquina       Int                @id @default(autoincrement())
   numSerie        String?
   nome            String?
+  hostName        String?
   modelo          String?
   local           String?
   descComponentes String?
   fkEmpresa       Int
-  hostName        String?
+  ativo           Boolean?          @default(true)
   empresa         Empresa            @relation(fields: [fkEmpresa], references: [idEmpresa])
   especificacoes  Especificacoes[]
   historicos      Historico[]
+  dados           Dados[]          
 }
 
 model Funcionario {
-  id         Int      @id @default(autoincrement())
-  nome       String?
-  email      String?
-  senha      String?
-  cpf        String?
-  cargo      String?
-  privilegio String?
+  idFuncionario   Int        @id @default(autoincrement())
+  nome            String?
+  email           String?
+  senha           String?
+  cpf             String?
+  cargo           String?
+  privilegio      String?
   foto Bytes?
-  fkEmpresa  Int
-  empresa    Empresa  @relation(fields: [fkEmpresa], references: [idEmpresa])
+  fkEmpresa       Int
+  empresa         Empresa    @relation(fields: [fkEmpresa], references: [idEmpresa], onDelete: Cascade)
 }
 
 model Endereco {
-  idEndereco Int      @id @default(autoincrement())
-  logradouro String?
-  cep        String?
-  bairro     String
-  numero     String?
-  estado     String?
-  fkEmpresa  Int
-  empresa    Empresa  @relation(fields: [fkEmpresa], references: [idEmpresa], onDelete: Cascade)
+  idEndereco      Int        @id @default(autoincrement())
+  logradouro      String?
+  cep             String?
+  bairro          String
+  numero          String?
+  estado          String?
+  fkEmpresa       Int
+  empresa         Empresa    @relation(fields: [fkEmpresa], references: [idEmpresa], onDelete: Cascade)
 }
 
-model TipoComponente {
-  idtipoComponente  Int               @id @default(autoincrement())
-  nome              String?
-  componentes       Componente[]
-  especificacoes    Especificacoes[]
-  historicos        Historico[]
-}
+
 
 model Componente {
   idComponente     Int               @id @default(autoincrement())
   marca            String?
   compatibilidade  String?
   dataVencimento   String?
-  fkTipoComponente Int
-  tipoComponente   TipoComponente    @relation(fields: [fkTipoComponente], references: [idtipoComponente])
   especificacoes   Especificacoes[]
   historicos       Historico[]
+  dados           Dados[]
 }
 
 model Especificacoes {
-  idEspecificacoes  Int
-  fkTipoComponente  Int
+  idEspecificacoes Int              @default(autoincrement()) @unique
+  fkMaquina        Int
+  fkComponente     Int
+  tipo             String?
+  dados            Dados[]           // Adicionando relação inversa com Dados
+  maquina          Maquina           @relation(fields: [fkMaquina], references: [idMaquina])
+  componente       Componente        @relation(fields: [fkComponente], references: [idComponente])
+  @@id([idEspecificacoes, fkMaquina, fkComponente])
+  @@index([fkMaquina, fkComponente], name: "idx_tipo_maquina_componente")
+}
+
+model Dados {
+  idDados           Int               @id @default(autoincrement())
+  descricao         String?
+  valor             String?
+  unidadeMedida     String?
+  fkEspecificacoes  Int
   fkMaquina         Int
   fkComponente      Int
-  descricao         String?
-  dadosEstaticos    String?
-  unidadeMedida     String?
-  maquina           Maquina          @relation(fields: [fkMaquina], references: [id])
-  componente        Componente       @relation(fields: [fkComponente], references: [idComponente])
-  tipoComponente    TipoComponente   @relation(fields: [fkTipoComponente], references: [idtipoComponente])
-  @@id([idEspecificacoes, fkTipoComponente, fkMaquina, fkComponente])
-  @@index([fkTipoComponente, fkMaquina, fkComponente], name: "idx_tipo_maquina_componente")
+  dataHora         DateTime?
+  especificacoes    Especificacoes    @relation(fields: [fkEspecificacoes], references: [idEspecificacoes])
+  componente        Componente        @relation(fields: [fkComponente], references: [idComponente])
+  maquina           Maquina           @relation(fields: [fkMaquina], references: [idMaquina])
+  @@index([fkEspecificacoes, fkMaquina, fkComponente], name: "idx_descricao_maquina_componente")
 }
 
 model Historico {
-  idHistorico      Int              @id @default(autoincrement())
-  fkTipoComponente Int
+  idHistorico      Int        @id @default(autoincrement())
   fkMaquina        Int
   fkComponente     Int
   dataHora         DateTime?
   nome             String?
   leitura          String?
   unidadeMedida    String?
-  maquina          Maquina          @relation(fields: [fkMaquina], references: [id])
-  componente       Componente       @relation(fields: [fkComponente], references: [idComponente])
-  tipoComponente   TipoComponente   @relation(fields: [fkTipoComponente], references: [idtipoComponente])
+  maquina          Maquina    @relation(fields: [fkMaquina], references: [idMaquina])
+  componente       Componente @relation(fields: [fkComponente], references: [idComponente])
 }
 
 

@@ -128,11 +128,11 @@
             const data = {
                 numSerie,
                 nome,
+                hostName,
                 modelo,
                 local,
                 descComponentes,
-                fkEmpresa,
-                hostName
+                fkEmpresa
             }
 
             const response = await axios.post('/maquinas', data);
