@@ -7,6 +7,9 @@ const maquinasController = express.Router()
 maquinasController.get('/', async (req, res) => {
     try {
         const maquinas = await prisma.maquina.findMany({
+            where: {
+                ativo: true
+            }
         })
         res.status(200).json(maquinas)
     } catch (error) {
@@ -39,22 +42,22 @@ maquinasController.post('/', async (req, res) => {
         const {
             numSerie,
             nome,
+            hostName,
             modelo,
             local,
             descComponentes,
-            fkEmpresa,
-            hostName
+            fkEmpresa
         } = req.body
 
         const maquinaCriada = await prisma.maquina.create({
             data: {
                 numSerie,
                 nome,
+                hostName,
                 modelo,
                 local,
                 descComponentes,
-                fkEmpresa,
-                hostName
+                fkEmpresa
             }
         })
 
@@ -96,11 +99,14 @@ maquinasController.patch('/:id', async (req, res) => {
     }
 })
 
-maquinasController.delete('/:id', async (req, res) => {
-    const idEmpresa = Number(req.params.id)
-    await prisma.maquina.delete({
+maquinasController.patch('/deletar/:id', async (req, res) => {
+    const idMaquina = Number(req.params.id)
+    await prisma.maquina.update({
         where: {
-            id: idEmpresa
+            idMaquina: idMaquina
+        },
+        data: {
+            ativo: false
         }
     })
 

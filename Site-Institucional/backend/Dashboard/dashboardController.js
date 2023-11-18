@@ -9,14 +9,14 @@ dashboardController.get('/:id', async (req, res) => {
     try {
         const cpu = await prisma.maquina.findUnique({
             where: {
-                id: idMaquina
+                idMaquina: idMaquina
             }
         })
 
         if(cpu){
             res.status(200).json(cpu)
         } else {
-            res.status(200).json("Não existe cpu com esse id")
+            res.status(200).json("Não existe maquina com esse id")
         }
 
     } catch (error) {
@@ -24,16 +24,14 @@ dashboardController.get('/:id', async (req, res) => {
     }
 })
 
-dashboardController.get('/especificacoes/:id/:idComp/:idtipo', async (req, res) => {
+dashboardController.get('/especificacoes/:id/:tipoComp', async (req, res) => {
     const idMaquina = Number(req.params.id)
-    const idComp = Number(req.params.idComp)
-    const tipoComp = Number(req.params.idtipo)
+    const tipoComp = req.params.tipoComp
     try {
         const EspecificacaoCpu = await prisma.especificacoes.findMany({
             where: {
                 fkMaquina: idMaquina,
-                fkComponente: idComp,
-                fkTipoComponente: tipoComp
+                tipo: tipoComp
             }
         })
 
