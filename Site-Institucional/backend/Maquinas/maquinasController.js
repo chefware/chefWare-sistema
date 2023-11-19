@@ -68,10 +68,11 @@ maquinasController.post('/', async (req, res) => {
 })
 
 maquinasController.patch('/:id', async (req, res) => {
-    const idEmpresa = Number(req.params.id)
+    const idMaquina = Number(req.params.id)
     const {
         numSerie,
         nome,
+        hostName,
         modelo,
         local,
         descComponentes,
@@ -81,11 +82,12 @@ maquinasController.patch('/:id', async (req, res) => {
 
         const maquinaAtualizada = await prisma.maquina.update({
             where: {
-                id: idEmpresa
+                idMaquina: idMaquina
             },
             data: {
                 numSerie: numSerie,
                 nome: nome,
+                hostName: hostName,
                 modelo: modelo,
                 local: local,
                 descComponentes: descComponentes,
