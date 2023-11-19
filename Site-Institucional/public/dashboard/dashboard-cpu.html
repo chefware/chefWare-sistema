@@ -109,7 +109,7 @@
 
                                 <div class="areaBotao">
 
-                                    <div class="botao">
+                                    <div class="botao" onclick="editar()">
                                         <img src="../assets/img/iconEditar.svg">
                                     </div>
 
@@ -435,6 +435,10 @@
         } catch (error) {
             console.log(error)
         }
+    }
+
+    async function editar(){
+        window.location.href = `editar-maquina.html?id=${idMaquina}`
     }
 
     function navegacaoDisco() {
