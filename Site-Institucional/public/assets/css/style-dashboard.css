@@ -321,6 +321,10 @@
     color: #040454;
 }
 
+.componente-selecionado {
+    border: #040454 solid 2px;
+}
+
 /* Modal */
 
 
@@ -428,4 +432,3 @@
 .componente-selecionado {
     border: #040454 solid 2px;
 }
-
