@@ -72,6 +72,25 @@ empresasController.get('/:id', async (req, res) => {
     }
 });
 
+empresasController.get('/search/:termo', async (req, res) => {
+    const termoPesquisa = req.params.termo.toLowerCase();
+
+    try {
+        const empresas = await prisma.empresa.findMany({
+            where: {
+                OR: [
+                    { nome: { contains: termoPesquisa } },
+                ]
+            }
+        });
+
+        res.status(200).json(empresas);
+    } catch (error) {
+        res.status(500).json(error);
+        console.error(error);
+    }
+});
+
 empresasController.post('/', async (req, res) => {
     try {
         const { nome, cnpj, telefone, endereco } = req.body;
