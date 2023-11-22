@@ -116,6 +116,11 @@ funcionariosController.patch('/:id', upload.single('foto'), upload.single('foto'
         const fotoPerfil = req.file;
         let fotoPerfilBuffer = null;
 
+        if (fotoPerfil) {
+            fotoPerfilBuffer = fotoPerfil.buffer;
+            updateData.foto = fotoPerfilBuffer;
+        }
+
         let updateData = {
             nome,
             email,
@@ -123,12 +128,8 @@ funcionariosController.patch('/:id', upload.single('foto'), upload.single('foto'
             cpf,
             cargo,
             privilegio,
+            foto: fotoPerfilBuffer,
         };
-
-        if (fotoPerfil) {
-            fotoPerfilBuffer = fotoPerfil.buffer;
-            updateData.foto = fotoPerfilBuffer;
-        }
 
         const funcionarioAtualizado = await prisma.Funcionario.update({
             where: {
@@ -140,8 +141,7 @@ funcionariosController.patch('/:id', upload.single('foto'), upload.single('foto'
                 senha,
                 cpf,
                 cargo,
-                privilegio,
-                foto: fotoPerfilBuffer,
+                privilegio
             },
         });
 
