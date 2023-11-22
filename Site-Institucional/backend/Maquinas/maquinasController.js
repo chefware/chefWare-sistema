@@ -4,18 +4,35 @@ const prisma = new PrismaClient()
 
 const maquinasController = express.Router()
 
-maquinasController.get('/', async (req, res) => {
+maquinasController.get('/page/:page', async (req, res) => {
+    const take = 5;
+    const page = Number(req.params.page) || 0;
+    const skip = page * take;
     try {
-        const maquinas = await prisma.maquina.findMany({
-            where: {
-                ativo: true
-            }
-        })
-        res.status(200).json(maquinas)
+        const [maquinas, total] = await prisma.$transaction([
+            prisma.maquina.findMany({
+                take: take,
+                skip: skip,
+            }),
+            prisma.maquina.count()
+        ]);
+
+        const totalPaginas = Math.ceil(total / take);
+
+        const resposta = {
+            maquinas,
+            totalPaginas,
+            paginaAtual: page,
+            totalEmpresas: total
+        };
+
+        res.status(200).json(resposta);
+
     } catch (error) {
-        res.status(400).json(error)
+        res.status(400).json(error);
+        console.log(error);
     }
-})
+});
 
 maquinasController.get('/:id', async (req, res) => {
     const idEmpresa = Number(req.params.id)
