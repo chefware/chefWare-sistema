@@ -109,15 +109,25 @@ funcionariosController.post('/', upload.single('foto'), async (req, res) => {
     }
 });
 
-funcionariosController.patch('/:id', upload.single('foto'), async (req, res) => {
+funcionariosController.patch('/:id', upload.single('foto'), upload.single('foto'), async (req, res) => {
     try {
         const { id } = req.params;
         const { nome, email, senha, cpf, cargo, privilegio } = req.body;
         const fotoPerfil = req.file;
         let fotoPerfilBuffer = null;
 
+        let updateData = {
+            nome,
+            email,
+            senha,
+            cpf,
+            cargo,
+            privilegio,
+        };
+
         if (fotoPerfil) {
             fotoPerfilBuffer = fotoPerfil.buffer;
+            updateData.foto = fotoPerfilBuffer;
         }
 
         let updateData = {
@@ -144,8 +154,7 @@ funcionariosController.patch('/:id', upload.single('foto'), async (req, res) => 
                 senha,
                 cpf,
                 cargo,
-                privilegio,
-                foto: fotoPerfilBuffer,
+                privilegio
             },
             data: updateData,
         });
