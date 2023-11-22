@@ -29,18 +29,17 @@ empresasController.get('/page/:page', async (req, res) => {
             return {
                 ...empresa,
                 endereco,
-                totalPaginas,
-                paginaAtual: page,
-                totalEmpresas: total
             };
         }));
 
-        res.status(200).json({
+        const resposta = {
             empresas: empresasComEndereco,
             totalPaginas,
             paginaAtual: page,
             totalEmpresas: total
-        });
+        };
+
+        res.status(200).json(resposta);
 
     } catch (error) {
         res.status(400).json(error);
@@ -48,29 +47,6 @@ empresasController.get('/page/:page', async (req, res) => {
     }
 });
 
-empresasController.get('/:id', async (req, res) => {
-    console.log(req.params.id);
-    const idEmpresa = Number(req.params.id);
-    try {
-        const empresa = await prisma.empresa.findUnique({
-            where: {
-                idEmpresa: idEmpresa
-            },
-            include: {
-                enderecos: true
-            }
-        });
-
-        if(empresa){
-            res.status(200).json(empresa);
-        } else {
-            res.status(404).json("Não existe empresa com esse id");
-        }
-
-    } catch (error) {
-        res.status(400).json(error);
-    }
-});
 
 empresasController.get('/search/:termo', async (req, res) => {
     const termoPesquisa = req.params.termo.toLowerCase();
