@@ -35,7 +35,8 @@
                 </div>
 
                 <div class="conteudo-modal">
-                   <span class="texto-modal">Tem certeza que deseja <b>excluir</b> a empresa <span id="nomeEmpresa"></span> ?</span>
+                    <span class="texto-modal">Tem certeza que deseja <b>excluir</b> a empresa <span
+                            id="nomeEmpresa"></span>?</span>
                     <div class="area-botao-modal">
                         <button class="botao-modal cancelar" onclick="fecharModal()">Cancelar</button>
                         <button class="botao-modal" onclick="excluir()">Confirmar</button>
@@ -113,8 +114,7 @@
                         <div class="page">
                             <div class="pagination">
                                 <button class="prev-page"><img src="../assets/voltar-icon.png" alt=""></button>
-                                <div id="pagination">
-                                </div>
+                                <div id="pagination"></div>
                                 <button class="next-page"><img src="../assets/avancar-icon.png" alt=""></button>
                             </div>
                         </div>
@@ -128,29 +128,35 @@
 </html>
 
 <script>
+    // Trazer o nome do usuário logado
     var perfil = document.getElementById("perfil");
-
     var user = sessionStorage.getItem("user");
 
     if (user != null) {
         perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${user}</span></span>`;
     }
 
+    // Quando clicar no botão sair, limpar o sessionStorage e redirecionar para a tela de login
+    const botaoSair = document.querySelector('.sidebar-sair');
+    botaoSair.addEventListener('click', function () {
+        sessionStorage.clear();
+        window.location.href = '../index.html';
+    });
+
+    // Redirecionar para a tela de cadastro de empresa
     const botaoAdicionarEmpresa = document.querySelector('.adicionar');
     botaoAdicionarEmpresa.addEventListener('click', function () {
         window.location.href = 'cadastrar-empresa.html';
     })
 
-    listaEmpresas(0)
 
+    listaEmpresas(0) // Carregar a lista de empresas ao carregar a página
 
-    var isFetchingData = false; 
+    var isFetchingData = false; // Flag para evitar múltiplas requisições simultâneas
+    let totalPaginas = 0; // Total de páginas disponíveis
+    let idEmpresaAtual; // Id da empresa que está sendo exibida no modal, para a exclusão
 
-
-    let totalPaginas = 0;
-
-    let idEmpresaAtual;
-
+    // Função para listar as empresas
     async function listaEmpresas(page) {
         console.log('Fetching data for page:', page);
 
@@ -235,6 +241,7 @@
         }
     }
 
+    // Função para buscar os dados da API de acordo com a página
     async function fetchData(page) {
         try {
             const response = await axios.get(`/empresas/page/${page}`);
@@ -276,10 +283,12 @@
     }
 
 
+    // Função para mudar de página
     async function changePage(page) {
         await listaEmpresas(page);
     }
 
+    // Evento para mudar de página ao clicar nos botões de paginação
     document.getElementById('pagination').addEventListener('click', function (event) {
         if (event.target.tagName === 'BUTTON') {
             const page = parseInt(event.target.innerText, 10);
@@ -287,6 +296,7 @@
         }
     });
 
+    // Excluir uma empresa
     async function excluir() {
         try {
             const response = await axios.delete(`/empresas/${idEmpresaAtual}`);
@@ -301,25 +311,31 @@
         }
     }
 
+    // Evento para excluir uma empresa ao clicar no botão de excluir
     const botaoExcluir = document.querySelectorAll('.botaoExcluir');
 
-    const modal = document.querySelector('.area-modal');
-    const botaoFecharModal = document.querySelector('.fecharModal');
 
+    const modal = document.querySelector('.area-modal'); // Modal de exclusão
+    const botaoFecharModal = document.querySelector('.fecharModal'); // Botão de fechar o modal de exclusão
+
+    // Abrir o modal de exclusão
     function abrirModal(idEmpresa, nomeEmpresa) {
         idEmpresaAtual = idEmpresa;
         document.getElementById('nomeEmpresa').innerHTML = `${nomeEmpresa}`;
         modal.style.display = 'flex'
     }
 
+    // Fechar o modal de exclusão pelo x
     botaoFecharModal.addEventListener('click', function () {
-    modal.style.display = 'none'
+        modal.style.display = 'none'
     });
 
+    // Fechar o modal de exclusão pelo botão cancelar
     function fecharModal() {
         modal.style.display = 'none'
     }
 
+    // Editar dados de uma empresa
     async function editar(id) {
         try {
             const response = await axios.get(`/empresas/${id}`);
@@ -333,6 +349,7 @@
         }
     }
 
+    // Pesquisar empresas pelo seu nome
     async function pesquisarEmpresas() {
         const termoPesquisa = document.getElementById('input_pesquisa').value.toLowerCase();
 
