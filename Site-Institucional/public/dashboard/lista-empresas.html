@@ -136,13 +136,6 @@
         perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${user}</span></span>`;
     }
 
-    // Quando clicar no botão sair, limpar o sessionStorage e redirecionar para a tela de login
-    const botaoSair = document.querySelector('.sidebar-sair');
-    botaoSair.addEventListener('click', function () {
-        sessionStorage.clear();
-        window.location.href = '../index.html';
-    });
-
     // Redirecionar para a tela de cadastro de empresa
     const botaoAdicionarEmpresa = document.querySelector('.adicionar');
     botaoAdicionarEmpresa.addEventListener('click', function () {

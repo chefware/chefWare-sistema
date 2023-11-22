@@ -15,3 +15,9 @@ const itemMenuFuncionario = document.getElementById('itemMenuFuncionario');
 itemMenuFuncionario.addEventListener('click', function () {
     window.location.href = 'lista-funcionario.html';
 });
+
+const botaoSair = document.querySelector('.sidebar-sair');
+botaoSair.addEventListener('click', function () {
+    sessionStorage.clear();
+    window.location.href = '../index.html';
+});

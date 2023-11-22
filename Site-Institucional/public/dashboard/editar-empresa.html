@@ -154,6 +154,10 @@
         perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${user}</span></span>`;
     }
 
+    const botaoCancelar = document.getElementById('botao-cancelar');
+    botaoCancelar.addEventListener('click', () => {
+        window.location.href = 'lista-empresas.html'
+    });
 
     const params = new URLSearchParams(window.location.search);
     const idEmpresa = params.get('id');
