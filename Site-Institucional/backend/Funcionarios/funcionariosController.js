@@ -25,12 +25,43 @@ funcionariosController.post('/login', async (req, res) => {
     }
 });
 
-funcionariosController.get('/', async (req, res) => {
+funcionariosController.get('/page/:page', async (req, res) => {
+    const take = 5;
+    const page = Number(req.params.page) || 0;
+    const skip = page * take;
     try {
-        const funcionarios = await prisma.funcionario.findMany();
-        res.status(200).json(funcionarios);
+        const [funcionarios, total] = await prisma.$transaction([
+            prisma.funcionario.findMany({
+                take: take,
+                skip: skip,
+                select: {
+                    id: true,
+                    nome: true,
+                    email: true,
+                    cpf: true,
+                    cargo: true,
+                    privilegio: true,
+                    fkEmpresa: true,
+                    foto: false
+                }
+            }),
+            prisma.funcionario.count()
+        ]);
+
+        const totalPaginas = Math.ceil(total / take);
+
+        const resposta = {
+            funcionarios,
+            totalPaginas,
+            paginaAtual: page,
+            totalEmpresas: total
+        };
+
+        res.status(200).json(resposta);
+
     } catch (error) {
-        res.json({ error: error.message });
+        res.status(400).json(error);
+        console.log(error);
     }
 });
 
