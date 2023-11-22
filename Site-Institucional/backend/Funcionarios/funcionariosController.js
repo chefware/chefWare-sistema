@@ -85,6 +85,10 @@ funcionariosController.patch('/:id', upload.single('foto'), async (req, res) => 
         const fotoPerfil = req.file;
         let fotoPerfilBuffer = null;
 
+        if (fotoPerfil) {
+            fotoPerfilBuffer = fotoPerfil.buffer;
+        }
+
         let updateData = {
             nome,
             email,
@@ -102,6 +106,15 @@ funcionariosController.patch('/:id', upload.single('foto'), async (req, res) => 
         const funcionarioAtualizado = await prisma.Funcionario.update({
             where: {
                 id: Number(id),
+            },
+            data: {
+                nome,
+                email,
+                senha,
+                cpf,
+                cargo,
+                privilegio,
+                foto: fotoPerfilBuffer,
             },
             data: updateData,
         });
