@@ -58,7 +58,7 @@
                         </div>
 
                         <div id="perfil" class="perfil-img">
-                            <img src="../assets/img/gerenteManoel.png" class="perfil">
+                            <img src="" class="perfil" id="foto-perfil">
                         </div>
 
                     </div>
@@ -94,6 +94,7 @@
 </html>
 <script>
     listaMaquinas()
+    pegarFoto()
 
     async function listaMaquinas() {
         try {
@@ -148,8 +149,16 @@
         }
     }
 
-    function navegacao(id){
-        window.location.href =`dashboard-cpu.html?id=${id}`
+    async function pegarFoto() {
+        const idFuncionario = 3
+        const imagem = document.getElementById('foto-perfil')
+        imagem.src = "http://localhost:3000/funcionarios/foto/3";
+    }
+
+
+
+    function navegacao(id) {
+        window.location.href = `dashboard-cpu.html?id=${id}`
     }
 
     const cadastroMaquina = document.querySelectorAll('.adicionar');
