@@ -159,5 +159,28 @@ funcionariosController.delete('/:id', async (req, res) => {
     }
 });
 
+funcionariosController.get('/foto/:id', async (req, res) => {
+    try {
+        const funcionario = await prisma.funcionario.findUnique({
+            where: {
+                id: Number(req.params.id),
+            },
+            select: {
+                idFuncionario: false,
+                nome: false,
+                email: false,
+                senha: false,
+                cpf: false,
+                cargo: false,
+                privilegio: false,
+                foto: true,
+                fkEmpresa: false
+            }
+        });
+        res.status(200).json(funcionario);
+    } catch (error) {
+        console.log(error);
+    }
+});
 
 export default funcionariosController;
