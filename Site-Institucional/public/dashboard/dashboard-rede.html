@@ -73,7 +73,7 @@
                         </div>
 
                         <div id="perfil" class="perfil-img">
-                            <img src="../assets/img/gerenteManoel.png" class="perfil">
+                            <img src="" class="perfil" id="foto-perfil">
                         </div>
 
                     </div>
@@ -207,6 +207,12 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="../assets/js/graficoCpu.js"></script>
 <script>
+    pegarFoto()
+    function pegarFoto() {
+        const idFuncionario = sessionStorage.getItem('idFuncionario')
+        const imagem = document.getElementById('foto-perfil')
+        imagem.src = `/funcionarios/foto/${idFuncionario}`;
+    }
     const ctxRede = document.getElementById('myChartRede');
     const nome = document.getElementById('nomeMaquina')
     const modelo = document.getElementById('modelo')

@@ -61,7 +61,7 @@
                         </div>
 
                         <div id="perfil" class="perfil-img">
-                            <img src="../assets/img/gerenteManoel.png" class="perfil">
+                            <img src="" class="perfil" id="foto-perfil">
                         </div>
 
                     </div>
@@ -307,6 +307,12 @@
 </html>
 
 <script>
+    pegarFoto()
+    function pegarFoto() {
+        const idFuncionario = 3
+        const imagem = document.getElementById('foto-perfil')
+        imagem.src = `/funcionarios/foto/${idFuncionario}`;
+    }
     const botaoAdicionarFunc = document.querySelector('#botaoAdicionarFunc');
     botaoAdicionarFunc.addEventListener('click', function () {
         window.location.href = 'cadastrar-funcionario.html';
