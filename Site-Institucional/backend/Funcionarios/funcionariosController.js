@@ -34,16 +34,16 @@ funcionariosController.get('/page/:page', async (req, res) => {
             prisma.funcionario.findMany({
                 take: take,
                 skip: skip,
-                select: {
-                    id: true,
-                    nome: true,
-                    email: true,
-                    cpf: true,
-                    cargo: true,
-                    privilegio: true,
-                    fkEmpresa: true,
-                    foto: false
-                }
+                // select: {
+                //     id: true,
+                //     nome: true,
+                //     email: true,
+                //     cpf: true,
+                //     cargo: true,
+                //     privilegio: true,
+                //     fkEmpresa: true,
+                //     foto: false
+                // }
             }),
             prisma.funcionario.count()
         ]);
@@ -54,7 +54,7 @@ funcionariosController.get('/page/:page', async (req, res) => {
             funcionarios,
             totalPaginas,
             paginaAtual: page,
-            totalEmpresas: total
+            totalFuncionarios: total
         };
 
         res.status(200).json(resposta);
@@ -69,7 +69,7 @@ funcionariosController.get('/:id', async (req, res) => {
     try {
         const funcionario = await prisma.funcionario.findUnique({
             where: {
-                id: Number(req.params.id),
+                idFuncionario: Number(req.params.id),
             },
         });
         res.status(200).json(funcionario);
@@ -133,7 +133,7 @@ funcionariosController.patch('/:id', upload.single('foto'), async (req, res) => 
 
         const funcionarioAtualizado = await prisma.Funcionario.update({
             where: {
-                id: Number(id),
+                idFuncionario: Number(id),
             },
             data: updateData,
         });
@@ -149,7 +149,7 @@ funcionariosController.delete('/:id', async (req, res) => {
         const { id } = req.params;
         const funcionarioDeletado = await prisma.Funcionario.delete({
             where: {
-                id: Number(id),
+                idFuncionario: Number(id),
             },
         });
 
