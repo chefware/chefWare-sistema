@@ -11,6 +11,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 
 <body>
@@ -66,43 +67,50 @@
                         <div class="form-editar">
                             <div class="campo">
                                 <h4 class="label-editar">Nome:</h4>
-                                <input type="text" class="input-form-editar" placeholder="00.000.000/0001-00">
+                                <input type="text" id="input_nome" class="input-form-editar" placeholder="00.000.000/0001-00">
                             </div>
 
                             <div class="campo">
                                 <h4 class="label-editar">CPF:</h4>
-                                <input type="text" class="input-form-editar" placeholder="(11) 90000-0000">
+                                <input type="text" id="input_cpf" class="input-form-editar" placeholder="(11) 90000-0000">
                             </div>
 
 
                             <div class="campo">
                                 <h4 class="label-editar">E-mail:</h4>
-                                <input type="text" class="input-form-editar" placeholder="00000-000">
+                                <input type="text" id="input_email" class="input-form-editar" placeholder="00000-000">
                             </div>
 
                             <div class="campo">
                                 <h4 class="label-editar">Senha:</h4>
-                                <input type="text" id="input-logradouro" class="input-form-editar"
+                                <input type="text" id="input_senha" class="input-form-editar"
                                     placeholder="Nome da rua">
                             </div>
 
                             <div class="campo" id="">
                                 <h4 class="label-editar">Cargo:</h4>
-                                <select class="input-form-editar sl-edicao" id="sl-estado">
-                                    <option value="SP" selected>Gerente</option>
+                                <select class="input-form-editar sl-edicao" id="sl_cargo">
+                                    <option value="Gerente">Gerente</option>
+                                    <option value="Funcionário">Funcionário</option>
                                 </select>
                             </div>
 
                             <div class="campo" id="">
                                 <h4 class="label-editar">Privilégio:</h4>
-                                <select class="input-form-editar sl-edicao" id="sl-estado">
-                                    <option value="SP" selected>Comum</option>
+                                <select class="input-form-editar sl-edicao" id="sl_privilegio">
+                                    <option value="Admin">Administrador</option>
+                                    <option value="Comum">Comum</option>
                                 </select>
+                            </div>
+
+                            <div class="campo">
+                                <h4 class="label-editar">Foto:</h4>
+                                <input type="File" id="input_foto" class="input-form-editar" placeholder="Nome funcionário" onchange="handleFileSelect(event)">
                             </div>
 
                             <div class="campo-botoes campo-horizontal">
                                 <button class="bt_edicao" id="botao-cancelar">Cancelar</button>
-                                <button class="bt_edicao" id="botao-editar">Editar</button>
+                                <button class="bt_edicao" id="botao-editar" onclick="editar()">Editar</button>
                             </div>
                         </div>
                     </div>
@@ -125,7 +133,59 @@
 
     if (user != null) {
         perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${user}</span></span>`;
-    } 
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const idFuncionario = params.get('id');
+    console.log(idFuncionario);
+
+    trazerDados();
+
+    async function trazerDados() {
+
+        try {
+            const response = await axios.get(`/funcionarios/${idFuncionario}`);
+            const funcionario = response.data;
+            console.log(funcionario);
+
+            document.getElementById("input_nome").value = funcionario.nome;
+            document.getElementById("input_cpf").value = funcionario.cpf;
+            document.getElementById("input_email").value = funcionario.email;
+            document.getElementById("input_senha").value = funcionario.senha;
+            document.getElementById("sl_cargo").value = funcionario.cargo;
+            document.getElementById("sl_privilegio").value = funcionario.privilegio;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async function editar() {
+        const nome = document.getElementById("input_nome").value;
+        const cpf = document.getElementById("input_cpf").value;
+        const email = document.getElementById("input_email").value;
+        const senha = document.getElementById("input_senha").value;
+        const cargo = document.getElementById("sl_cargo").value;
+        const privilegio = document.getElementById("sl_privilegio").value;
+        const foto = document.getElementById("input_foto").value;
+
+        const funcionario = {
+            nome,
+            cpf,
+            email,
+            senha,
+            cargo,
+            privilegio,
+            foto
+        }
+
+        try {
+            const response = await axios.patch(`/funcionarios/${idFuncionario}`, funcionario);
+            console.log(response.data);
+            window.location.href = 'lista-funcionario.html';
+        } catch (error) {
+            console.log(error);
+        }
+    }
 </script>
 
 <script src="../assets/js/navegacao-menu.js"></script>
