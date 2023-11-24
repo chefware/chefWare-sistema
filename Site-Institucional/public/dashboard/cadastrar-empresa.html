@@ -147,10 +147,12 @@
     }
     // Trazer o nome do usuário na tela
     var perfil = document.getElementById("perfil");
-    var user = sessionStorage.getItem("user");
+    var nomeUser = sessionStorage.getItem("nomeFuncionario");
+    var fkEmpresa = sessionStorage.getItem("fkEmpresa");
+    var idFuncionario = sessionStorage.getItem("idFuncionario");
 
-    if (user != null) {
-        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${user}</span></span>`;
+    if (nomeUser != null) {
+        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${nomeUser}</span></span>`;
     }
 
     // Quando o usuário clicar no botão de sair, ele limpa o sessionStorage e volta para a tela de login

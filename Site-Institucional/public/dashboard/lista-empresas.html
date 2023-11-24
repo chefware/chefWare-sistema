@@ -142,12 +142,6 @@
     var fkEmpresa = sessionStorage.getItem("fkEmpresa");
     var idFuncionario = sessionStorage.getItem("idFuncionario");
 
-    var nomeUser = sessionStorage.getItem("nomeFuncionario");
-    var fkEmpresa = sessionStorage.getItem("fkEmpresa");
-    var idFuncionario = sessionStorage.getItem("idFuncionario");
-
-    if (nomeUser != null) {
-        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${nomeUser}</span></span>`;
     if (nomeUser != null) {
         perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${nomeUser}</span></span>`;
     }
@@ -425,7 +419,7 @@
             console.error(error);
         }
     }
-}
+
 </script>
 
 <script src="../assets/js/navegacao-menu.js"></script>
