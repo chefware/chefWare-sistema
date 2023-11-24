@@ -92,6 +92,7 @@
 </body>
 
 </html>
+
 <script>
     listaMaquinas()
     pegarFoto()
@@ -101,6 +102,7 @@
         const baseUrl = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
         imagem.src = `${baseUrl}/funcionarios/foto/${idFuncionario}`
     }
+    
     async function listaMaquinas() {
         try {
             const response = await axios.get('/maquinas')
@@ -108,10 +110,9 @@
                 const dados = response.data
                 console.log('Dados recebidos:', dados)
                 linha_maquina.innerHTML = ``
-                for (var i = 0; i <= dados.length; i++) {
+                for (var i = 0; i < dados.length; i++) {
                     linha_maquina.innerHTML += `<div class="cardMaquina" onclick="navegacao(${dados[i].idMaquina})">
                                     <div class="alerta">
-
                                     </div>
                                     <div class="informacoes">
                                         <div class="tituloMaquina">
@@ -157,8 +158,8 @@
 
 
 
-    function navegacao(id) {
-        window.location.href = `dashboard-cpu.html?id=${id}`
+    function navegacao(id)  {
+        window.location.href =  `dashboard-cpu.html?id=${id}`
     }
 
     const cadastroMaquina = document.querySelectorAll('.adicionar')
@@ -172,9 +173,12 @@
     var perfil = document.getElementById("perfil")
 
     var user = sessionStorage.getItem("user")
+    var nomeUser = sessionStorage.getItem("nomeFuncionario");
+    var fkEmpresa = sessionStorage.getItem("fkEmpresa");
+    var idFuncionario = sessionStorage.getItem("idFuncionario");
 
     if (user != null) {
-        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${user}</span></span>`
+        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${user}</span></span>`;
     }
 
 </script>

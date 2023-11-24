@@ -67,6 +67,29 @@ empresasController.get('/search/:termo', async (req, res) => {
     }
 });
 
+empresasController.get('/:id', async (req, res) => {
+    const idEmpresa = Number(req.params.id);
+    try {
+        const empresa = await prisma.empresa.findUnique({
+            where: {
+                idEmpresa: idEmpresa
+            },
+            include: {
+                enderecos: true 
+            }
+        });
+
+        if (empresa) {
+            res.status(200).json(empresa);
+        } else {
+            res.status(404).json({ error: "Empresa não encontrada" });
+        }
+    } catch (error) {
+        res.status(500).json(error);
+        console.error(error);
+    }
+});
+
 empresasController.post('/', async (req, res) => {
     try {
         const { nome, cnpj, telefone, endereco } = req.body;
@@ -91,7 +114,7 @@ empresasController.post('/', async (req, res) => {
     } catch (e) {
         res.status(500).json(e);
     }
-})
+});
 
 // Exemplo de requisição POST
 // {
