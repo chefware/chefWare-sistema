@@ -122,7 +122,8 @@
     function pegarFoto() {
         const idFuncionario = sessionStorage.getItem('idFuncionario')
         const imagem = document.getElementById('foto-perfil')
-        imagem.src = `/funcionarios/foto/${idFuncionario}`;
+        const baseUrl = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
+        imagem.src = `${baseUrl}/funcionarios/foto/${idFuncionario}`
     }
     var perfil = document.getElementById("perfil");
 

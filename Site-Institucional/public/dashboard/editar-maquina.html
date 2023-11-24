@@ -120,7 +120,8 @@
     function pegarFoto() {
         const idFuncionario = sessionStorage.getItem('idFuncionario')
         const imagem = document.getElementById('foto-perfil')
-        imagem.src = `/funcionarios/foto/${idFuncionario}`;
+        const baseUrl = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
+        imagem.src = `${baseUrl}/funcionarios/foto/${idFuncionario}`
     }
     const params = new URLSearchParams(window.location.search)
     const idMaquina = params.get('id')
@@ -133,7 +134,7 @@
     const local = document.getElementById('input_local')
     const descComponentes = document.getElementById('input_descricao')
     const fkEmpresa = 1
-  
+
 
     maquinaDashboard()
 

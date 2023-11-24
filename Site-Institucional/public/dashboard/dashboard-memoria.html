@@ -170,7 +170,7 @@
 
                                         <span class="tituloInformacoesEstaticas">Informações Estáticas:</span>
                                         <div class="areaDadosEstaticos">
-                                            <span class="tituloDadoEstatico">Total: 
+                                            <span class="tituloDadoEstatico">Total:
                                                 <span class="dadoEstatico" id="total">8 GB</span></span>
                                         </div>
 
@@ -197,7 +197,8 @@
     function pegarFoto() {
         const idFuncionario = sessionStorage.getItem('idFuncionario')
         const imagem = document.getElementById('foto-perfil')
-        imagem.src = `/funcionarios/foto/${idFuncionario}`;
+        const baseUrl = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
+        imagem.src = `${baseUrl}/funcionarios/foto/${idFuncionario}`
     }
     const ctxMemoria = document.getElementById('myChartMemoria');
     const nome = document.getElementById('nomeMaquina')
