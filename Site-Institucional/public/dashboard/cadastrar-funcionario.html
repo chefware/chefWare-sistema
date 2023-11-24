@@ -13,6 +13,7 @@
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 
 <body>
@@ -37,16 +38,7 @@
                         <img src="../assets/funcionarios 1.png" class="sidebar-icon">
                         <span class="sidebar-text">Funcionários</span>
                     </div>
-                    <div class="sidebar-item">
-                        <img src="../assets/relogio 1.png" class="sidebar-icon">
-                        <span class="sidebar-text">Histórico</span>
-                    </div>
-                    <div class="sidebar-item">
-                        <img src="../assets/ajudando 1.png" class="sidebar-icon">
-                        <span class="sidebar-text">Ajuda</span>
-                    </div>
                 </div>
-
 
                 <div class="sidebar-sair">
                     <img src="../assets/sair 1.png" class="sidebar-icon">
@@ -116,11 +108,11 @@
 
                             <div class="campo">
                                 <h4 class="label-editar">Foto:</h4>
-                                <input type="File" id="input_nome" class="input-form-editar" placeholder="Nome funcionário">
+                                <input type="File" id="input_foto" class="input-form-editar" placeholder="Nome funcionário" onchange="handleFileSelect(event)">
                             </div>
 
                             <div class="campo-botoes campo-horizontal">
-                                <button class="bt_edicao" id="botao-cancelar">Cancelar</button>
+                                <button class="bt_edicao" id="botao-cancelar" onclick="cancelar()">Cancelar</button>
                                 <button class="bt_edicao" id="botao-editar" onclick="cadastrar()">Cadastrar</button>
                             </div>
                         </div>
@@ -145,6 +137,63 @@
 
     if (user != null) {
         perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${user}</span></span>`;
+    }
+
+    function cancelar() {
+        window.location.href = 'lista-funcionario.html'
+    }
+
+    let bufferFoto;
+
+    function handleFileSelect(event) {
+        const fileInput = event.target;
+        const file = fileInput.files[0];
+
+        if (file) {
+            bufferFoto = file;
+            console.log('Arquivo da imagem:', bufferFoto);
+    }
+    }
+
+    async function cadastrar() {
+        try {
+
+            if (!bufferFoto) {
+            console.error('A foto não foi carregada.');
+            return;
+        }
+
+            var result = document.getElementById("snackbar");
+
+            const form = new FormData();
+            const fkEmpresa = 1;
+
+            form.append('nome', input_nome.value);
+            form.append('email', input_email.value);
+            form.append('senha', input_senha.value);
+            form.append('cpf', input_cpf.value);
+            form.append('cargo', sl_cargo.value);
+            form.append('privilegio', sl_privilegio.value);
+            form.append('foto', bufferFoto);
+            form.append('fkEmpresa', fkEmpresa);
+            
+            const config = {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            };
+
+            const response = await axios.post('/funcionarios', form, config);
+            if (response.status === 201) {
+                const funcionarioCriado = response.data;
+                console.log('Funcionário cadastrada com sucesso:', funcionarioCriado);
+            } else {
+                console.error('Erro ao cadastrar funcionario:', response.status, response.statusText)
+            }
+
+        } catch (error) {
+            console.log(error)
+        }
     }
 </script>
 
