@@ -18,6 +18,7 @@ CREATE TABLE `Maquina` (
     `local` VARCHAR(191) NULL,
     `descComponentes` VARCHAR(191) NULL,
     `fkEmpresa` INTEGER NOT NULL,
+    `ativo` BOOLEAN NULL DEFAULT true,
 
     PRIMARY KEY (`idMaquina`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -81,6 +82,7 @@ CREATE TABLE `Dados` (
     `fkEspecificacoes` INTEGER NOT NULL,
     `fkMaquina` INTEGER NOT NULL,
     `fkComponente` INTEGER NOT NULL,
+    `dataHora` DATETIME(3) NULL,
 
     INDEX `idx_descricao_maquina_componente`(`fkEspecificacoes`, `fkMaquina`, `fkComponente`),
     PRIMARY KEY (`idDados`)
@@ -91,6 +93,7 @@ CREATE TABLE `Historico` (
     `idHistorico` INTEGER NOT NULL AUTO_INCREMENT,
     `fkMaquina` INTEGER NOT NULL,
     `fkComponente` INTEGER NOT NULL,
+    `fkEspecificacoes` INTEGER NOT NULL,
     `dataHora` DATETIME(3) NULL,
     `nome` VARCHAR(191) NULL,
     `leitura` VARCHAR(191) NULL,
@@ -125,6 +128,9 @@ ALTER TABLE `Dados` ADD CONSTRAINT `Dados_fkMaquina_fkey` FOREIGN KEY (`fkMaquin
 
 -- AddForeignKey
 ALTER TABLE `Historico` ADD CONSTRAINT `Historico_fkMaquina_fkey` FOREIGN KEY (`fkMaquina`) REFERENCES `Maquina`(`idMaquina`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Historico` ADD CONSTRAINT `Historico_fkEspecificacoes_fkey` FOREIGN KEY (`fkEspecificacoes`) REFERENCES `Especificacoes`(`idEspecificacoes`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Historico` ADD CONSTRAINT `Historico_fkComponente_fkey` FOREIGN KEY (`fkComponente`) REFERENCES `Componente`(`idComponente`) ON DELETE RESTRICT ON UPDATE CASCADE;
