@@ -79,7 +79,7 @@
                     <div class="header">
                         <div class="conteudoEmpresa">
                             <span>Empresa</span>
-                            <h1>Fogo de Chão</h1>
+                            <h1 id="nomeEmpresa">Fogo de Chão</h1>
                         </div>
 
                         <div id="perfil" class="perfil-img">
@@ -132,10 +132,12 @@
 
     var perfil = document.getElementById("perfil");
 
-    var user = sessionStorage.getItem("user");
+    var nomeUser = sessionStorage.getItem("nomeFuncionario");
+    var fkEmpresa = sessionStorage.getItem("fkEmpresa");
+    var idFuncionario = sessionStorage.getItem("idFuncionario");
 
-    if (user != null) {
-        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${user}</span></span>`;
+    if (nomeUser != null) {
+        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${nomeUser}</span></span>`;
     }
 
     listaFuncionarios(0)

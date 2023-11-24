@@ -128,12 +128,14 @@
 </html>
 
 <script>
-    // Trazer o nome do usuário logado
     var perfil = document.getElementById("perfil");
-    var user = sessionStorage.getItem("user");
 
-    if (user != null) {
-        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${user}</span></span>`;
+    var nomeUser = sessionStorage.getItem("nomeFuncionario");
+    var fkEmpresa = sessionStorage.getItem("fkEmpresa");
+    var idFuncionario = sessionStorage.getItem("idFuncionario");
+
+    if (nomeUser != null) {
+        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${nomeUser}</span></span>`;
     }
 
     // Redirecionar para a tela de cadastro de empresa
@@ -338,7 +340,7 @@
                 console.error('Erro na requisição:', response.status, response.statusText);
             }
         } catch (error) {
-
+            console.log(error);
         }
     }
 
