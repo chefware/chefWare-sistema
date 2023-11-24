@@ -57,7 +57,7 @@
                         </div>
 
                         <div id="perfil" class="perfil-img">
-                            <img src="../assets/img/gerenteManoel.png" class="perfil">
+                            <img src="" class="perfil" id="foto-perfil">
                         </div>
 
                     </div>
@@ -118,6 +118,13 @@
 
 
 <script>
+    pegarFoto()
+    function pegarFoto() {
+        const idFuncionario = sessionStorage.getItem('idFuncionario')
+        const imagem = document.getElementById('foto-perfil')
+        const baseUrl = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
+        imagem.src = `${baseUrl}/funcionarios/foto/${idFuncionario}`
+    }
     var perfil = document.getElementById("perfil");
 
     var user = sessionStorage.getItem("user");

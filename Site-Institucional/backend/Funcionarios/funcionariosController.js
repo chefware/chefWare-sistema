@@ -159,5 +159,33 @@ funcionariosController.delete('/:id', async (req, res) => {
     }
 });
 
+funcionariosController.get('/foto/:id', async (req, res) => {
+    try {
+        const funcionario = await prisma.funcionario.findUnique({
+            where: {
+                id: Number(req.params.id),
+            },
+            select: {
+                foto: true,
+            }
+        });
+
+        if (!funcionario || !funcionario.foto) {
+            // Se não houver funcionário ou foto, retorne um erro ou status 404, conforme apropriado
+            res.status(404).send('Funcionário não encontrado ou sem foto.');
+            return;
+        }
+
+        // Defina o cabeçalho Content-Type para imagem/png ou o tipo MIME apropriado
+        res.setHeader('Content-Type', 'image/png');
+
+        // Envie os dados da imagem como resposta
+        res.status(200).send(funcionario.foto);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Erro ao buscar a foto do funcionário.');
+    }
+});
+
 
 export default funcionariosController;
