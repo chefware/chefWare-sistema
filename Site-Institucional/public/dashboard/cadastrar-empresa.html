@@ -54,7 +54,7 @@
                         </div>
 
                         <div id="perfil" class="perfil-img">
-                            <img src="../assets/julia.png" class="perfil">
+                            <img src="" class="perfil" id="foto-perfil">
                         </div>
 
                     </div>
@@ -65,17 +65,20 @@
 
                             <div class="campo">
                                 <h4 class="label-cadastrar">Nome:</h4>
-                                <input type="text" class="input-form-cadastrar" id="input_nome" placeholder="Nome da empresa">
+                                <input type="text" class="input-form-cadastrar" id="input_nome"
+                                    placeholder="Nome da empresa">
                             </div>
 
                             <div class="campo">
                                 <h4 class="label-cadastrar">CNPJ:</h4>
-                                <input type="text" class="input-form-cadastrar" id="input_cnpj" placeholder="00.000.000/0001-00">
+                                <input type="text" class="input-form-cadastrar" id="input_cnpj"
+                                    placeholder="00.000.000/0001-00">
                             </div>
 
                             <div class="campo">
                                 <h4 class="label-cadastrar">Telefone:</h4>
-                                <input type="text" class="input-form-cadastrar" id="input_telefone" placeholder="(11) 90000-0000">
+                                <input type="text" class="input-form-cadastrar" id="input_telefone"
+                                    placeholder="(11) 90000-0000">
                             </div>
 
 
@@ -93,8 +96,7 @@
 
                                 <div class="campo" id="campo-numero-endereco">
                                     <h4 class="label-cadastrar">N°:</h4>
-                                    <input type="text" id="input_numero" class="input-form-cadastrar"
-                                        placeholder="00">
+                                    <input type="text" id="input_numero" class="input-form-cadastrar" placeholder="00">
                                 </div>
                             </div>
 
@@ -119,31 +121,70 @@
                                 <button class="bt_edicao" id="botao-cadastrar" onclick="cadastrar()">Cadastrar</button>
                             </div>
                             <div id="snackbar">
-                                Cadastrado com sucesso
+                                <img src="../assets/img/sucessoSnackbar.png" alt="símbolo de correto">
+                                <div class="snackbar-area-texto">
+                                    <h4>Sucesso!</h4>
+                                    <span>Empresa cadastrada com sucesso!</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
-
-
-
 </body>
 
 </html>
 
 <script>
+    pegarFoto()
+    function pegarFoto() {
+        const idFuncionario = sessionStorage.getItem('idFuncionario')
+        const imagem = document.getElementById('foto-perfil')
+        const baseUrl = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
+        imagem.src = `${baseUrl}/funcionarios/foto/${idFuncionario}`
+    }
+    // Trazer o nome do usuário na tela
     var perfil = document.getElementById("perfil");
-
     var user = sessionStorage.getItem("user");
 
     if (user != null) {
         perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${user}</span></span>`;
     }
 
+    // Quando o usuário clicar no botão de sair, ele limpa o sessionStorage e volta para a tela de login
+    const botaoSair = document.querySelector('.sidebar-sair');
+    botaoSair.addEventListener('click', function () {
+        sessionStorage.clear();
+        window.location.href = '../index.html';
+    });
+
+    // Quando o usuário clicar no botão de cancelar, ele volta para a tela de lista de empresas
+    const botaoCancelar = document.getElementById("botao-cancelar");
+    botaoCancelar.addEventListener("click", function () {
+        window.location.href = 'lista-empresas.html'
+    });
+
+    // Quando o usuário sair do focus do input de CEP, ele chama a função buscarCep()
+    const input_cep = document.getElementById("input_cep");
+    input_cep.addEventListener("blur", function () {
+        buscarCep();
+    });
+
+    // Busca o CEP na API ViaCEP e preenche os campos de endereço
+    async function buscarCep() {
+        const cep = input_cep.value;
+
+        const response = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
+        const data = response.data;
+
+        input_logradouro.value = data.logradouro;
+        input_bairro.value = data.bairro;
+        sl_estado.value = data.uf;
+    }
+
+    // Cadastra a empresa
     async function cadastrar() {
         try {
             var result = document.getElementById("snackbar");
@@ -159,29 +200,33 @@
                 nome,
                 cnpj,
                 telefone,
-                 endereco :{
+                endereco: {
                     logradouro,
                     cep,
                     bairro,
                     numero,
                     estado
-                 }
+                }
             }
 
-        const response = await axios.post('/empresas', data);
+            const response = await axios.post('/empresas', data);
 
-        if (response.status === 201) {
+            if (response.status === 201) {
                 const empresaCriada = response.data;
                 console.log('Empresa cadastrada com sucesso:', empresaCriada);
 
                 result.className = "show";
-                setTimeout(function () { x.className = result.className.replace("show", ""); }, 1500);
-                setTimeout(function () { window.location.href = 'lista-empresas.html' }, 2000);
+                setTimeout(function () {
+                    x.className = result.className.replace("show", "");
+                }, 1500);
+                setTimeout(function () {
+                    window.location.href = 'lista-empresas.html'
+                }, 2000);
             } else {
                 console.error('Erro ao cadastrar empresa:', response.status, response.statusText)
-            } 
+            }
 
-        } catch (error){
+        } catch (error) {
             console.log(error)
         }
     }

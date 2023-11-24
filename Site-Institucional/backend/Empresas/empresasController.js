@@ -4,10 +4,10 @@ const prisma = new PrismaClient();
 
 const empresasController = express.Router();
 
-empresasController.get('/', async (req, res) => {
-    let take = 5;
-    let page = Number(req?.query?.page) | 0;
-    let skip = 1;
+empresasController.get('/page/:page', async (req, res) => {
+    const take = 5;
+    const page = Number(req.params.page) || 0;
+    const skip = page * take;
     try {
         const [empresas, total] = await prisma.$transaction([
             prisma.empresa.findMany({
@@ -16,45 +16,54 @@ empresasController.get('/', async (req, res) => {
             }),
             prisma.empresa.count()
         ]);
+
+        const totalPaginas = Math.ceil(total / take);
+
         const empresasComEndereco = await Promise.all(empresas.map(async (empresa) => {
             const endereco = await prisma.endereco.findFirst({
                 where: {
                     fkEmpresa: empresa.idEmpresa
                 }
             });
-            return { 
+
+            return {
                 ...empresa,
                 endereco,
-                totalPaginas: Math.ceil(total / take),
-                paginaAtual: page,
-                totalEmpresas: total
-            }
+            };
         }));
-        res.status(200).json(empresasComEndereco);
+
+        const resposta = {
+            empresas: empresasComEndereco,
+            totalPaginas,
+            paginaAtual: page,
+            totalEmpresas: total
+        };
+
+        res.status(200).json(resposta);
+
     } catch (error) {
         res.status(400).json(error);
         console.log(error);
     }
 });
 
-empresasController.get('/:id', async (req, res) => {
-    console.log(req.params.id);
-    const idEmpresa = Number(req.params.id);
+
+empresasController.get('/search/:termo', async (req, res) => {
+    const termoPesquisa = req.params.termo.toLowerCase();
+
     try {
-        const empresa = await prisma.empresa.findUnique({
+        const empresas = await prisma.empresa.findMany({
             where: {
-                idEmpresa: idEmpresa
+                OR: [
+                    { nome: { contains: termoPesquisa } },
+                ]
             }
         });
 
-        if(empresa){
-            res.status(200).json(empresa);
-        } else {
-            res.status(404).json("Não existe empresa com esse id");
-        }
-
+        res.status(200).json(empresas);
     } catch (error) {
-        res.status(400).json(error);
+        res.status(500).json(error);
+        console.error(error);
     }
 });
 

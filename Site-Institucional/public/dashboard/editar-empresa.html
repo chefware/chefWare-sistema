@@ -56,7 +56,7 @@
                         </div>
 
                         <div id="perfil" class="perfil-img">
-                            <img src="../assets/img/gerenteManoel.png" class="perfil">
+                            <img src="" class="perfil" id="foto-perfil">
                         </div>
 
                     </div>
@@ -125,7 +125,11 @@
                             </div>
 
                             <div id="snackbar">
-                                Cadastrado com sucesso
+                                <img src="../assets/img/sucessoSnackbar.png" alt="símbolo de correto">
+                                <div class="snackbar-area-texto">
+                                    <h4>Sucesso!</h4>
+                                    <span>Empresa editada com sucesso!</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -142,6 +146,13 @@
 </html>
 
 <script>
+    pegarFoto()
+    function pegarFoto() {
+        const idFuncionario = sessionStorage.getItem('idFuncionario')
+        const imagem = document.getElementById('foto-perfil')
+        const baseUrl = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
+        imagem.src = `${baseUrl}/funcionarios/foto/${idFuncionario}`
+    }
     var perfil = document.getElementById("perfil");
 
     var user = sessionStorage.getItem("user");
@@ -150,10 +161,16 @@
         perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${user}</span></span>`;
     }
 
+    const botaoCancelar = document.getElementById('botao-cancelar');
+    botaoCancelar.addEventListener('click', () => {
+        window.location.href = 'lista-empresas.html'
+    });
 
     const params = new URLSearchParams(window.location.search);
     const idEmpresa = params.get('id');
+
     empresaId();
+
     async function empresaId() {
         try {
             const response = await axios.get(`/empresas/${idEmpresa}`);
@@ -162,16 +179,15 @@
             console.log(empresa);
             document.getElementById('input_nome').value = empresa.nome;
             document.getElementById('input_cnpj').value = empresa.cnpj;
-            document.getElementById('input_cep').value = empresa.cep;
+            document.getElementById('input_cep').value = empresa.enderecos[0].cep;
             document.getElementById('input_telefone').value = empresa.telefone;
-            document.getElementById('input_logradouro').value = empresa.logradouro;
-            document.getElementById('input_numero-endereco').value = empresa.numero;
-            document.getElementById('input_bairro').value = empresa.bairro;
-            document.getElementById('sl_estado').value = empresa.estado;
+            document.getElementById('input_logradouro').value = empresa.enderecos[0].logradouro;
+            document.getElementById('input_numero_endereco').value = empresa.enderecos[0].numero;
+            document.getElementById('input_bairro').value = empresa.enderecos[0].bairro;
+            document.getElementById('sl_estado').value = empresa.enderecos[0].estado;
         } catch (error) {
             console.error(error);
         }
-
     }
 
     async function editar() {

@@ -11,6 +11,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 
 <body>
@@ -56,7 +57,7 @@
                         </div>
 
                         <div id="perfil" class="perfil-img">
-                            <img src="../assets/img/gerenteManoel.png" class="perfil">
+                            <img src="" class="perfil" id="foto-perfil">
                         </div>
 
                     </div>
@@ -66,43 +67,50 @@
                         <div class="form-editar">
                             <div class="campo">
                                 <h4 class="label-editar">Nome:</h4>
-                                <input type="text" class="input-form-editar" placeholder="00.000.000/0001-00">
+                                <input type="text" id="input_nome" class="input-form-editar" placeholder="00.000.000/0001-00">
                             </div>
 
                             <div class="campo">
                                 <h4 class="label-editar">CPF:</h4>
-                                <input type="text" class="input-form-editar" placeholder="(11) 90000-0000">
+                                <input type="text" id="input_cpf" class="input-form-editar" placeholder="(11) 90000-0000">
                             </div>
 
 
                             <div class="campo">
                                 <h4 class="label-editar">E-mail:</h4>
-                                <input type="text" class="input-form-editar" placeholder="00000-000">
+                                <input type="text" id="input_email" class="input-form-editar" placeholder="00000-000">
                             </div>
 
                             <div class="campo">
                                 <h4 class="label-editar">Senha:</h4>
-                                <input type="text" id="input-logradouro" class="input-form-editar"
+                                <input type="text" id="input_senha" class="input-form-editar"
                                     placeholder="Nome da rua">
                             </div>
 
                             <div class="campo" id="">
                                 <h4 class="label-editar">Cargo:</h4>
-                                <select class="input-form-editar sl-edicao" id="sl-estado">
-                                    <option value="SP" selected>Gerente</option>
+                                <select class="input-form-editar sl-edicao" id="sl_cargo">
+                                    <option value="Gerente">Gerente</option>
+                                    <option value="Funcionário">Funcionário</option>
                                 </select>
                             </div>
 
                             <div class="campo" id="">
                                 <h4 class="label-editar">Privilégio:</h4>
-                                <select class="input-form-editar sl-edicao" id="sl-estado">
-                                    <option value="SP" selected>Comum</option>
+                                <select class="input-form-editar sl-edicao" id="sl_privilegio">
+                                    <option value="Admin">Administrador</option>
+                                    <option value="Comum">Comum</option>
                                 </select>
+                            </div>
+
+                            <div class="campo">
+                                <h4 class="label-editar">Foto:</h4>
+                                <input type="File" id="input_foto" class="input-form-editar" placeholder="Nome funcionário" onchange="handleFileSelect(event)">
                             </div>
 
                             <div class="campo-botoes campo-horizontal">
                                 <button class="bt_edicao" id="botao-cancelar">Cancelar</button>
-                                <button class="bt_edicao" id="botao-editar">Editar</button>
+                                <button class="bt_edicao" id="botao-editar" onclick="editar()">Editar</button>
                             </div>
                         </div>
                     </div>
@@ -119,13 +127,20 @@
 </html>
 
 <script>
+    pegarFoto()
+    function pegarFoto() {
+        const idFuncionario = sessionStorage.getItem('idFuncionario')
+        const imagem = document.getElementById('foto-perfil')
+        const baseUrl = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
+        imagem.src = `${baseUrl}/funcionarios/foto/${idFuncionario}`
+    }
     var perfil = document.getElementById("perfil");
 
     var user = sessionStorage.getItem("user");
 
     if (user != null) {
         perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${user}</span></span>`;
-    } 
+    }
 </script>
 
 <script src="../assets/js/navegacao-menu.js"></script>

@@ -18,8 +18,8 @@
 <body>
     <script type="text/javascript">
         window.addEventListener("scroll", function () {
-            var header = document.querySelector("header");
-            header.classList.toggle("sticky", window.scrollY > 0);
+            var header = document.querySelector("header")
+            header.classList.toggle("sticky", window.scrollY > 0)
         })
     </script>
     <div class="main">
@@ -58,7 +58,7 @@
                         </div>
 
                         <div id="perfil" class="perfil-img">
-                            <img src="../assets/img/gerenteManoel.png" class="perfil">
+                            <img src="" class="perfil" id="foto-perfil">
                         </div>
 
                     </div>
@@ -94,13 +94,19 @@
 </html>
 <script>
     listaMaquinas()
-
+    pegarFoto()
+    function pegarFoto() {
+        const idFuncionario = sessionStorage.getItem('idFuncionario')
+        const imagem = document.getElementById('foto-perfil')
+        const baseUrl = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
+        imagem.src = `${baseUrl}/funcionarios/foto/${idFuncionario}`
+    }
     async function listaMaquinas() {
         try {
-            const response = await axios.get('/maquinas');
+            const response = await axios.get('/maquinas')
             if (response.status === 200) {
-                const dados = response.data;
-                console.log('Dados recebidos:', dados);
+                const dados = response.data
+                console.log('Dados recebidos:', dados)
                 linha_maquina.innerHTML = ``
                 for (var i = 0; i <= dados.length; i++) {
                     var backgroundColor = dados[i].length === 0 ? "gray" : "red";
@@ -147,32 +153,31 @@
                                 </div>`
                 }
             } else {
-                console.error('Erro na requisição:', response.status, response.statusText);
+                console.error('Erro na requisição:', response.status, response.statusText)
             }
         } catch (error) {
 
         }
     }
 
-
-    function navegacao(id){
-        window.location.href =`dashboard-cpu.html?id=${id}`
+    function navegacao(id) {
+        window.location.href = `dashboard-cpu.html?id=${id}`
     }
 
-    const cadastroMaquina = document.querySelectorAll('.adicionar');
+    const cadastroMaquina = document.querySelectorAll('.adicionar')
 
     cadastroMaquina.forEach((card) => {
         card.addEventListener('click', () => {
-            window.location.href = 'cadastrar-maquinas.html';
+            window.location.href = 'cadastrar-maquinas.html'
         })
     })
 
-    var perfil = document.getElementById("perfil");
+    var perfil = document.getElementById("perfil")
 
-    var user = sessionStorage.getItem("user");
+    var user = sessionStorage.getItem("user")
 
     if (user != null) {
-        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${user}</span></span>`;
+        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${user}</span></span>`
     }
 
 </script>

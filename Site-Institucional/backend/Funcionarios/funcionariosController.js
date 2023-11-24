@@ -25,12 +25,43 @@ funcionariosController.post('/login', async (req, res) => {
     }
 });
 
-funcionariosController.get('/', async (req, res) => {
+funcionariosController.get('/page/:page', async (req, res) => {
+    const take = 5;
+    const page = Number(req.params.page) || 0;
+    const skip = page * take;
     try {
-        const funcionarios = await prisma.funcionario.findMany();
-        res.status(200).json(funcionarios);
+        const [funcionarios, total] = await prisma.$transaction([
+            prisma.funcionario.findMany({
+                take: take,
+                skip: skip,
+                // select: {
+                //     id: true,
+                //     nome: true,
+                //     email: true,
+                //     cpf: true,
+                //     cargo: true,
+                //     privilegio: true,
+                //     fkEmpresa: true,
+                //     foto: false
+                // }
+            }),
+            prisma.funcionario.count()
+        ]);
+
+        const totalPaginas = Math.ceil(total / take);
+
+        const resposta = {
+            funcionarios,
+            totalPaginas,
+            paginaAtual: page,
+            totalFuncionarios: total
+        };
+
+        res.status(200).json(resposta);
+
     } catch (error) {
-        res.json({ error: error.message });
+        res.status(400).json(error);
+        console.log(error);
     }
 });
 
@@ -38,7 +69,7 @@ funcionariosController.get('/:id', async (req, res) => {
     try {
         const funcionario = await prisma.funcionario.findUnique({
             where: {
-                id: Number(req.params.id),
+                idFuncionario: Number(req.params.id),
             },
         });
         res.status(200).json(funcionario);
@@ -53,7 +84,7 @@ funcionariosController.post('/', upload.single('foto'), async (req, res) => {
         const fotoPerfil = req.file;
         const fkEmpresaInt = Number(fkEmpresa);
         let fotoPerfilBuffer = null;
-        
+
         if (fotoPerfil) {
             fotoPerfilBuffer = fotoPerfil.buffer;
         }
@@ -78,22 +109,33 @@ funcionariosController.post('/', upload.single('foto'), async (req, res) => {
     }
 });
 
-funcionariosController.patch('/:id', async (req, res) => {
+funcionariosController.patch('/:id', upload.single('foto'), async (req, res) => {
     try {
         const { id } = req.params;
         const { nome, email, senha, cpf, cargo, privilegio } = req.body;
+        const fotoPerfil = req.file;
+        let fotoPerfilBuffer = null;
+
+        if (fotoPerfil) {
+            fotoPerfilBuffer = fotoPerfil.buffer;
+            updateData.foto = fotoPerfilBuffer;
+        }
+
+        let updateData = {
+            nome,
+            email,
+            senha,
+            cpf,
+            cargo,
+            privilegio,
+            foto: fotoPerfilBuffer,
+        };
+
         const funcionarioAtualizado = await prisma.Funcionario.update({
             where: {
-                id: Number(id),
+                idFuncionario: Number(id),
             },
-            data: {
-                nome,
-                email,
-                senha,
-                cpf,
-                cargo,
-                privilegio
-            },
+            data: updateData,
         });
 
         res.status(200).json(funcionarioAtualizado);
@@ -107,13 +149,41 @@ funcionariosController.delete('/:id', async (req, res) => {
         const { id } = req.params;
         const funcionarioDeletado = await prisma.Funcionario.delete({
             where: {
-                id: Number(id),
+                idFuncionario: Number(id),
             },
         });
 
         res.status(200).json(funcionarioDeletado);
     } catch (error) {
         res.json({ error: error.message });
+    }
+});
+
+funcionariosController.get('/foto/:id', async (req, res) => {
+    try {
+        const funcionario = await prisma.funcionario.findUnique({
+            where: {
+                id: Number(req.params.id),
+            },
+            select: {
+                foto: true,
+            }
+        });
+
+        if (!funcionario || !funcionario.foto) {
+            // Se não houver funcionário ou foto, retorne um erro ou status 404, conforme apropriado
+            res.status(404).send('Funcionário não encontrado ou sem foto.');
+            return;
+        }
+
+        // Defina o cabeçalho Content-Type para imagem/png ou o tipo MIME apropriado
+        res.setHeader('Content-Type', 'image/png');
+
+        // Envie os dados da imagem como resposta
+        res.status(200).send(funcionario.foto);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Erro ao buscar a foto do funcionário.');
     }
 });
 
