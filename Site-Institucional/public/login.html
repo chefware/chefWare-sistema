@@ -69,7 +69,7 @@ function logar() {
     .then(function(response) {
         if (response.status === 200) {
             sessionStorage.setItem("fkEmpresa", response.data.fkEmpresa);
-            sessionStorage.setItem("idFuncionario", response.data.id);
+            sessionStorage.setItem("idFuncionario", response.data.idFuncionario);
             sessionStorage.setItem("nomeFuncionario", response.data.nome);
             window.location.href = "./dashboard/lista-maquinas.html";
         }
