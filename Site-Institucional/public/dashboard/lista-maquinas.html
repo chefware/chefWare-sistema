@@ -103,8 +103,14 @@
                 console.log('Dados recebidos:', dados);
                 linha_maquina.innerHTML = ``
                 for (var i = 0; i <= dados.length; i++) {
+                    var backgroundColor = dados[i].length === 0 ? "gray" : "red";
+
+                    var backgroundColorSit = dados[i].length === 0 ? "gray" : "red";
+
+                    var sit = dados.length === 0 ? "Desconhecido" : "Grave";
+
                     linha_maquina.innerHTML += `<div class="cardMaquina" onclick="navegacao(${dados[i].idMaquina})">
-                                    <div class="alerta">
+                                    <div class="alerta" id="alerta" style="background-color: ${backgroundColor};">
 
                                     </div>
                                     <div class="informacoes">
@@ -130,7 +136,7 @@
                                             <div class="situacao">
                                                 <div class="grave">
                                                     Situação:
-                                                    <span class="colorSituacao"> Grave </span>
+                                                    <span class="colorSituacao" id="situacao" style="color: ${backgroundColorSit};"> ${sit} </span>
                                                 </div>
                                                 <div class="local">
                                                     Local: ${dados[i].local}
@@ -147,6 +153,7 @@
 
         }
     }
+
 
     function navegacao(id){
         window.location.href =`dashboard-cpu.html?id=${id}`

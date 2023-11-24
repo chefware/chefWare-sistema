@@ -129,7 +129,7 @@
 
                                     <div id="botaoCpu" class="opcaoMenuComponentes componente-selecionado">
                                         <h2>CPU</h2>
-                                        <span>Em uso: <span>35%</span></span>
+                                        <span>Em uso: <span id="usoMenu"></span></span>
                                     </div>
 
                                     <div id="botaoDisco" class="opcaoMenuComponentes" onclick="navegacaoDisco()">
@@ -169,7 +169,7 @@
 
                                             <h4>Uso Atual:</h4>
 
-                                            <div class="areaDadoGrafico">
+                                            <div class="areaDadoGrafico" id="situacaoAlerta">
                                                 <span id="uso"></span>
                                             </div>
 
@@ -236,8 +236,10 @@
     const logicas = document.getElementById('logicas')
     const ctxCpu = document.getElementById('myChartCpu').getContext('2d')
     const comp = document.getElementById('comp')
+    const situacaoAlerta = document.getElementById('situacaoAlerta')
     const tipoComp = "CPU"
     const qtdUso = document.getElementById('uso')
+    const qtdUsoMenu = document.getElementById('usoMenu')
     var idEsp_grafico
     var idComp_grafico
 
@@ -412,10 +414,19 @@
                 const startIndex = Math.max(0, historico.data.length - 10)
                 for (var i = startIndex; i < historico.data.length; i++) {
                     qtdUso.innerText = `${historico.data[i].leitura} ${historico.data[i].unidadeMedida}`
+                    qtdUsoMenu.innerText = `${historico.data[i].leitura} ${historico.data[i].unidadeMedida}`
 
                     const dataHoraFormatada = formatarDataHora(historico.data[i].dataHora)
                     graficoData.labels.push(dataHoraFormatada)
                     graficoData.datasets[0].data.push(parseFloat(historico.data[i].leitura))
+
+                if(historico.data[i].leitura >= 70 && historico.data[i].leitura < 90){
+                    situacaoAlerta.style.backgroundColor = 'yellow'   
+                } else if (historico.data[i].leitura >= 90){
+                    situacaoAlerta.style.backgroundColor = 'red'
+                } else {
+                    situacaoAlerta.style.backgroundColor = 'green'
+                } 
                 }
 
                 grafico.data = graficoData
