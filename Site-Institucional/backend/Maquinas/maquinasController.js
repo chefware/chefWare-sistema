@@ -5,7 +5,7 @@ const prisma = new PrismaClient()
 const maquinasController = express.Router()
 
 maquinasController.get('/page/:page', async (req, res) => {
-    const take = 5;
+    const take = 6;
     const page = Number(req.params.page) || 0;
     const skip = page * take;
     try {
@@ -23,7 +23,7 @@ maquinasController.get('/page/:page', async (req, res) => {
             maquinas,
             totalPaginas,
             paginaAtual: page,
-            totalEmpresas: total
+            totalMaquinas: total
         };
 
         res.status(200).json(resposta);
@@ -52,7 +52,26 @@ maquinasController.get('/:id', async (req, res) => {
     } catch (error) {
         res.status(400).json(error)
     }
-})
+});
+
+maquinasController.get('/search/:termo', async (req, res) => {
+    const termoPesquisa = req.params.termo.toLowerCase();
+
+    try {
+        const maquinas = await prisma.maquina.findMany({
+            where: {
+                OR: [
+                    { nome: { contains: termoPesquisa } },
+                ]
+            }
+        });
+
+        res.status(200).json(maquinas);
+    } catch (error) {
+        res.status(500).json(error);
+        console.error(error);
+    }
+});
 
 maquinasController.post('/', async (req, res) => {
     try {
