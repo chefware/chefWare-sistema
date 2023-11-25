@@ -170,7 +170,7 @@
             var result = document.getElementById("snackbar");
 
             const form = new FormData();
-            const fkEmpresa = 1;
+            const fkEmpresaFunc = fkEmpresa;
 
             form.append('nome', input_nome.value);
             form.append('email', input_email.value);
@@ -179,7 +179,7 @@
             form.append('cargo', sl_cargo.value);
             form.append('privilegio', sl_privilegio.value);
             form.append('foto', bufferFoto);
-            form.append('fkEmpresa', fkEmpresa);
+            form.append('fkEmpresa', fkEmpresaFunc);
             
             const config = {
                 headers: {
