@@ -78,6 +78,25 @@ funcionariosController.get('/:id', async (req, res) => {
     }
 });
 
+funcionariosController.get('/search/:termo', async (req, res) => {
+    const termoPesquisa = req.params.termo.toLowerCase();
+
+    try {
+        const funcionario = await prisma.funcionario.findMany({
+            where: {
+                OR: [
+                    { nome: { contains: termoPesquisa } },
+                ]
+            }
+        });
+
+        res.status(200).json(funcionario);
+    } catch (error) {
+        res.status(500).json(error);
+        console.error(error);
+    }
+});
+
 funcionariosController.post('/', upload.single('foto'), async (req, res) => {
     try {
         const { nome, email, senha, cpf, cargo, privilegio, fkEmpresa } = req.body;
