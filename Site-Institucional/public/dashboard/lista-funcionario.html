@@ -94,7 +94,7 @@
                                 Funcionários
                             </div>
                             <div class="busca">
-                                <input type="text" placeholder="Insira o nome do funcionário">
+                                <input type="text" id="input_pesquisa" oninput="pesquisarFuncionario()" placeholder="Insira o nome do funcionário">
                                 <button class="lupa"><img src="../assets/busca.png" alt=""></button>
                                 <button class="filtro"><img src="../assets/filtro.png" alt=""></button>
                             </div>
@@ -125,9 +125,10 @@
 </html>
 
 <script>
+    const idFuncionario = sessionStorage.getItem('idFuncionario');
+    
     pegarFoto()
     function pegarFoto() {
-        const idFuncionario = sessionStorage.getItem('idFuncionario')
         const imagem = document.getElementById('foto-perfil')
         const baseUrl = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
         imagem.src = `${baseUrl}/funcionarios/foto/${idFuncionario}`
@@ -141,7 +142,6 @@
 
     var nomeUser = sessionStorage.getItem("nomeFuncionario");
     var fkEmpresa = sessionStorage.getItem("fkEmpresa");
-    var idFuncionario = sessionStorage.getItem("idFuncionario");
 
     if (nomeUser != null) {
         perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${nomeUser}</span></span>`;
@@ -338,6 +338,73 @@
             }
         } catch (error) {
 
+        }
+    }
+
+    async function pesquisarFuncionario() {
+        const termoPesquisa = document.getElementById('input_pesquisa').value.toLowerCase();
+
+        try {
+            if (termoPesquisa.trim() !== '') {
+                const response = await axios.get(`/funcionarios/search/${termoPesquisa}`);
+                const funcionariosPesquisados = response.data;
+
+                listaFuncionariosCards.innerHTML = "";
+
+                funcionariosPesquisados.forEach((funcionario) => {
+                    listaFuncionariosCards.innerHTML += `<div class="cardFuncionario">
+                                <div class="informacoes">
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            Identificação
+                                        </span>
+                                        <span class="resultDados">
+                                            ${funcionario.idFuncionario}
+                                        </span>
+                                    </div>
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            Nome
+                                        </span>
+                                        <span class="resultDados">
+                                            ${funcionario.nome}
+                                        </span>
+                                    </div>
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            Cargo
+                                        </span>
+                                        <span class="resultDados">
+                                            ${funcionario.cargo}
+                                        </span>
+                                    </div>
+                                    <div class="dados">
+                                        <span class="titleDados">
+                                            Privilégio
+                                        </span>
+                                        <span class="resultDados">
+                                            ${funcionario.privilegio}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="acoes">
+                                    <a onclick="editar(${funcionario.idFuncionario})"><img src="../assets/editar.png"></a>
+                                    <a onclick="abrirModal(${funcionario.idFuncionario}, '${funcionario.nome}')"><img src="../assets/excluir.png"></a>
+                                </div>
+                            </div>`
+                });
+
+                pagination.innerHTML = "";
+                for (let i = 0; i < totalPaginas; i++) {
+                    pagination.innerHTML +=
+                        `<button class="page-num" onclick="changePage(${i})">${i + 1}</button>`;
+                }
+            } else {
+                await listaFuncionarios(0);
+            }
+
+        } catch (error) {
+            console.error(error);
         }
     }
 

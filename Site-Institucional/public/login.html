@@ -55,11 +55,11 @@
 <script>
 
 function logar() {
-    var usuario = document.getElementById("inp_user").value;
+    var email = document.getElementById("inp_user").value;
     var senha = document.getElementById("inp_password").value;
 
     axios.post('/funcionarios/login', {
-        usuario: usuario,
+        email: email,
         senha: senha
     }, {
         headers: {

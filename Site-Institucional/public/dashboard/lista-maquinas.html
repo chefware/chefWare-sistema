@@ -69,7 +69,7 @@
                                 Máquinas
                             </div>
                             <div class="busca">
-                                <input type="text" placeholder="Insira o nome da máquina" id="input_busca">
+                                <input type="text" placeholder="Insira o nome da máquina" id="input_pesquisa" oninput="pesquisarMaquinas()">
                                 <button class="lupa"><img src="../assets/busca.png" onclick="buscar()" alt=""></button>
                                 <button class="filtro"><img src="../assets/filtro.png" alt=""></button>
                             </div>
@@ -81,6 +81,13 @@
                         <div class="conteudoMaquinas">
                             <div class="linhaMaquinas" id="linha_maquina">
 
+                            </div>
+                            <div class="page">
+                                <div class="pagination">
+                                    <button class="prev-page"><img src="../assets/voltar-icon.png" alt=""></button>
+                                    <div id="pagination"></div>
+                                    <button class="next-page"><img src="../assets/avancar-icon.png" alt=""></button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -94,36 +101,48 @@
 </html>
 
 <script>
-    listaMaquinas()
+    listaMaquinas(0);
     pegarFoto()
+
     function pegarFoto() {
         const idFuncionario = sessionStorage.getItem('idFuncionario')
         const imagem = document.getElementById('foto-perfil')
-        const baseUrl = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
+        const baseUrl = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' +
+            window.location.port : '')
         imagem.src = `${baseUrl}/funcionarios/foto/${idFuncionario}`
     }
-    
-    async function listaMaquinas() {
+
+    async function listaMaquinas(page) {
+        console.log('Fetching data for page:', page);
+
+        if (isFetchingData) {
+            console.log('Aguarde a conclusão da chamada anterior.');
+            return;
+        }
+
+        linha_maquina.innerHTML = "";
+        console.log('Limpei a div');
+
         try {
-            const response = await axios.get('/maquinas')
-            if (response.status === 200) {
-                const dados = response.data
-                console.log('Dados recebidos:', dados)
-                linha_maquina.innerHTML = ``
-                for (var i = 0; i <= dados.length; i++) {
-                    var backgroundColor = dados[i].length === 0 ? "gray" : "red";
+            isFetchingData = true;
 
-                    var backgroundColorSit = dados[i].length === 0 ? "gray" : "red";
+            const {
+                maquinas,
+                totalPaginas,
+                paginaAtual,
+                totalMaquinas
+            } = await fetchData(page);
 
-                    var sit = dados.length === 0 ? "Desconhecido" : "Grave";
+            console.log('Dados recebidos: ', maquinas);
 
-                    linha_maquina.innerHTML += `<div class="cardMaquina" onclick="navegacao(${dados[i].idMaquina})">
-                                    <div class="alerta" id="alerta" style="background-color: ${backgroundColor};">
-                                    
+            maquinas.forEach((maquina) => {
+                console.log('Maquina:', maquina);
+                linha_maquina.innerHTML += `<div class="cardMaquina" onclick="navegacao(${maquina.idMaquina})">
+                                    <div class="alerta">
                                     </div>
                                     <div class="informacoes">
                                         <div class="tituloMaquina">
-                                            <h4>${dados[i].nome}</h4>
+                                            <h4>${maquina.nome}</h4>
                                             <img src="../assets/maquina.png">
                                         </div>
                                         <div class="info">
@@ -147,23 +166,87 @@
                                                     <span class="colorSituacao" id="situacao" style="color: ${backgroundColorSit};"> ${sit} </span>
                                                 </div>
                                                 <div class="local">
-                                                    Local: ${dados[i].local}
+                                                    Local: ${maquina.local}
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>`
+            });
+
+            if (totalPaginas > 0) {
+                console.log(`Numero de páginas ${totalPaginas}`);
+                pagination.innerHTML = "";
+                for (let i = 0; i < totalPaginas; i++) {
+                    pagination.innerHTML +=
+                        `<button class="page-num" onclick="changePage(${i})">${i + 1}</button>`;
                 }
-            } else {
-                console.error('Erro na requisição:', response.status, response.statusText)
             }
         } catch (error) {
-
+            console.error(error);
+        } finally {
+            isFetchingData = false;
         }
     }
 
-    function navegacao(id)  {
-        window.location.href =  `dashboard-cpu.html?id=${id}`
+    var isFetchingData = false; // Flag para evitar múltiplas requisições simultâneas
+    let totalPaginas = 0; // Total de páginas disponíveis
+
+    // Função para buscar os dados da API de acordo com a página
+    async function fetchData(page) {
+        try {
+            const response = await axios.get(`/maquinas/page/${page}`);
+
+            if (response.status === 200) {
+                const {
+                    maquinas,
+                    totalPaginas: fetchedTotalPaginas,
+                    paginaAtual,
+                    totalMaquinas
+                } = response.data;
+
+                totalPaginas = fetchedTotalPaginas;
+
+                return {
+                    maquinas,
+                    totalPaginas,
+                    paginaAtual,
+                    totalMaquinas
+                };
+            } else {
+                console.error('Erro na requisição:', response.status, response.statusText);
+                return {
+                    mmaquinas: [],
+                    totalPaginas: 0,
+                    paginaAtual: 0,
+                    totalMaquinas: 0
+                };
+            }
+        } catch (error) {
+            console.error(error);
+            return {
+                maquinas: [],
+                totalPaginas: 0,
+                paginaAtual: 0,
+                totalMaquinas: 0
+            };
+        }
+    }
+
+    // Função para mudar de página
+    async function changePage(page) {
+        await listaMaquinas(page);
+    }
+
+    document.getElementById('pagination').addEventListener('click', function (event) {
+        if (event.target.tagName === 'BUTTON') {
+            const page = parseInt(event.target.innerText, 10);
+            changePage(page);
+        }
+    });
+
+    function navegacao(id) {
+        window.location.href = `dashboard-cpu.html?id=${id}`
     }
 
     const cadastroMaquina = document.querySelectorAll('.adicionar')
@@ -183,7 +266,68 @@
     if (nomeUser != null) {
         perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${nomeUser}</span></span>`;
     }
-    
+
+    async function pesquisarMaquinas() {
+        const termoPesquisa = document.getElementById('input_pesquisa').value.toLowerCase();
+
+        try {
+            if (termoPesquisa.trim() !== '') {
+                const response = await axios.get(`/maquinas/search/${termoPesquisa}`);
+                const maquinasPesquisadas = response.data;
+
+                linha_maquina.innerHTML = "";
+
+                maquinasPesquisadas.forEach((maquina) => {
+                    linha_maquina.innerHTML += `<div class="cardMaquina" onclick="navegacao(${maquina.idMaquina})">
+                                    <div class="alerta">
+                                    </div>
+                                    <div class="informacoes">
+                                        <div class="tituloMaquina">
+                                            <h4>${maquina.nome}</h4>
+                                            <img src="../assets/maquina.png">
+                                        </div>
+                                        <div class="info">
+                                            <div class="componentes">
+                                                <p>Componentens em alertas:</p>
+                                                <div class="listaComponentes">
+                                                    <li class="componenteEspecifico">
+                                                        Memória
+                                                    </li>
+                                                    <li class="componenteEspecifico">
+                                                        CPU
+                                                    </li>
+                                                    <li class="componenteEspecifico">
+                                                        Disco
+                                                    </li>
+                                                </div>
+                                            </div>
+                                            <div class="situacao">
+                                                <div class="grave">
+                                                    Situação:
+                                                    <span class="colorSituacao"> Grave </span>
+                                                </div>
+                                                <div class="local">
+                                                    Local: ${maquina.local}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`
+                });
+
+                pagination.innerHTML = "";
+                for (let i = 0; i < totalPaginas; i++) {
+                    pagination.innerHTML +=
+                        `<button class="page-num" onclick="changePage(${i})">${i + 1}</button>`;
+                }
+            } else {
+                await listaMaquinas(0);
+            }
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
 </script>
 
 <script src="../assets/js/navegacao-menu.js"></script>
