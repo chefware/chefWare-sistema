@@ -128,7 +128,7 @@
 
                                     <div id="botaoMemoria" class="opcaoMenuComponentes">
                                         <h2>MEMÓRIA</h2>
-                                        <span>Em uso: <span>7,0/8,0 GB</span></span>
+                                        <span>Em uso: <span id="usoMenu">7,0/8,0 GB</span></span>
                                     </div>
 
                                     <div id="botaoRede" class="opcaoMenuComponentes componente-selecionado">
@@ -224,6 +224,7 @@
     const pacotesRecebidos = document.getElementById('pacotesRecebidos')
     const pacotesEnviados = document.getElementById('pacotesEnviados')
     const tipoComp = "Rede"
+    const usoMenu = document.getElementById('usoMenu')
 
     const params = new URLSearchParams(window.location.search)
     const idMaquina = params.get('id')

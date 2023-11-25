@@ -130,7 +130,7 @@
 
                                     <div id="botaoMemoria" class="opcaoMenuComponentes componente-selecionado">
                                         <h2>MEMÓRIA</h2>
-                                        <span>Em uso: <span>7,0/8,0 GB</span></span>
+                                        <span>Em uso: <span id="usoMenu"></span></span>
                                     </div>
 
                                     <div id="botaoRede" class="opcaoMenuComponentes">
@@ -154,13 +154,13 @@
                                         <div class="informacoesDinamicas">
                                             <h4>Em uso:</h4>
 
-                                            <div class="areaDadoGrafico critico">
-                                                <span id="qtdUso">7,0 GB</span>
+                                            <div class="areaDadoGrafico" id="situacaoAlerta">
+                                                <span id="qtdUso"></span>
                                             </div>
 
                                             <h4>Disponível:</h4>
                                             <div class="areaDadoGrafico">
-                                                <span id="qtdRestante">1,0 GB</span>
+                                                <span id="qtdRestante"></span>
                                             </div>
 
                                         </div>
@@ -208,7 +208,10 @@
     const qtdUso = document.getElementById('qtdUso')
     const qtdRestante = document.getElementById('qtdRestante')
     const tipoComp = "Memória"
-
+    const situacaoAlerta = document.getElementById('situacaoAlerta')
+    const usoMenu = document.getElementById('usoMenu')
+    var idEsp_grafico
+    var idComp_grafico
     const params = new URLSearchParams(window.location.search)
     const idMaquina = params.get('id')
 
@@ -245,26 +248,12 @@
             console.log(especificacao)
             if (especificacao.status === 200) {
                 const dadosEspecificacoes = especificacao.data
-                dados(dadosEspecificacoes[0].idEspecificacoes, dadosEspecificacoes[0].fkComponente)
-                histórico(dadosEspecificacoes[0].fkComponente)
+                await histórico(dadosEspecificacoes[0].fkComponente)
                 componente(dadosEspecificacoes[0].fkComponente)
                 idEsp_grafico = dadosEspecificacoes[0].idEspecificacoes
                 idComp_grafico = dadosEspecificacoes[0].fkComponente
                 comp.innerText = dadosEspecificacoes[0].tipo
-            }
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    async function dados(idEsp, idComp){
-        try {
-            const dadosResult = await axios.get(`/dados/${idEsp}/${idMaquina}/${idComp}`)
-            if(dadosResult.status === 200){
-                const dadosEstaticos = dadosResult.data
-                if (dadosEstaticos.length > 0) {
-                    total.innerText = dadosEstaticos[0].valor + ' ' + dadosEstaticos[0].unidadeMedida || ''
-                }
+                dados(dadosEspecificacoes[0].idEspecificacoes, dadosEspecificacoes[0].fkComponente)
             }
         } catch (error) {
             console.log(error)
@@ -318,10 +307,9 @@
         }
     });
 
-    setInterval(() => {
-
-        histórico(idComp_grafico)
-
+    setInterval(async () => {
+        await histórico(idComp_grafico)
+        dados(idEsp_grafico, idComp_grafico)
     }, 5000)
 
     function formatarDataHora(dataHora) {
@@ -379,14 +367,39 @@
                         const dataHoraFormatada = formatarDataHora(historico.data[i].dataHora)
                         graficoData.labels.push(dataHoraFormatada)
                         graficoData.datasets[0].data.push(parseFloat(historico.data[i].leitura))
+                        usoMenu.innerText = `${historico.data[i].leitura}`
                     } else {
                         qtdRestante.innerText = `${historico.data[i].leitura} ${historico.data[i].unidadeMedida}`
                     }
 
+                    if(historico.data[i].nome === 'Memoria em Uso'){
+                       if(historico.data[i].leitura >= 70 && historico.data[i].leitura < 90){
+                        situacaoAlerta.style.backgroundColor = 'yellow'
+                    } else if(historico.data[i].leitura - historico.data[i + 1].leitura >= 90){
+                        situacaoAlerta.style.backgroundColor = 'red'
+                    } else {
+                        situacaoAlerta.style.backgroundColor = 'green'
+                    }
+                    }
                 }
 
                 grafico.data = graficoData
                 grafico.update()
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function dados(idEsp, idComp){
+        try {
+            const dadosResult = await axios.get(`/dados/${idEsp}/${idMaquina}/${idComp}`)
+            if(dadosResult.status === 200){
+                const dadosEstaticos = dadosResult.data
+                if (dadosEstaticos.length > 0) {
+                    total.innerText = dadosEstaticos[0].valor + ' ' + dadosEstaticos[0].unidadeMedida || ''
+                    usoMenu.innerText += ` / ${dadosEstaticos[0].valor} ${dadosEstaticos[0].unidadeMedida}`
+                }
             }
         } catch (error) {
             console.log(error)

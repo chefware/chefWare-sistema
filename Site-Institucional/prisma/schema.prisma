@@ -76,6 +76,7 @@ model Especificacoes {
   tipo             String?
   dados            Dados[]           // Adicionando relação inversa com Dados
   maquina          Maquina           @relation(fields: [fkMaquina], references: [idMaquina])
+  historicos       Historico[]       
   componente       Componente        @relation(fields: [fkComponente], references: [idComponente])
   @@id([idEspecificacoes, fkMaquina, fkComponente])
   @@index([fkMaquina, fkComponente], name: "idx_tipo_maquina_componente")
@@ -100,11 +101,13 @@ model Historico {
   idHistorico      Int        @id @default(autoincrement())
   fkMaquina        Int
   fkComponente     Int
+  fkEspecificacoes Int
   dataHora         DateTime?
   nome             String?
   leitura          String?
   unidadeMedida    String?
   maquina          Maquina    @relation(fields: [fkMaquina], references: [idMaquina])
+  especificacoes   Especificacoes @relation(fields: [fkEspecificacoes], references: [idEspecificacoes])
   componente       Componente @relation(fields: [fkComponente], references: [idComponente])
 }
 

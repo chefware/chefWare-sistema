@@ -127,7 +127,7 @@
 
                                     <div id="botaoMemoria" class="opcaoMenuComponentes">
                                         <h2>MEMÓRIA</h2>
-                                        <span>Em uso: <span>7,0/8,0 GB</span></span>
+                                        <span>Em uso: <span id="UsoMenu"></span></span>
                                     </div>
 
                                     <div id="botaoRede" class="opcaoMenuComponentes">
@@ -151,7 +151,7 @@
                                         <div class="informacoesDinamicas">
                                             <h4>Em uso:</h4>
 
-                                            <div class="areaDadoGrafico alerta">
+                                            <div class="areaDadoGrafico" id="situacaoAlerta">
                                                 <span id="qtdUso"></span>
                                             </div>
 
@@ -171,6 +171,7 @@
                                                 <span class="tituloDadoEstatico">Tamanho total: <span
                                                         class="dadoEstatico" id="tamTotal"></span>
                                                 </span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -178,10 +179,9 @@
                         </div>
                     </div>
                 </div>
-            </div>
 
+            </div>
         </div>
-    </div>
 
 </body>
 
@@ -202,7 +202,10 @@
     const tamTotal = document.getElementById('tamTotal')
     const qtdUso = document.getElementById('qtdUso')
     const qtdRestante = document.getElementById('qtdRestante')
+    const situacaoAlerta = document.getElementById('situacaoAlerta')
     const tipoComp = "Disco"
+    const usoMenu = document.getElementById('UsoMenu')
+    var qtdUsoAlerta
 
     const params = new URLSearchParams(window.location.search)
     const idMaquina = params.get('id')
@@ -252,10 +255,10 @@
         }
     }
 
-    async function dados(idEsp, idComp){
+    async function dados(idEsp, idComp) {
         try {
             const dadosResult = await axios.get(`/dados/${idEsp}/${idMaquina}/${idComp}`)
-            if(dadosResult.status === 200){
+            if (dadosResult.status === 200) {
                 const dadosEstaticos = dadosResult.data
                 if (dadosEstaticos.length > 0) {
                     tamTotal.innerText = dadosEstaticos[0].valor + ' ' + dadosEstaticos[0].unidadeMedida || ''
@@ -338,7 +341,7 @@
                 var graficoData = {
                     labels: [],
                     datasets: [{
-                        label: '% de uso',
+                        label: 'GB de uso',
                         data: [],
                         borderWidth: 1,
                         backgroundColor: (context) => {
@@ -371,17 +374,26 @@
                 }
                 const startIndex = Math.max(0, historico.data.length - 10)
                 for (var i = startIndex; i < historico.data.length; i++) {
-                    if(historico.data[i].descricao === 'Disco Tamanho Total'){
-                        qtdUso.innerText = `${historico.data[i].valor - historico.data[i+1].valor} ${historico.data[i].unidadeMedida}`
-                    } else {
-                        qtdRestante.innerText = `${historico.data[i].valor} ${historico.data[i].unidadeMedida}`
+                    if (historico.data[i].descricao === 'Disco Tamanho Total') {
+                        qtdUso.innerText = `${(historico.data[i].valor - historico.data[i + 1].valor).toFixed(2)} ${historico.data[i].unidadeMedida}`
+                        qtdUsoAlerta = historico.data[i].valor - historico.data[i + 1].valor
                         const dataHoraFormatada = formatarDataHora(historico.data[i].dataHora)
                         graficoData.labels.push(dataHoraFormatada)
-                        graficoData.datasets[0].data.push(parseFloat(historico.data[i].valor))
+                        graficoData.datasets[0].data.push(parseFloat(historico.data[i].valor - historico.data[i + 1].valor))
+                    } else {
+                        qtdRestante.innerText = `${historico.data[i].valor} ${historico.data[i].unidadeMedida}`
                     }
 
+                    if(historico.data[i].descricao === 'Disco Tamanho Total'){
+                       if(historico.data[i].valor - historico.data[i + 1].valor >= 70 && historico.data[i].valor - historico.data[i + 1].valor < 90){
+                        situacaoAlerta.style.backgroundColor = 'yellow'
+                    } else if(historico.data[i].valor - historico.data[i + 1].valor >= 90){
+                        situacaoAlerta.style.backgroundColor = 'red'
+                    } else {
+                        situacaoAlerta.style.backgroundColor = 'green'
+                    }
+                    }
                 }
-
                 grafico.data = graficoData
                 grafico.update()
             }
