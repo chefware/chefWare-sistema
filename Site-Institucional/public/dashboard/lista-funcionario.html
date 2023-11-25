@@ -125,9 +125,10 @@
 </html>
 
 <script>
+    const idFuncionario = sessionStorage.getItem('idFuncionario');
+    
     pegarFoto()
     function pegarFoto() {
-        const idFuncionario = sessionStorage.getItem('idFuncionario')
         const imagem = document.getElementById('foto-perfil')
         const baseUrl = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
         imagem.src = `${baseUrl}/funcionarios/foto/${idFuncionario}`
@@ -141,7 +142,6 @@
 
     var nomeUser = sessionStorage.getItem("nomeFuncionario");
     var fkEmpresa = sessionStorage.getItem("fkEmpresa");
-    var idFuncionario = sessionStorage.getItem("idFuncionario");
 
     if (nomeUser != null) {
         perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${nomeUser}</span></span>`;
