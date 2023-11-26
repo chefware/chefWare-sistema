@@ -138,7 +138,8 @@
             const modelo = input_modelo.value
             const local = input_local.value
             const descComponentes = input_descricao.value;
-            const fkEmpresa = 1
+            const fkEmpresa = sessionStorage.getItem("fkEmpresa");
+            console.log(fkEmpresa)
             const data = {
                 numSerie,
                 nome,
