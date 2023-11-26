@@ -182,7 +182,7 @@ funcionariosController.get('/foto/:id', async (req, res) => {
     try {
         const funcionario = await prisma.funcionario.findUnique({
             where: {
-                id: Number(req.params.id),
+                idFuncionario: Number(req.params.id),
             },
             select: {
                 foto: true,
