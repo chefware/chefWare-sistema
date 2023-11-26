@@ -54,7 +54,7 @@
                     <div class="header">
                         <div class="conteudoEmpresa">
                             <span>Empresa</span>
-                            <h1>Fogo de Chão</h1>
+                            <h1 id="nomeEmpresa">Fogo de Chão</h1>
                         </div>
 
                         <div id="perfil" class="perfil-img">
@@ -69,11 +69,12 @@
                                 Máquinas
                             </div>
                             <div class="busca">
-                                <input type="text" placeholder="Insira o nome da máquina" id="input_pesquisa" oninput="pesquisarMaquinas()">
+                                <input type="text" placeholder="Insira o nome da máquina" id="input_pesquisa"
+                                    oninput="pesquisarMaquinas()">
                                 <button class="lupa"><img src="../assets/busca.png" onclick="buscar()" alt=""></button>
                                 <button class="filtro"><img src="../assets/filtro.png" alt=""></button>
                             </div>
-                            <button class="adicionar">
+                            <button id="botaoAdicionarMaquina" class="adicionar">
                                 <img src="../assets/adicionar.png" alt="">
                                 Nova máquina
                             </button>
@@ -101,9 +102,31 @@
 </html>
 
 <script>
-    listaMaquinas(0);
-    pegarFoto()
+    // Variaveis globais
+    var perfil = document.getElementById("perfil")
+    var nomeUser = sessionStorage.getItem("nomeFuncionario");
+    var fkEmpresa = sessionStorage.getItem("fkEmpresa");
+    var idFuncionario = sessionStorage.getItem("idFuncionario");
+    var privilegio = sessionStorage.getItem("privilegio");
+    var isFetchingData = false; // Flag para evitar múltiplas requisições simultâneas
+    let totalPaginas = 0; // Total de páginas disponíveis
 
+    // Pegar o nome do funcionario
+    if (nomeUser != null) {
+        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${nomeUser}</span></span>`;
+    }
+
+    // Verificar o privilegio do funcionario
+    if (privilegio == "Comum") {
+        document.getElementById("itemMenuEmpresa").style.display = "none";
+        document.getElementById("botaoAdicionarMaquina").style.display = "none";
+    }
+
+    pegarFoto(); // Chamar a função para pegar a foto do funcionario
+    listaMaquinas(0); // Chamar a função para listar as maquinas
+    pegarNomeEmpresa(); // Chamar a função para pegar o nome da empresa
+
+    // Função para pegar a foto do funcionario
     function pegarFoto() {
         const idFuncionario = sessionStorage.getItem('idFuncionario')
         const imagem = document.getElementById('foto-perfil')
@@ -112,6 +135,23 @@
         imagem.src = `${baseUrl}/funcionarios/foto/${idFuncionario}`
     }
 
+    // Funcão para pegar o nome da empresa
+    async function pegarNomeEmpresa() {
+        try {
+            const response = await axios.get(`/empresas/${fkEmpresa}`);
+            if (response.status === 200) {
+                const dados = response.data;
+                console.log(dados);
+                document.getElementById('nomeEmpresa').innerHTML = `${dados.nome}`;
+            } else {
+                console.error('Erro na requisição:', response.status, response.statusText);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    // Função para listar as maquinas
     async function listaMaquinas(page) {
         console.log('Fetching data for page:', page);
 
@@ -189,9 +229,6 @@
         }
     }
 
-    var isFetchingData = false; // Flag para evitar múltiplas requisições simultâneas
-    let totalPaginas = 0; // Total de páginas disponíveis
-
     // Função para buscar os dados da API de acordo com a página
     async function fetchData(page) {
         try {
@@ -238,6 +275,7 @@
         await listaMaquinas(page);
     }
 
+    // Pegar os elementos de paginação
     document.getElementById('pagination').addEventListener('click', function (event) {
         if (event.target.tagName === 'BUTTON') {
             const page = parseInt(event.target.innerText, 10);
@@ -245,28 +283,22 @@
         }
     });
 
+    // Função para navegar para a página de dashboard da máquina
     function navegacao(id) {
         window.location.href = `dashboard-cpu.html?id=${id}`
     }
 
+    // Pegar de adicionar nova máquina
     const cadastroMaquina = document.querySelectorAll('.adicionar')
 
+    // Navegar para a página de cadastro de máquina
     cadastroMaquina.forEach((card) => {
         card.addEventListener('click', () => {
             window.location.href = 'cadastrar-maquinas.html'
         })
     })
 
-    var perfil = document.getElementById("perfil")
-
-    var nomeUser = sessionStorage.getItem("nomeFuncionario");
-    var fkEmpresa = sessionStorage.getItem("fkEmpresa");
-    var idFuncionario = sessionStorage.getItem("idFuncionario");
-
-    if (nomeUser != null) {
-        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${nomeUser}</span></span>`;
-    }
-
+    // Função para pesquisar as máquinas por nome
     async function pesquisarMaquinas() {
         const termoPesquisa = document.getElementById('input_pesquisa').value.toLowerCase();
 

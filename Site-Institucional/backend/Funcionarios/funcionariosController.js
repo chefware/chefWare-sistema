@@ -132,15 +132,19 @@ funcionariosController.patch('/:id', upload.single('foto'), async (req, res) => 
     try {
         const { id } = req.params;
         const { nome, email, senha, cpf, cargo, privilegio } = req.body;
-        const fotoPerfil = req.file;
-        let fotoPerfilBuffer = null;
+        const fotoPerfil = req.file;  // Nova foto, se fornecida
 
-        if (fotoPerfil) {
-            fotoPerfilBuffer = fotoPerfil.buffer;
-            updateData.foto = fotoPerfilBuffer;
-        }
+        // Obtenha os dados do funcionário existente
+        const funcionarioExistente = await prisma.Funcionario.findUnique({
+            where: {
+                idFuncionario: Number(id),
+            },
+        });
 
-        let updateData = {
+        // Se uma nova foto foi fornecida, atualize-a; caso contrário, mantenha a foto existente
+        const fotoPerfilBuffer = fotoPerfil ? fotoPerfil.buffer : funcionarioExistente.foto;
+
+        const updateData = {
             nome,
             email,
             senha,
@@ -182,7 +186,7 @@ funcionariosController.get('/foto/:id', async (req, res) => {
     try {
         const funcionario = await prisma.funcionario.findUnique({
             where: {
-                id: Number(req.params.id),
+                idFuncionario: Number(req.params.id),
             },
             select: {
                 foto: true,

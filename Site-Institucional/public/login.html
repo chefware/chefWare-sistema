@@ -71,6 +71,7 @@ function logar() {
             sessionStorage.setItem("fkEmpresa", response.data.fkEmpresa);
             sessionStorage.setItem("idFuncionario", response.data.idFuncionario);
             sessionStorage.setItem("nomeFuncionario", response.data.nome);
+            sessionStorage.setItem("privilegio", response.data.privilegio);
             window.location.href = "./dashboard/lista-maquinas.html";
         }
     })
