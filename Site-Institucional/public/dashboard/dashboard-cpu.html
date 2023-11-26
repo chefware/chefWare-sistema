@@ -72,7 +72,7 @@
 
                         <div class="conteudoEmpresa">
                             <span>Empresa</span>
-                            <h1>Fogo de Chão</h1>
+                            <h1 id="nomeEmpresa">Fogo de Chão</h1>
                         </div>
 
                         <div id="perfil" class="perfil-img">
@@ -227,12 +227,52 @@
 <script src="../assets/js/graficoCpu.js"></script>
 <script>
     pegarFoto()
+
     function pegarFoto() {
         const idFuncionario = sessionStorage.getItem('idFuncionario')
         const imagem = document.getElementById('foto-perfil')
-        const baseUrl = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
+        const baseUrl = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' +
+            window.location.port : '')
         imagem.src = `${baseUrl}/funcionarios/foto/${idFuncionario}`
     }
+
+    var perfil = document.getElementById("perfil")
+    var nomeUser = sessionStorage.getItem("nomeFuncionario");
+    var fkEmpresa = sessionStorage.getItem("fkEmpresa");
+    var idFuncionario = sessionStorage.getItem("idFuncionario");
+    var privilegio = sessionStorage.getItem("privilegio");
+
+    if (nomeUser != null) {
+        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${nomeUser}</span></span>`;
+    }
+
+    pegarNomeEmpresa();
+
+    async function pegarNomeEmpresa() {
+        try {
+            const response = await axios.get(`/empresas/${fkEmpresa}`);
+            if (response.status === 200) {
+                const dados = response.data;
+                console.log(dados);
+                document.getElementById('nomeEmpresa').innerHTML = `${dados.nome}`;
+            } else {
+                console.error('Erro na requisição:', response.status, response.statusText);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    // Verificar o privilegio do usuário
+    if (privilegio == "Comum") {
+        document.getElementById("itemMenuEmpresa").style.display = "none";
+        const botoesCrud = document.querySelectorAll(".botao");
+        botoesCrud.forEach(botao => {
+            botao.style.display = "none";
+        });
+        document.querySelector(".botaoAcoesRapidas").style.display = "none";
+    }
+
     const nome = document.getElementById('nomeMaquina')
     const modelo = document.getElementById('modelo')
     const fabricante = document.getElementById('fabricante')
@@ -298,10 +338,10 @@
         }
     }
 
-    async function dados(idEsp, idComp){
+    async function dados(idEsp, idComp) {
         try {
             const dadosResult = await axios.get(`/dados/${idEsp}/${idMaquina}/${idComp}`)
-            if(dadosResult.status === 200){
+            if (dadosResult.status === 200) {
                 const dadosEstaticos = dadosResult.data
                 if (dadosEstaticos.length > 0) {
                     fabricante.innerText = dadosEstaticos[0].valor || ''
@@ -374,7 +414,11 @@
 
         data.setHours(data.getHours() + 3)
 
-        const options = { hour: 'numeric', minute: 'numeric', second: 'numeric' }
+        const options = {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric'
+        }
         return new Intl.DateTimeFormat('pt-BR', options).format(data)
     }
 
@@ -426,13 +470,13 @@
                     graficoData.labels.push(dataHoraFormatada)
                     graficoData.datasets[0].data.push(parseFloat(historico.data[i].leitura))
 
-                if(historico.data[i].leitura >= 70 && historico.data[i].leitura < 90){
-                    situacaoAlerta.style.backgroundColor = 'yellow'   
-                } else if (historico.data[i].leitura >= 90){
-                    situacaoAlerta.style.backgroundColor = 'red'
-                } else {
-                    situacaoAlerta.style.backgroundColor = 'green'
-                } 
+                    if (historico.data[i].leitura >= 70 && historico.data[i].leitura < 90) {
+                        situacaoAlerta.style.backgroundColor = 'yellow'
+                    } else if (historico.data[i].leitura >= 90) {
+                        situacaoAlerta.style.backgroundColor = 'red'
+                    } else {
+                        situacaoAlerta.style.backgroundColor = 'green'
+                    }
                 }
 
                 grafico.data = graficoData
@@ -454,7 +498,7 @@
         }
     }
 
-    async function editar(){
+    async function editar() {
         window.location.href = `editar-maquina.html?id=${idMaquina}`
     }
 
@@ -507,31 +551,19 @@
         window.location.href = 'lista-funcionario.html'
     })
 
-    var perfil = document.getElementById("perfil")
-    var nomeUser = sessionStorage.getItem("nomeFuncionario");
-    var fkEmpresa = sessionStorage.getItem("fkEmpresa");
-    var idFuncionario = sessionStorage.getItem("idFuncionario");
-
-    if (nomeUser != null) {
-        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${nomeUser}</span></span>`;
-    }
-
-    function receberAcaoRapida(acao){
+    function receberAcaoRapida(acao) {
         axios.post('http://10.18.34.93:8080/inovacao', {
             comando: acao
-        },
-            {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
+        }, {
+            headers: {
+                'Content-Type': 'application/json'
             }
-        ).then(function (response) {
+        }).then(function (response) {
             console.log(response)
         }).catch(function (error) {
             console.log(error)
         })
     }
-
 </script>
 
 <script src="../assets/js/controle-pages.js"></script>

@@ -53,7 +53,7 @@
                     <div class="header">
                         <div class="conteudoEmpresa">
                             <span>Empresa</span>
-                            <h1>Fogo de Chão</h1>
+                            <h1 id="nomeEmpresa">Fogo de Chão</h1>
                         </div>
 
                         <div id="perfil" class="perfil-img">
@@ -78,12 +78,14 @@
 
                             <div class="campo">
                                 <h4 class="label-editar">HostName:</h4>
-                                <input id="input_hostName" type="text" class="input-form-editar" placeholder="Máquina 01">
+                                <input id="input_hostName" type="text" class="input-form-editar"
+                                    placeholder="Máquina 01">
                             </div>
 
                             <div class="campo">
                                 <h4 class="label-editar">Modelo:</h4>
-                                <input id="input_modelo" type="text" class="input-form-editar" placeholder="Intell 83948">
+                                <input id="input_modelo" type="text" class="input-form-editar"
+                                    placeholder="Intell 83948">
                             </div>
 
 
@@ -116,13 +118,44 @@
 </html>
 
 <script>
-    pegarFoto()
+    // Variaveis globais
+    var perfil = document.getElementById("perfil");
+    var nomeUser = sessionStorage.getItem("nomeFuncionario");
+    var fkEmpresaAtual = sessionStorage.getItem("fkEmpresa");
+    var idFuncionario = sessionStorage.getItem("idFuncionario");
+
+    pegarFoto();
+    pegarNomeEmpresa();
+
+    // Pegar o nome do usuário
+    if (nomeUser != null) {
+        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${nomeUser}</span></span>`;
+    }
+
+    // Pegar a foto do usuário
     function pegarFoto() {
         const idFuncionario = sessionStorage.getItem('idFuncionario')
         const imagem = document.getElementById('foto-perfil')
-        const baseUrl = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
+        const baseUrl = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' +
+            window.location.port : '')
         imagem.src = `${baseUrl}/funcionarios/foto/${idFuncionario}`
     }
+
+    async function pegarNomeEmpresa() {
+        try {
+            const response = await axios.get(`/empresas/${fkEmpresaAtual}`);
+            if (response.status === 200) {
+                const dados = response.data;
+                console.log(dados);
+                document.getElementById('nomeEmpresa').innerHTML = `${dados.nome}`;
+            } else {
+                console.error('Erro na requisição:', response.status, response.statusText);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     const params = new URLSearchParams(window.location.search)
     const idMaquina = params.get('id')
 
@@ -134,7 +167,6 @@
     const local = document.getElementById('input_local')
     const descComponentes = document.getElementById('input_descricao')
     const fkEmpresa = 1
-
 
     maquinaDashboard()
 
@@ -155,45 +187,36 @@
         }
     }
 
-    async function editar(){
+    async function editar() {
         const data = {
-        numSerie: numSerie.value,
-        nome: nome.value,
-        hostName: hostName.value,
-        modelo: modelo.value,
-        local: local.value,
-        descComponentes: descComponentes.value,
-        fkEmpresa: fkEmpresa
-    };
+            numSerie: numSerie.value,
+            nome: nome.value,
+            hostName: hostName.value,
+            modelo: modelo.value,
+            local: local.value,
+            descComponentes: descComponentes.value,
+            fkEmpresa: fkEmpresa
+        };
 
-            const response = await axios.patch(`/maquinas/${idMaquina}`, data);
-            if (response.status === 200) {
-                const maquinaCriada = response.data;
-                console.log('Máquina cadastrada com sucesso:', maquinaCriada);
+        const response = await axios.patch(`/maquinas/${idMaquina}`, data);
+        if (response.status === 200) {
+            const maquinaCriada = response.data;
+            console.log('Máquina cadastrada com sucesso:', maquinaCriada);
 
-                result.className = "show";
-                setTimeout(function () {
-                    x.className = result.className.replace("show", "");
-                }, 1500);
-                setTimeout(function () {
-                    window.location.href = `dashboard-cpu.html?id=${idMaquina}`
-                }, 2000);
-            } else {
-                console.error('Erro ao eidtar máquina:', response.status, response.statusText)
-            }
+            result.className = "show";
+            setTimeout(function () {
+                x.className = result.className.replace("show", "");
+            }, 1500);
+            setTimeout(function () {
+                window.location.href = `dashboard-cpu.html?id=${idMaquina}`
+            }, 2000);
+        } else {
+            console.error('Erro ao eidtar máquina:', response.status, response.statusText)
+        }
     }
 
-    async function cancelar(){
+    async function cancelar() {
         window.location.href = `dashboard-cpu.html?id=${idMaquina}`
-    }
-
-    var perfil = document.getElementById("perfil");
-    var nomeUser = sessionStorage.getItem("nomeFuncionario");
-    var fkEmpresaAtual = sessionStorage.getItem("fkEmpresa");
-    var idFuncionario = sessionStorage.getItem("idFuncionario");
-
-    if (nomeUser != null) {
-        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${nomeUser}</span></span>`;
     }
 </script>
 

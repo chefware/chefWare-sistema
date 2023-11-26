@@ -166,3 +166,7 @@
     border: none;
     padding: 5px;
 }
+
+.imgAcoes {
+    display: flex;
+}
