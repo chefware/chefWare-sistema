@@ -11,6 +11,9 @@ maquinasController.get('/page/:page', async (req, res) => {
     try {
         const [maquinas, total] = await prisma.$transaction([
             prisma.maquina.findMany({
+                where: {
+                    ativo: true
+                },
                 take: take,
                 skip: skip,
             }),
@@ -85,6 +88,8 @@ maquinasController.post('/', async (req, res) => {
             fkEmpresa
         } = req.body
 
+        const fkEmpresaInt = Number(fkEmpresa);
+
         const maquinaCriada = await prisma.maquina.create({
             data: {
                 numSerie,
@@ -93,7 +98,7 @@ maquinasController.post('/', async (req, res) => {
                 modelo,
                 local,
                 descComponentes,
-                fkEmpresa
+                fkEmpresa: fkEmpresaInt
             }
         })
 
