@@ -34,16 +34,16 @@ funcionariosController.get('/page/:page', async (req, res) => {
             prisma.funcionario.findMany({
                 take: take,
                 skip: skip,
-                // select: {
-                //     id: true,
-                //     nome: true,
-                //     email: true,
-                //     cpf: true,
-                //     cargo: true,
-                //     privilegio: true,
-                //     fkEmpresa: true,
-                //     foto: false
-                // }
+                select: {
+                    id: true,
+                    nome: true,
+                    email: true,
+                    cpf: true,
+                    cargo: true,
+                    privilegio: true,
+                    fkEmpresa: true,
+                    foto: false
+                }
             }),
             prisma.funcionario.count()
         ]);
