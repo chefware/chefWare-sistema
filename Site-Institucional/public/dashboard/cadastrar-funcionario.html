@@ -111,6 +111,12 @@
                                 <input type="File" id="input_foto" class="input-form-editar" placeholder="Nome funcionário" onchange="handleFileSelect(event)">
                             </div>
 
+                            <div class="campo">
+                                <h4 class="label-editar">Id da Empresa</h4>
+                                <select class="input-form-editar sl-edicao selectEmpresa" id="sl_empresa">
+                                </select>
+                            </div>
+
                             <div class="campo-botoes campo-horizontal">
                                 <button class="bt_edicao" id="botao-cancelar" onclick="cancelar()">Cancelar</button>
                                 <button class="bt_edicao" id="botao-editar" onclick="cadastrar()">Cadastrar</button>
@@ -128,6 +134,28 @@
 
 <script>
     pegarFoto()
+    selectBoxEmpresas()
+    function selectBoxEmpresas(){
+
+        const form = document.getElementsByClassName('selectEmpresa')[0]
+        let numeroDePaginas;
+        const primeiraRequisicao = axios.get(`/empresas/page/${0}`).then(response => {
+            numeroDePaginas = response.data.totalPaginas
+        })
+        console.log(numeroDePaginas)
+        for(let i = 0; i < numeroDePaginas; i++){
+            const empresas = axios.get(`/empresas/page/${i}`).then(response => {
+                const dados = response.data.content
+                dados.forEach(empresa => {
+                    const option = document.createElement('option')
+                    option.value = empresa.id
+                    option.innerHTML = empresa.nome
+                    form.appendChild(option)
+                })
+            })
+        }
+        const idList = axios.get('/empresas')
+    }
     function pegarFoto() {
         const idFuncionario = sessionStorage.getItem('idFuncionario')
         const imagem = document.getElementById('foto-perfil')
@@ -197,7 +225,7 @@
             form.append('privilegio', sl_privilegio.value);
             form.append('foto', bufferFoto);
             form.append('fkEmpresa', fkEmpresaFunc);
-            
+
             const config = {
                 headers: {
                     'Content-Type': 'multipart/form-data'
