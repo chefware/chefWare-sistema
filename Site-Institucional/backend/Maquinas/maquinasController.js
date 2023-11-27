@@ -1,5 +1,7 @@
 import express from 'express'
-import { PrismaClient } from '@prisma/client'
+import {
+    PrismaClient
+} from '@prisma/client'
 const prisma = new PrismaClient()
 
 const maquinasController = express.Router()
@@ -57,7 +59,7 @@ maquinasController.get('/:id', async (req, res) => {
             }
         })
 
-        if(maquinas){
+        if (maquinas) {
             res.status(200).json(maquinas)
         } else {
             res.status(200).json("Não existe empresa com esse id")
@@ -71,16 +73,19 @@ maquinasController.get('/:id', async (req, res) => {
 maquinasController.get('/search/:termo', async (req, res) => {
     const termoPesquisa = req.params.termo.toLowerCase();
     const fkEmpresa = Number(req.query.fkEmpresa);
-    if(fkEmpresa === 1){ // se for chefware, mostre todas as maquinas de todas as empresas
+    if (fkEmpresa === 1) { // se for chefware, mostre todas as maquinas de todas as empresas
         fkEmpresa = null
     }
 
     try {
         const maquinas = await prisma.maquina.findMany({
             where: {
-                OR: [
-                    { nome: { contains: termoPesquisa, fkEmpresa: fkEmpresa } },
-                ]
+                OR: [{
+                    nome: {
+                        contains: termoPesquisa
+                    },
+                    fkEmpresa: fkEmpresa
+                }]
             }
         });
 
