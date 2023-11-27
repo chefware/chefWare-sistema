@@ -197,7 +197,7 @@
                 totalPaginas,
                 paginaAtual,
                 totalFuncionarios
-            } = await fetchData(page);
+            } = await fetchData(page, fkEmpresa);
 
             console.log('Dados recebidos: ', funcionarios);
 
@@ -273,40 +273,36 @@
         }
     }
 
-    // Função para buscar os dados da API de acordo com a página
-    async function fetchData(page) {
-        try {
-            const response = await axios.get(`/funcionarios/page/${page}`);
+// Função para buscar os dados da API de acordo com a página
+async function fetchData(page, fkEmpresa) {
+    try {
+        let url = `/funcionarios/page/${page}`;
+        if (fkEmpresa) {
+            url += `?fkEmpresa=${fkEmpresa}`;
+        }
 
-            if (response.status === 200) {
-                const {
-                    funcionarios,
-                    totalPaginas: fetchedTotalPaginas,
-                    paginaAtual,
-                    totalFuncionarios
-                } = response.data;
+        const response = await axios.get(url);
 
-                console.log(funcionarios);
+        if (response.status === 200) {
+            const {
+                funcionarios,
+                totalPaginas: fetchedTotalPaginas,
+                paginaAtual,
+                totalFuncionarios
+            } = response.data;
 
-                totalPaginas = fetchedTotalPaginas;
+            console.log(funcionarios);
 
-                return {
-                    funcionarios,
-                    totalPaginas,
-                    paginaAtual,
-                    totalFuncionarios
-                };
-            } else {
-                console.error('Erro na requisição:', response.status, response.statusText);
-                return {
-                    funcionarios: [],
-                    totalPaginas: 0,
-                    paginaAtual: 0,
-                    totalFuncionarios: 0
-                };
-            }
-        } catch (error) {
-            console.error(error);
+            totalPaginas = fetchedTotalPaginas;
+
+            return {
+                funcionarios,
+                totalPaginas,
+                paginaAtual,
+                totalFuncionarios
+            };
+        } else {
+            console.error('Erro na requisição:', response.status, response.statusText);
             return {
                 funcionarios: [],
                 totalPaginas: 0,
@@ -314,7 +310,17 @@
                 totalFuncionarios: 0
             };
         }
+    } catch (error) {
+        console.error(error);
+        return {
+            funcionarios: [],
+            totalPaginas: 0,
+            paginaAtual: 0,
+            totalFuncionarios: 0
+        };
     }
+}
+
 
     document.getElementById('pagination').addEventListener('click', function (event) {
         if (event.target.tagName === 'BUTTON') {

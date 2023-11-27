@@ -29,13 +29,22 @@ funcionariosController.get('/page/:page', async (req, res) => {
     const take = 5;
     const page = Number(req.params.page) || 0;
     const skip = page * take;
-    try {
-        const [funcionarios, total] = await prisma.$transaction([
-            prisma.funcionario.findMany({
-                take: take,
+        var fkEmpresa = Number(req.query.fkEmpresa);
+
+        if (fkEmpresa === 1){ // se for chefware, mostre todos os funcionários de todas as empresas
+            fkEmpresa = null;
+        }
+
+        try {
+            const [funcionarios, total] = await prisma.$transaction([
+                prisma.funcionario.findMany({
+                    take: take,
                 skip: skip,
+                where: {
+                    fkEmpresa: fkEmpresa || undefined
+                },
                 select: {
-                    id: true,
+                    idFuncionario: true,
                     nome: true,
                     email: true,
                     cpf: true,
