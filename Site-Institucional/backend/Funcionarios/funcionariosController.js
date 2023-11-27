@@ -102,7 +102,10 @@ funcionariosController.get('/search/:termo', async (req, res) => {
         const funcionario = await prisma.funcionario.findMany({
             where: {
                 OR: [
-                    { nome: { contains: termoPesquisa, fkEmpresa: fkEmpresa } },
+                    {
+                        nome: { contains: termoPesquisa },
+                        fkEmpresa: fkEmpresa
+                    },
                 ]
             }
         })
