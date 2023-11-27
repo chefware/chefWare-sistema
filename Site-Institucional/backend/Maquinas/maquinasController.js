@@ -8,11 +8,17 @@ maquinasController.get('/page/:page', async (req, res) => {
     const take = 6;
     const page = Number(req.params.page) || 0;
     const skip = page * take;
+    var fkEmpresa = Number(req.query.fkEmpresa)
+
+    if (fkEmpresa === 1) { // se for chefware, mostre todos os funcionários de todas as empresas
+        fkEmpresa = null
+    }
     try {
         const [maquinas, total] = await prisma.$transaction([
             prisma.maquina.findMany({
                 where: {
-                    ativo: true
+                    ativo: true,
+                    fkEmpresa: fkEmpresa || undefined
                 },
                 take: take,
                 skip: skip,
