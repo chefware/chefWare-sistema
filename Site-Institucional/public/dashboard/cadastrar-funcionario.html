@@ -148,13 +148,17 @@
             const form = document.getElementsByClassName('selectEmpresa')[0]
             let numeroDePaginas
             const primeiraRequisicao = axios.get(`/empresas/page/${0}`).then(response => {
+                console.log(response)
+                console.log(response.data)
+                console.log(response.data.totalPaginas)
                 numeroDePaginas = response.totalPaginas
             })
             console.log(numeroDePaginas)
             for (let i = 0; i < numeroDePaginas; i++) {
                 const empresas = axios.get(`/empresas/page/${i}`).then(response => {
-                    const dados = response.data.content
-                    dados.forEach(empresa => {
+                    const empresas = response.data
+                    console.log(empresas)
+                    empresas.forEach(empresa => {
                         const option = document.createElement('option')
                         option.value = empresa.id
                         option.innerHTML = empresa.nome
@@ -162,7 +166,6 @@
                     })
                 })
             }
-            const idList = axios.get('/empresas')
         } else {
             console.log('nao é admin')
         }
