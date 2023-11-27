@@ -28,7 +28,7 @@ dashboardController.get('/especificacoes/:id/:tipoComp', async (req, res) => {
     const idMaquina = Number(req.params.id)
     const tipoComp = req.params.tipoComp
     try {
-        const EspecificacaoCpu = await prisma.especificacoes.findMany({
+        const EspecificacaoCpu = await prisma.componente.findMany({
             where: {
                 fkMaquina: idMaquina,
                 tipo: tipoComp
