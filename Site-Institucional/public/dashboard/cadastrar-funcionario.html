@@ -148,7 +148,7 @@
             const form = document.getElementsByClassName('selectEmpresa')[0]
             let numeroDePaginas
             const primeiraRequisicao = axios.get(`/empresas/page/${0}`).then(response => {
-                numeroDePaginas = response.data.totalPaginas
+                numeroDePaginas = response.totalPaginas
             })
             console.log(numeroDePaginas)
             for (let i = 0; i < numeroDePaginas; i++) {
