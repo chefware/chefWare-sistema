@@ -141,6 +141,9 @@
     selectBoxEmpresas()
     function selectBoxEmpresas() {
         const privilegio = sessionStorage.getItem('privilegio')
+        const fkEmpresa = sessionStorage.getItem('fkEmpresa')
+        console.log(privilegio)
+        console.log(fkEmpresa)
         if (privilegio === 'Admin' && fkEmpresa === '1') {
             const form = document.getElementsByClassName('selectEmpresa')[0]
             let numeroDePaginas
