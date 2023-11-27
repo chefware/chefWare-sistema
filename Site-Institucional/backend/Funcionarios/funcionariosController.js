@@ -54,7 +54,11 @@ funcionariosController.get('/page/:page', async (req, res) => {
                     foto: false
                 }
             }),
-            prisma.funcionario.count()
+            prisma.funcionario.count({
+                where: {
+                    fkEmpresa: fkEmpresa || undefined
+                }
+            })
         ])
 
         const totalPaginas = Math.ceil(total / take)
@@ -89,12 +93,16 @@ funcionariosController.get('/:id', async (req, res) => {
 
 funcionariosController.get('/search/:termo', async (req, res) => {
     const termoPesquisa = req.params.termo.toLowerCase()
+    const fkEmpresa = Number(req.query.fkEmpresa)
+    if (fkEmpresa === 1) { // se for chefware, mostre todos os funcionários de todas as empresas
+        fkEmpresa = null
+    }
 
     try {
         const funcionario = await prisma.funcionario.findMany({
             where: {
                 OR: [
-                    { nome: { contains: termoPesquisa } },
+                    { nome: { contains: termoPesquisa, fkEmpresa: fkEmpresa } },
                 ]
             }
         })
