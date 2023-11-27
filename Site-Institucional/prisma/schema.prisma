@@ -82,11 +82,10 @@ model Dados {
   idDados           Int               @id @default(autoincrement())
   descricao         String?
   valor             String?
-  unidadeMedida     Int 
+  unidadeMedida     String? 
   fkMaquina         Int
   fkComponente      Int
   dataHora         DateTime?
-  unidadesMedida    unidadeMedida     @relation(fields: [unidadeMedida], references: [idUnidadeMedida])
   componente        Componente        @relation(fields: [fkComponente], references: [idComponente])
   maquina           Maquina           @relation(fields: [fkMaquina], references: [idMaquina])
   @@index([unidadeMedida, fkMaquina, fkComponente], name: "idx_descricao_maquina_componente")
@@ -99,16 +98,9 @@ model Historico {
   dataHora         DateTime?
   nome             String?
   leitura          String?
-  unidadeMedida  Int
+  unidadeMedida    String?
   maquina          Maquina    @relation(fields: [fkMaquina], references: [idMaquina])
   componente       Componente @relation(fields: [fkComponente], references: [idComponente])
-  unidadeMedidas   unidadeMedida @relation(fields: [unidadeMedida], references: [idUnidadeMedida])
 }
 
-model unidadeMedida {
-  idUnidadeMedida Int        @id @default(autoincrement())
-  tipo            String?
-  historicos      Historico[]
-  registros       Dados[]
-}
 
