@@ -264,6 +264,8 @@
                 botoesAcoes.forEach((item) => {
                     item.innerHTML = "";
                 });
+            } else if (privilegio = 'Admin' && fkEmpresa != 1) {
+                document.getElementById("itemMenuEmpresa").style.display = "none"
             }
 
         } catch (error) {
@@ -273,36 +275,45 @@
         }
     }
 
-// Função para buscar os dados da API de acordo com a página
-async function fetchData(page, fkEmpresa) {
-    try {
-        let url = `/funcionarios/page/${page}`;
-        if (fkEmpresa) {
-            url += `?fkEmpresa=${fkEmpresa}`;
-        }
+    // Função para buscar os dados da API de acordo com a página
+    async function fetchData(page, fkEmpresa) {
+        try {
+            let url = `/funcionarios/page/${page}`;
+            if (fkEmpresa) {
+                url += `?fkEmpresa=${fkEmpresa}`;
+            }
 
-        const response = await axios.get(url);
+            const response = await axios.get(url);
 
-        if (response.status === 200) {
-            const {
-                funcionarios,
-                totalPaginas: fetchedTotalPaginas,
-                paginaAtual,
-                totalFuncionarios
-            } = response.data;
+            if (response.status === 200) {
+                const {
+                    funcionarios,
+                    totalPaginas: fetchedTotalPaginas,
+                    paginaAtual,
+                    totalFuncionarios
+                } = response.data;
 
-            console.log(funcionarios);
+                console.log(funcionarios);
 
-            totalPaginas = fetchedTotalPaginas;
+                totalPaginas = fetchedTotalPaginas;
 
-            return {
-                funcionarios,
-                totalPaginas,
-                paginaAtual,
-                totalFuncionarios
-            };
-        } else {
-            console.error('Erro na requisição:', response.status, response.statusText);
+                return {
+                    funcionarios,
+                    totalPaginas,
+                    paginaAtual,
+                    totalFuncionarios
+                };
+            } else {
+                console.error('Erro na requisição:', response.status, response.statusText);
+                return {
+                    funcionarios: [],
+                    totalPaginas: 0,
+                    paginaAtual: 0,
+                    totalFuncionarios: 0
+                };
+            }
+        } catch (error) {
+            console.error(error);
             return {
                 funcionarios: [],
                 totalPaginas: 0,
@@ -310,16 +321,7 @@ async function fetchData(page, fkEmpresa) {
                 totalFuncionarios: 0
             };
         }
-    } catch (error) {
-        console.error(error);
-        return {
-            funcionarios: [],
-            totalPaginas: 0,
-            paginaAtual: 0,
-            totalFuncionarios: 0
-        };
     }
-}
 
 
     document.getElementById('pagination').addEventListener('click', function (event) {

@@ -253,6 +253,8 @@
             botao.style.display = "none";
         });
         document.querySelector(".botaoAcoesRapidas").style.display = "none";
+    } else if (privilegio = 'Admin' && fkEmpresa != 1) {
+        document.getElementById("itemMenuEmpresa").style.display = "none"
     }
 
 
@@ -303,25 +305,25 @@
         }
     }
 
-    async function unidadeMedida(idUnidade, tipoFunction){
+    async function unidadeMedida(idUnidade, tipoFunction) {
         try {
             const unidadeMedida = await axios.get(`/unidades/${idUnidade}`)
             if (unidadeMedida.status === 200) {
                 const unidade = unidadeMedida.data
-                
+
                 usoMenu.innerText += `${unidade[0].tipo}`
-                
-                
+
+
             }
         } catch (error) {
             console.log(error)
         }
     }
 
-    async function dados(idComp){
+    async function dados(idComp) {
         try {
             const dadosResult = await axios.get(`/dados/${idMaquina}/${idComp}`)
-            if(dadosResult.status === 200){
+            if (dadosResult.status === 200) {
                 const dadosEstaticos = dadosResult.data
                 if (dadosEstaticos.length > 0) {
                     nomeEstatico.innerText = dadosEstaticos[0].valor

@@ -189,10 +189,12 @@
 <script src="../assets/js/graficoCpu.js"></script>
 <script>
     pegarFoto()
+
     function pegarFoto() {
         const idFuncionario = sessionStorage.getItem('idFuncionario')
         const imagem = document.getElementById('foto-perfil')
-        const baseUrl = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
+        const baseUrl = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' +
+            window.location.port : '')
         imagem.src = `${baseUrl}/funcionarios/foto/${idFuncionario}`
     }
 
@@ -231,6 +233,8 @@
             botao.style.display = "none";
         });
         document.querySelector(".botaoAcoesRapidas").style.display = "none";
+    } else if (privilegio = 'Admin' && fkEmpresa != 1) {
+        document.getElementById("itemMenuEmpresa").style.display = "none"
     }
 
     const ctxDisco = document.getElementById('myChartDisco');
@@ -280,19 +284,19 @@
         }
     }
 
-    async function unidadeMedida(idUnidade, tipoFunction){
+    async function unidadeMedida(idUnidade, tipoFunction) {
         try {
             const unidadeMedida = await axios.get(`/unidades/${idUnidade}`)
             if (unidadeMedida.status === 200) {
                 const unidade = unidadeMedida.data
-                if(tipoFunction === 'historico'){
+                if (tipoFunction === 'historico') {
                     qtdUso.innerText += `${unidade[0].tipo}`
                     qtdRestante.innerText += `${unidade[0].tipo}`
                 } else {
                     tamTotal.innerText += `${unidade[0].tipo}`
                     usoMenu.innerText += `${unidade[0].tipo}`
                 }
-                
+
             }
         } catch (error) {
             console.log(error)
@@ -374,7 +378,11 @@
 
         data.setHours(data.getHours() + 3)
 
-        const options = { hour: 'numeric', minute: 'numeric', second: 'numeric' }
+        const options = {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric'
+        }
         return new Intl.DateTimeFormat('pt-BR', options).format(data)
     }
 
@@ -424,19 +432,21 @@
                         qtdUsoAlerta = historico.data[i].valor - historico.data[i + 1].valor
                         const dataHoraFormatada = formatarDataHora(historico.data[i].dataHora)
                         graficoData.labels.push(dataHoraFormatada)
-                        graficoData.datasets[0].data.push(parseFloat(historico.data[i].valor - historico.data[i + 1].valor))
+                        graficoData.datasets[0].data.push(parseFloat(historico.data[i].valor - historico.data[i + 1]
+                            .valor))
                     } else {
                         qtdRestante.innerText = `${historico.data[i].valor}`
                     }
 
-                    if(historico.data[i].descricao === 'Disco Tamanho Total'){
-                       if(historico.data[i].valor - historico.data[i + 1].valor >= 70 && historico.data[i].valor - historico.data[i + 1].valor < 90){
-                        situacaoAlerta.style.backgroundColor = 'yellow'
-                    } else if(historico.data[i].valor - historico.data[i + 1].valor >= 90){
-                        situacaoAlerta.style.backgroundColor = 'red'
-                    } else {
-                        situacaoAlerta.style.backgroundColor = 'green'
-                    }
+                    if (historico.data[i].descricao === 'Disco Tamanho Total') {
+                        if (historico.data[i].valor - historico.data[i + 1].valor >= 70 && historico.data[i].valor -
+                            historico.data[i + 1].valor < 90) {
+                            situacaoAlerta.style.backgroundColor = 'yellow'
+                        } else if (historico.data[i].valor - historico.data[i + 1].valor >= 90) {
+                            situacaoAlerta.style.backgroundColor = 'red'
+                        } else {
+                            situacaoAlerta.style.backgroundColor = 'green'
+                        }
                     }
                 }
 

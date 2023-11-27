@@ -133,6 +133,7 @@
     var nomeUser = sessionStorage.getItem("nomeFuncionario");
     var fkEmpresa = sessionStorage.getItem("fkEmpresa");
     var idFuncionario = sessionStorage.getItem("idFuncionario");
+    var privilegio = sessionStorage.getItem("privilegio");
     var isFetchingData = false; // Flag para evitar múltiplas requisições simultâneas
     let totalPaginas = 0; // Total de páginas disponíveis
     let idEmpresaAtual; // Id da empresa que está sendo exibida no modal, para a exclusão
@@ -142,6 +143,10 @@
     botaoAdicionarEmpresa.addEventListener('click', function () {
         window.location.href = 'cadastrar-empresa.html';
     });
+
+    if (privilegio == "Admin" && fkEmpresa != 1) {
+        document.getElementById("itemMenuEmpresa").style.display = "none";
+    }   
 
     pegarFoto();
     pegarNomeEmpresa();
