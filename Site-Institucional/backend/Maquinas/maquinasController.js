@@ -10,7 +10,7 @@ maquinasController.get('/page/:page', async (req, res) => {
     const skip = page * take;
     var fkEmpresa = Number(req.query.fkEmpresa)
 
-    if (fkEmpresa === 1) { // se for chefware, mostre todos os funcionários de todas as empresas
+    if (fkEmpresa === 1) { // se for chefware, mostre todas as maquinas de todas as empresas
         fkEmpresa = null
     }
     try {
@@ -23,7 +23,12 @@ maquinasController.get('/page/:page', async (req, res) => {
                 take: take,
                 skip: skip,
             }),
-            prisma.maquina.count()
+            prisma.maquina.count({
+                where: {
+                    ativo: true,
+                    fkEmpresa: fkEmpresa || undefined
+                }
+            })
         ]);
 
         const totalPaginas = Math.ceil(total / take);
@@ -65,12 +70,16 @@ maquinasController.get('/:id', async (req, res) => {
 
 maquinasController.get('/search/:termo', async (req, res) => {
     const termoPesquisa = req.params.termo.toLowerCase();
+    const fkEmpresa = Number(req.query.fkEmpresa);
+    if(fkEmpresa === 1){ // se for chefware, mostre todas as maquinas de todas as empresas
+        fkEmpresa = null
+    }
 
     try {
         const maquinas = await prisma.maquina.findMany({
             where: {
                 OR: [
-                    { nome: { contains: termoPesquisa } },
+                    { nome: { contains: termoPesquisa, fkEmpresa: fkEmpresa } },
                 ]
             }
         });
