@@ -138,8 +138,9 @@
 
 <script>
     pegarFoto()
-    selectBoxEmpresas()
-    function selectBoxEmpresas() {
+    await selectBoxEmpresas()
+    async function selectBoxEmpresas() {
+        console.log('oi')
         const privilegio = sessionStorage.getItem('privilegio')
         const fkEmpresa = sessionStorage.getItem('fkEmpresa')
         console.log(privilegio)
@@ -147,7 +148,7 @@
         if (privilegio === 'Admin' && fkEmpresa === '1') {
             const form = document.getElementsByClassName('selectEmpresa')[0]
             let numeroDePaginas
-            const primeiraRequisicao = axios.get(`/empresas/page/${0}`).then(response => {
+            const primeiraRequisicao = await axios.get(`/empresas/page/${0}`).then(response => {
                 console.log(response)
                 console.log(response.data)
                 console.log(response.data.totalPaginas)
@@ -155,7 +156,7 @@
             })
             console.log(numeroDePaginas)
             for (let i = 0; i < numeroDePaginas; i++) {
-                const empresas = axios.get(`/empresas/page/${i}`).then(response => {
+                const empresas = await axios.get(`/empresas/page/${i}`).then(response => {
                     const empresas = response.data
                     console.log(empresas)
                     empresas.forEach(empresa => {
