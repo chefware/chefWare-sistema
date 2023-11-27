@@ -116,7 +116,7 @@
                             </div>
 
                             <div class="campo">
-                                <h4 class="label-editar">Id da Empresa</h4>
+                                <h4 class="label-editar">Nome da Empresa</h4>
                                 <select class="input-form-editar sl-edicao selectEmpresa" id="sl_empresa">
                                 </select>
                             </div>
@@ -141,7 +141,7 @@
     selectBoxEmpresas()
     function selectBoxEmpresas() {
         const privilegio = sessionStorage.getItem('privilegio')
-        if (privilegio === 'Admin') {
+        if (privilegio === 'Admin' && fkEmpresa === '1') {
             const form = document.getElementsByClassName('selectEmpresa')[0]
             let numeroDePaginas
             const primeiraRequisicao = axios.get(`/empresas/page/${0}`).then(response => {
