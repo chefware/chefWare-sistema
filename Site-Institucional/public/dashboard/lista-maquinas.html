@@ -69,7 +69,8 @@
                                 Máquinas
                             </div>
                             <div class="busca">
-                                <input type="text" placeholder="Insira o nome da máquina" id="input_pesquisa" oninput="pesquisarMaquinas()">
+                                <input type="text" placeholder="Insira o nome da máquina" id="input_pesquisa"
+                                    oninput="pesquisarMaquinas()">
                                 <button class="lupa"><img src="../assets/busca.png" onclick="buscar()" alt=""></button>
                                 <button class="filtro"><img src="../assets/filtro.png" alt=""></button>
                             </div>
@@ -104,6 +105,220 @@
     listaMaquinas(0);
     pegarFoto()
 
+    var situacaoAlerta
+    var idComp
+    var idM
+    var sit
+    var qtdEmAlerta = 0
+    var listaCompAlertas
+
+    async function especificacaoGeral(idMaquina) {
+        try {
+            listaCompAlertas = ''
+            await especificacaoCPU(idMaquina)
+            await especificacaoDisco(idMaquina)
+            await especificacaoMemoria(idMaquina)
+            await especificacaoRede(idMaquina)
+
+            await historicoGeral(idMaquina, idComp)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function especificacaoCPU(idMaquina) {
+        try {
+            const especificacao = await axios.get(`/dashboard/especificacoes/${idMaquina}/CPU`)
+            console.log(especificacao)
+            if (especificacao.status === 200) {
+                const dadosEspecificacoes = especificacao.data
+                idEsp_grafico = dadosEspecificacoes[0].idEspecificacoes
+                idComp = dadosEspecificacoes[0].fkComponente
+                idM = idMaquina
+                await historicoCPU(idMaquina, dadosEspecificacoes[0].fkComponente)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function especificacaoDisco(idMaquina) {
+        try {
+            const especificacao = await axios.get(`/dashboard/especificacoes/${idMaquina}/Disco`)
+            console.log(especificacao)
+            if (especificacao.status === 200) {
+                const dadosEspecificacoes = especificacao.data
+                idEsp_grafico = dadosEspecificacoes[0].idEspecificacoes
+                idComp = dadosEspecificacoes[0].fkComponente
+                idM = idMaquina
+                await historicoDisco(dadosEspecificacoes[0].idEspecificacoes, idMaquina, dadosEspecificacoes[0].fkComponente)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function especificacaoMemoria(idMaquina) {
+        try {
+            const especificacao = await axios.get(`/dashboard/especificacoes/${idMaquina}/Memória`)
+            console.log(especificacao)
+            if (especificacao.status === 200) {
+                const dadosEspecificacoes = especificacao.data
+                idEsp_grafico = dadosEspecificacoes[0].idEspecificacoes
+                idComp = dadosEspecificacoes[0].fkComponente
+                idM = idMaquina
+                await historicoMemoria(idMaquina, dadosEspecificacoes[0].fkComponente)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function especificacaoRede(idMaquina) {
+        try {
+            const especificacao = await axios.get(`/dashboard/especificacoes/${idMaquina}/Rede`)
+            console.log(especificacao)
+            if (especificacao.status === 200) {
+                const dadosEspecificacoes = especificacao.data
+                idEsp_grafico = dadosEspecificacoes[0].idEspecificacoes
+                idComp = dadosEspecificacoes[0].fkComponente
+                idM = idMaquina
+                await historicoRede(idMaquina, dadosEspecificacoes[0].fkComponente)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function historicoGeral() {
+        try {
+            if (qtdEmAlerta === 1) {
+                situacaoAlerta = 'yellow'
+                sit = 'Alerta'
+            } else if (qtdEmAlerta > 1) {
+                situacaoAlerta = 'red'
+                sit = 'Grave'
+            } else {
+                situacaoAlerta = 'green'
+                sit = 'Normal'
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function historicoCPU(idMaquina, idComp) {
+        try {
+            const historico = await axios.get(`/historico/${idMaquina}/${idComp}`)
+            const startIndex = Math.max(0, historico.data.length - 1)
+            var alertaQtd = 0
+            var alerta = false
+            for (var i = 0; i < historico.data.length; i++) {
+
+                if (historico.data[i].leitura >= 70 && historico.data[i].leitura < 90) {
+                    alertaQtd = 1
+                    alerta = true
+                } else if (historico.data[i].leitura >= 90) {
+                    alerta = true
+                    alertaQtd = 1
+                }
+            }
+
+            if (alerta === true) {
+                listaCompAlertas += `<li class="componenteEspecifico">
+                                            CPU
+                                        </li>`
+            }
+            qtdEmAlerta = alertaQtd
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function historicoDisco(idEsp, idMaquina, idComp) {
+        try {
+            const historico = await axios.get(`/dados/${idEsp}/${idMaquina}/${idComp}`)
+            const startIndex = Math.max(0, historico.data.length - 1)
+            var alertaQtd = false
+            for (var i = 0; i < historico.data.length; i++) {
+                var alertaQtd = 0
+                if (historico.data[i].descricao === 'Disco Tamanho Total') {
+                    if (historico.data[i].valor - historico.data[i + 1].valor >= 70 && historico.data[i].valor - historico.data[i + 1].valor < 90) {
+                        alertaQtd = 1
+                        alerta = true
+                    } else if (historico.data[i].valor - historico.data[i + 1].valor >= 90) {
+                        alertaQtd = 1
+                        alerta = true
+                    }
+                }
+            }
+
+            if (alerta === true) {
+                listaCompAlertas += `<li class="componenteEspecifico">
+                                            Disco
+                                        </li>`
+            }
+            qtdEmAlerta = alertaQtd
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function historicoMemoria(idMaquina, idComp) {
+        try {
+            const historico = await axios.get(`/historico/${idMaquina}/${idComp}`)
+            const startIndex = Math.max(0, historico.data.length - 1)
+            var alerta = false
+            for (var i = 0; i < historico.data.length; i++) {
+                var alertaQtd = 0
+                if (historico.data[i].leitura >= 70 && historico.data[i].leitura < 90) {
+                    alertaQtd = 1
+                    alerta = true
+                } else if (historico.data[i].leitura >= 90) {
+                    alerta = true
+                    alertaQtd = 1
+                }
+            }
+
+            if (alerta === true) {
+                listaCompAlertas += `<li class="componenteEspecifico">
+                                            Memória
+                                        </li>`
+            }
+            qtdEmAlerta = alertaQtd
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function historicoRede(idMaquina, idComp) {
+        try {
+            const historico = await axios.get(`/historico/${idMaquina}/${idComp}`)
+            const startIndex = Math.max(0, historico.data.length - 10)
+            var alerta = false
+            for (var i = 0; i < historico.data.length; i++) {
+                var alertaQtd = 0
+                if (historico.data[i].leitura >= 70 && historico.data[i].leitura < 90) {
+                    alerta = true
+                    alertaQtd = 1
+                } else if (historico.data[i].leitura >= 90) {
+                    alerta = true
+                    alertaQtd = 1
+                }
+            }
+
+            if (alerta === true) {
+                listaCompAlertas = `<li class="componenteEspecifico">
+                                            Rede
+                                        </li>`
+            }
+            qtdEmAlerta = alertaQtd
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
     function pegarFoto() {
         const idFuncionario = sessionStorage.getItem('idFuncionario')
         const imagem = document.getElementById('foto-perfil')
@@ -136,9 +351,9 @@
             console.log('Dados recebidos: ', maquinas);
 
             maquinas.forEach((maquina) => {
-                console.log('Maquina:', maquina);
-                linha_maquina.innerHTML += `<div class="cardMaquina" onclick="navegacao(${maquina.idMaquina})">
-                                    <div class="alerta">
+                especificacaoGeral(maquina.idMaquina).then(() => {
+                    linha_maquina.innerHTML += `<div class="cardMaquina" onclick="navegacao(${maquina.idMaquina})">
+                                    <div class="alerta" style="background-color: ${situacaoAlerta}">
                                     </div>
                                     <div class="informacoes">
                                         <div class="tituloMaquina">
@@ -148,22 +363,14 @@
                                         <div class="info">
                                             <div class="componentes">
                                                 <p>Componentens em alertas:</p>
-                                                <div class="listaComponentes">
-                                                    <li class="componenteEspecifico">
-                                                        Memória
-                                                    </li>
-                                                    <li class="componenteEspecifico">
-                                                        CPU
-                                                    </li>
-                                                    <li class="componenteEspecifico">
-                                                        Disco
-                                                    </li>
+                                                <div class="listaComponentes>
+                                                    ${listaCompAlertas}
                                                 </div>
                                             </div>
                                             <div class="situacao">
                                                 <div class="grave">
                                                     Situação:
-                                                    <span class="colorSituacao" id="situacao"> grave </span>
+                                                    <span class="colorSituacao" id="situacao" style="color: ${situacaoAlerta}"> ${sit} </span>
                                                 </div>
                                                 <div class="local">
                                                     Local: ${maquina.local}
@@ -172,6 +379,7 @@
                                         </div>
                                     </div>
                                 </div>`
+                });
             });
 
             if (totalPaginas > 0) {
@@ -188,6 +396,13 @@
             isFetchingData = false;
         }
     }
+
+    console.log(qtdEmAlerta)
+    setInterval(() => {
+
+        historicoGeral(idM, idComp)
+
+    }, 5000)
 
     var isFetchingData = false; // Flag para evitar múltiplas requisições simultâneas
     let totalPaginas = 0; // Total de páginas disponíveis

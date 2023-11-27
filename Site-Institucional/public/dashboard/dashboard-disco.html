@@ -226,28 +226,15 @@
         }
     }
 
-    async function componente(id) {
-        try {
-            const comp = await axios.get(`/componentes/${id}`)
-            if (comp.status === 200) {
-
-            }
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
     async function especificacaoCPU() {
         try {
             const especificacao = await axios.get(`/dashboard/especificacoes/${idMaquina}/${tipoComp}`)
             console.log(especificacao)
             if (especificacao.status === 200) {
                 const dadosEspecificacoes = especificacao.data
-                dados(dadosEspecificacoes[0].idEspecificacoes, dadosEspecificacoes[0].fkComponente)
-                histórico(dadosEspecificacoes[0].idEspecificacoes, dadosEspecificacoes[0].fkComponente)
-                componente(dadosEspecificacoes[0].fkComponente)
-                idEsp_grafico = dadosEspecificacoes[0].idEspecificacoes
-                idComp_grafico = dadosEspecificacoes[0].fkComponente
+                dados(dadosEspecificacoes[0].idComponente)
+                histórico(dadosEspecificacoes[0].idComponente)
+                idComp_grafico = dadosEspecificacoes[0].idComponente
                 comp.innerText = dadosEspecificacoes[0].tipo
             }
         } catch (error) {
@@ -255,13 +242,33 @@
         }
     }
 
-    async function dados(idEsp, idComp) {
+    async function unidadeMedida(idUnidade, tipoFunction){
         try {
-            const dadosResult = await axios.get(`/dados/${idEsp}/${idMaquina}/${idComp}`)
+            const unidadeMedida = await axios.get(`/unidades/${idUnidade}`)
+            if (unidadeMedida.status === 200) {
+                const unidade = unidadeMedida.data
+                if(tipoFunction === 'historico'){
+                    qtdUso.innerText += `${unidade[0].tipo}`
+                    qtdRestante.innerText += `${unidade[0].tipo}`
+                } else {
+                    tamTotal.innerText += `${unidade[0].tipo}`
+                    usoMenu.innerText += `${unidade[0].tipo}`
+                }
+                
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function dados(idComp) {
+        try {
+            const dadosResult = await axios.get(`/dados/${idMaquina}/${idComp}`)
             if (dadosResult.status === 200) {
                 const dadosEstaticos = dadosResult.data
                 if (dadosEstaticos.length > 0) {
-                    tamTotal.innerText = dadosEstaticos[0].valor + ' ' + dadosEstaticos[0].unidadeMedida || ''
+                    tamTotal.innerText = dadosEstaticos[0].valor
+                    unidadeMedida(dadosEstaticos[0].unidadeMedida, 'dados')
                 }
             }
         } catch (error) {
@@ -320,7 +327,7 @@
 
     setInterval(() => {
 
-        histórico(idEsp_grafico, idComp_grafico)
+        histórico(idComp_grafico)
 
     }, 5000)
 
@@ -333,9 +340,9 @@
         return new Intl.DateTimeFormat('pt-BR', options).format(data)
     }
 
-    async function histórico(idEsp, idComp) {
+    async function histórico(idComp) {
         try {
-            const historico = await axios.get(`/dados/${idEsp}/${idMaquina}/${idComp}`)
+            const historico = await axios.get(`/dados/${idMaquina}/${idComp}`)
             console.log(historico)
             if (historico.status === 200) {
                 var graficoData = {
@@ -375,13 +382,13 @@
                 const startIndex = Math.max(0, historico.data.length - 10)
                 for (var i = startIndex; i < historico.data.length; i++) {
                     if (historico.data[i].descricao === 'Disco Tamanho Total') {
-                        qtdUso.innerText = `${(historico.data[i].valor - historico.data[i + 1].valor).toFixed(2)} ${historico.data[i].unidadeMedida}`
+                        qtdUso.innerText = `${(historico.data[i].valor - historico.data[i + 1].valor).toFixed(2)}`
                         qtdUsoAlerta = historico.data[i].valor - historico.data[i + 1].valor
                         const dataHoraFormatada = formatarDataHora(historico.data[i].dataHora)
                         graficoData.labels.push(dataHoraFormatada)
                         graficoData.datasets[0].data.push(parseFloat(historico.data[i].valor - historico.data[i + 1].valor))
                     } else {
-                        qtdRestante.innerText = `${historico.data[i].valor} ${historico.data[i].unidadeMedida}`
+                        qtdRestante.innerText = `${historico.data[i].valor}`
                     }
 
                     if(historico.data[i].descricao === 'Disco Tamanho Total'){
@@ -394,6 +401,9 @@
                     }
                     }
                 }
+
+                const hist = 'historico'
+                unidadeMedida(historico.data[0].unidadeMedida, hist)
                 grafico.data = graficoData
                 grafico.update()
             }
