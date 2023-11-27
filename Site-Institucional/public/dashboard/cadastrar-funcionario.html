@@ -227,7 +227,12 @@
             var result = document.getElementById("snackbar")
 
             const form = new FormData()
-            const fkEmpresaFunc = fkEmpresa
+            if (fkEmpresa == 1){
+                const select = document.getElementById('sl_empresa')
+                const fkEmpresaFunc = select.value
+            }else{
+                const fkEmpresaFunc = fkEmpresa
+            }
 
             form.append('nome', input_nome.value)
             form.append('email', input_email.value)
