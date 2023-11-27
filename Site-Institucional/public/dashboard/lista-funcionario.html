@@ -94,7 +94,8 @@
                                 Funcionários
                             </div>
                             <div class="busca">
-                                <input type="text" id="input_pesquisa" oninput="pesquisarFuncionario()" placeholder="Insira o nome do funcionário">
+                                <input type="text" id="input_pesquisa" oninput="pesquisarFuncionario()"
+                                    placeholder="Insira o nome do funcionário">
                                 <button class="lupa"><img src="../assets/busca.png" alt=""></button>
                                 <button class="filtro"><img src="../assets/filtro.png" alt=""></button>
                             </div>
@@ -103,7 +104,7 @@
                                 Novo funcionário
                             </button>
                         </div>
-                        
+
                         <div id="listaFuncionariosCards" class="listaFuncionarios">
 
                         </div>
@@ -125,34 +126,58 @@
 </html>
 
 <script>
+    // Variáveis globais
     const idFuncionario = sessionStorage.getItem('idFuncionario');
-    
-    pegarFoto()
-    function pegarFoto() {
-        const imagem = document.getElementById('foto-perfil')
-        const baseUrl = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
-        imagem.src = `${baseUrl}/funcionarios/foto/${idFuncionario}`
-    }
+    var perfil = document.getElementById("perfil");
+    var nomeUser = sessionStorage.getItem("nomeFuncionario");
+    var fkEmpresa = sessionStorage.getItem("fkEmpresa");
+    var privilegio = sessionStorage.getItem("privilegio");
+    var isFetchingData = false; // Flag para evitar múltiplas requisições
+    let totalPaginas = 0; // Total de páginas disponíveis
+    let idFuncionarioAtual = 0; // Id do funcionário a ser excluído
+
+    // Eventos de clique do botao de adicionar funcionario
     const botaoAdicionarFunc = document.querySelector('#botaoAdicionarFunc');
     botaoAdicionarFunc.addEventListener('click', function () {
         window.location.href = 'cadastrar-funcionario.html';
     });
 
-    var perfil = document.getElementById("perfil");
+    pegarFoto();
+    pegarNomeEmpresa();
+    listaFuncionarios(0);
 
-    var nomeUser = sessionStorage.getItem("nomeFuncionario");
-    var fkEmpresa = sessionStorage.getItem("fkEmpresa");
-
+    // Pegar nome do funcionário
     if (nomeUser != null) {
         perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${nomeUser}</span></span>`;
     }
 
-    listaFuncionarios(0)
-    
-    var isFetchingData = false; 
-    let totalPaginas = 0; // Total de páginas disponíveis
-    let idFuncionarioAtual = 0; // Id do funcionário a ser excluído
 
+
+    // Pegar foto do funcionário
+    function pegarFoto() {
+        const imagem = document.getElementById('foto-perfil')
+        const baseUrl = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' +
+            window.location.port : '')
+        imagem.src = `${baseUrl}/funcionarios/foto/${idFuncionario}`
+    }
+
+    // Pegar nome da empresa
+    async function pegarNomeEmpresa() {
+        try {
+            const response = await axios.get(`/empresas/${fkEmpresa}`);
+            if (response.status === 200) {
+                const dados = response.data;
+                console.log(dados);
+                document.getElementById('nomeEmpresa').innerHTML = `${dados.nome}`;
+            } else {
+                console.error('Erro na requisição:', response.status, response.statusText);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    // Lista funcionários
     async function listaFuncionarios(page) {
         console.log('Fetching data for page:', page);
 
@@ -172,7 +197,7 @@
                 totalPaginas,
                 paginaAtual,
                 totalFuncionarios
-            } = await fetchData(page);
+            } = await fetchData(page, fkEmpresa);
 
             console.log('Dados recebidos: ', funcionarios);
 
@@ -230,6 +255,17 @@
                 }
             }
 
+            // Verificar o privilegio do usuário
+            if (privilegio == "Comum") {
+                document.getElementById("itemMenuEmpresa").style.display = "none";
+                document.getElementById("botaoAdicionarFunc").style.display = "none";
+                // Esconder todos os botões de ação
+                const botoesAcoes = document.querySelectorAll('.acoes');
+                botoesAcoes.forEach((item) => {
+                    item.innerHTML = "";
+                });
+            }
+
         } catch (error) {
             console.error(error);
         } finally {
@@ -237,39 +273,36 @@
         }
     }
 
-    async function fetchData(page) {
-        try {
-            const response = await axios.get(`/funcionarios/page/${page}`);
+// Função para buscar os dados da API de acordo com a página
+async function fetchData(page, fkEmpresa) {
+    try {
+        let url = `/funcionarios/page/${page}`;
+        if (fkEmpresa) {
+            url += `?fkEmpresa=${fkEmpresa}`;
+        }
 
-            if (response.status === 200) {
-                const {
-                    funcionarios,
-                    totalPaginas: fetchedTotalPaginas,
-                    paginaAtual,
-                    totalFuncionarios
-                } = response.data;
+        const response = await axios.get(url);
 
-                console.log(funcionarios);
+        if (response.status === 200) {
+            const {
+                funcionarios,
+                totalPaginas: fetchedTotalPaginas,
+                paginaAtual,
+                totalFuncionarios
+            } = response.data;
 
-                totalPaginas = fetchedTotalPaginas;
+            console.log(funcionarios);
 
-                return {
-                    funcionarios,
-                    totalPaginas,
-                    paginaAtual,
-                    totalFuncionarios
-                };
-            } else {
-                console.error('Erro na requisição:', response.status, response.statusText);
-                return {
-                    funcionarios: [],
-                    totalPaginas: 0,
-                    paginaAtual: 0,
-                    totalFuncionarios: 0
-                };
-            }
-        } catch (error) {
-            console.error(error);
+            totalPaginas = fetchedTotalPaginas;
+
+            return {
+                funcionarios,
+                totalPaginas,
+                paginaAtual,
+                totalFuncionarios
+            };
+        } else {
+            console.error('Erro na requisição:', response.status, response.statusText);
             return {
                 funcionarios: [],
                 totalPaginas: 0,
@@ -277,7 +310,17 @@
                 totalFuncionarios: 0
             };
         }
+    } catch (error) {
+        console.error(error);
+        return {
+            funcionarios: [],
+            totalPaginas: 0,
+            paginaAtual: 0,
+            totalFuncionarios: 0
+        };
     }
+}
+
 
     document.getElementById('pagination').addEventListener('click', function (event) {
         if (event.target.tagName === 'BUTTON') {
@@ -328,6 +371,7 @@
     const botaoExcluir = document.querySelectorAll('.botaoExcluir');
 
 
+    //Editar funcionário
     async function editar(idFuncionario) {
         try {
             const response = await axios.get(`/funcionarios/${idFuncionario}`);
@@ -341,6 +385,7 @@
         }
     }
 
+    // Pesquisar funcionário
     async function pesquisarFuncionario() {
         const termoPesquisa = document.getElementById('input_pesquisa').value.toLowerCase();
 
@@ -394,6 +439,17 @@
                             </div>`
                 });
 
+                // Verificar o privilegio do usuário
+                if (privilegio == "Comum") {
+                    document.getElementById("itemMenuEmpresa").style.display = "none";
+                    document.getElementById("botaoAdicionarFunc").style.display = "none";
+                    // Esconder todos os botões de ação
+                    const botoesAcoes = document.querySelectorAll('.acoes');
+                    botoesAcoes.forEach((item) => {
+                        item.innerHTML = "";
+                    });
+                }
+
                 pagination.innerHTML = "";
                 for (let i = 0; i < totalPaginas; i++) {
                     pagination.innerHTML +=
@@ -407,7 +463,6 @@
             console.error(error);
         }
     }
-
 </script>
 
 <script src="../assets/js/navegacao-menu.js"></script>

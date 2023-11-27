@@ -83,7 +83,7 @@
                     <div class="header">
                         <div class="conteudoEmpresa">
                             <span>Empresa</span>
-                            <h1>Fogo de Chão</h1>
+                            <h1 id="nomeEmpresaFuncionario">Fogo de Chão</h1>
                         </div>
 
                         <div id="perfil" class="perfil-img">
@@ -128,36 +128,53 @@
 </html>
 
 <script>
-    pegarFoto()
-    function pegarFoto() {
-        const idFuncionario = sessionStorage.getItem('idFuncionario')
-        const imagem = document.getElementById('foto-perfil')
-        const baseUrl = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
-        imagem.src = `${baseUrl}/funcionarios/foto/${idFuncionario}`
-    }
-    // Trazer o nome do usuário logado
+    // Variáveis globais
     var perfil = document.getElementById("perfil");
-
     var nomeUser = sessionStorage.getItem("nomeFuncionario");
     var fkEmpresa = sessionStorage.getItem("fkEmpresa");
     var idFuncionario = sessionStorage.getItem("idFuncionario");
-
-    if (nomeUser != null) {
-        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${nomeUser}</span></span>`;
-    }
+    var isFetchingData = false; // Flag para evitar múltiplas requisições simultâneas
+    let totalPaginas = 0; // Total de páginas disponíveis
+    let idEmpresaAtual; // Id da empresa que está sendo exibida no modal, para a exclusão
 
     // Redirecionar para a tela de cadastro de empresa
     const botaoAdicionarEmpresa = document.querySelector('.adicionar');
     botaoAdicionarEmpresa.addEventListener('click', function () {
         window.location.href = 'cadastrar-empresa.html';
-    })
+    });
 
+    pegarFoto();
+    pegarNomeEmpresa();
+    listaEmpresas(0); // Carregar a lista de empresas ao carregar a página
 
-    listaEmpresas(0) // Carregar a lista de empresas ao carregar a página
+    if (nomeUser != null) {
+        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${nomeUser}</span></span>`;
+    }
 
-    var isFetchingData = false; // Flag para evitar múltiplas requisições simultâneas
-    let totalPaginas = 0; // Total de páginas disponíveis
-    let idEmpresaAtual; // Id da empresa que está sendo exibida no modal, para a exclusão
+    // Pegar a foto do perfil
+    function pegarFoto() {
+        const idFuncionario = sessionStorage.getItem('idFuncionario')
+        const imagem = document.getElementById('foto-perfil')
+        const baseUrl = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' +
+            window.location.port : '')
+        imagem.src = `${baseUrl}/funcionarios/foto/${idFuncionario}`
+    }
+
+    // Pegar o nome da empresa
+    async function pegarNomeEmpresa() {
+        try {
+            const response = await axios.get(`/empresas/${fkEmpresa}`);
+            if (response.status === 200) {
+                const dados = response.data;
+                console.log(`nome da empresa: ${dados.nome}`);
+                document.getElementById('nomeEmpresaFuncionario').innerHTML = `${dados.nome}`;
+            } else {
+                console.error('Erro na requisição:', response.status, response.statusText);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     // Função para listar as empresas
     async function listaEmpresas(page) {
@@ -315,8 +332,6 @@
 
     // Evento para excluir uma empresa ao clicar no botão de excluir
     const botaoExcluir = document.querySelectorAll('.botaoExcluir');
-
-
     const modal = document.querySelector('.area-modal'); // Modal de exclusão
     const botaoFecharModal = document.querySelector('.fecharModal'); // Botão de fechar o modal de exclusão
 
@@ -419,7 +434,6 @@
             console.error(error);
         }
     }
-
 </script>
 
 <script src="../assets/js/navegacao-menu.js"></script>

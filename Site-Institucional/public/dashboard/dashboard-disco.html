@@ -68,7 +68,7 @@
                     <div class="header">
                         <div class="conteudoEmpresa">
                             <span>Empresa</span>
-                            <h1>Fogo de Chão</h1>
+                            <h1 id="nomeEmpresa">Fogo de Chão</h1>
                         </div>
 
                         <div id="perfil" class="perfil-img">
@@ -195,6 +195,44 @@
         const baseUrl = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
         imagem.src = `${baseUrl}/funcionarios/foto/${idFuncionario}`
     }
+
+    var perfil = document.getElementById("perfil");
+    var nomeUser = sessionStorage.getItem("nomeFuncionario");
+    var fkEmpresa = sessionStorage.getItem("fkEmpresa");
+    var idFuncionario = sessionStorage.getItem("idFuncionario");
+    var privilegio = sessionStorage.getItem("privilegio");
+
+    if (nomeUser != null) {
+        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${nomeUser}</span></span>`;
+    }
+
+    pegarNomeEmpresa();
+
+    async function pegarNomeEmpresa() {
+        try {
+            const response = await axios.get(`/empresas/${fkEmpresa}`);
+            if (response.status === 200) {
+                const dados = response.data;
+                console.log(dados);
+                document.getElementById('nomeEmpresa').innerHTML = `${dados.nome}`;
+            } else {
+                console.error('Erro na requisição:', response.status, response.statusText);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    // Verificar o privilegio do usuário
+    if (privilegio == "Comum") {
+        document.getElementById("itemMenuEmpresa").style.display = "none";
+        const botoesCrud = document.querySelectorAll(".botao");
+        botoesCrud.forEach(botao => {
+            botao.style.display = "none";
+        });
+        document.querySelector(".botaoAcoesRapidas").style.display = "none";
+    }
+
     const ctxDisco = document.getElementById('myChartDisco');
     const nome = document.getElementById('nomeMaquina')
     const modelo = document.getElementById('modelo')
@@ -447,15 +485,6 @@
     botaoRede.addEventListener('click', function () {
         window.location.href = `dashboard-rede.html?id=${idMaquina}`;
     });
-
-    var perfil = document.getElementById("perfil");
-    var nomeUser = sessionStorage.getItem("nomeFuncionario");
-    var fkEmpresa = sessionStorage.getItem("fkEmpresa");
-    var idFuncionario = sessionStorage.getItem("idFuncionario");
-
-    if (nomeUser != null) {
-        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${nomeUser}</span></span>`;
-    }
 
     function receberAcaoRapida(acao) {
         axios.post('http://10.18.34.93:8080/inovacao', {

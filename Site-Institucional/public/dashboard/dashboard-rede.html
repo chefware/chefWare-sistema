@@ -69,7 +69,7 @@
                     <div class="header">
                         <div class="conteudoEmpresa">
                             <span>Empresa</span>
-                            <h1>Fogo de Chão</h1>
+                            <h1 id="nomeEmpresa">Fogo de Chão</h1>
                         </div>
 
                         <div id="perfil" class="perfil-img">
@@ -170,8 +170,8 @@
                                         <span class="tituloInformacoesEstaticas">Informações Estáticas:</span>
                                         <div class="areaDadosEstaticos">
                                             <div class="colunaDado">
-                                                <span class="tituloDadoEstatico">Nome: <span
-                                                        class="dadoEstatico" id="nomeEstatico">En0001</span></span>
+                                                <span class="tituloDadoEstatico">Nome: <span class="dadoEstatico"
+                                                        id="nomeEstatico">En0001</span></span>
 
                                                 <span class="tituloDadoEstatico">Nome de exibição: <span
                                                         class="dadoEstatico">Wi-fi</span>
@@ -184,7 +184,8 @@
                                                 </span>
 
                                                 <span class="tituloDadoEstatico">Endereço IPv6: <span
-                                                        class="dadoEstatico" id="ipv6">fe80:1:1:0:21f:4ba1:cc39:ba50</span></span>
+                                                        class="dadoEstatico"
+                                                        id="ipv6">fe80:1:1:0:21f:4ba1:cc39:ba50</span></span>
                                             </div>
                                         </div>
 
@@ -208,12 +209,53 @@
 <script src="../assets/js/graficoCpu.js"></script>
 <script>
     pegarFoto()
+
     function pegarFoto() {
         const idFuncionario = sessionStorage.getItem('idFuncionario')
         const imagem = document.getElementById('foto-perfil')
-        const baseUrl = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
+        const baseUrl = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' +
+            window.location.port : '')
         imagem.src = `${baseUrl}/funcionarios/foto/${idFuncionario}`
     }
+
+    var perfil = document.getElementById("perfil");
+    var nomeUser = sessionStorage.getItem("nomeFuncionario");
+    var fkEmpresa = sessionStorage.getItem("fkEmpresa");
+    var idFuncionario = sessionStorage.getItem("idFuncionario");
+    var privilegio = sessionStorage.getItem("privilegio");
+
+    if (nomeUser != null) {
+        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${nomeUser}</span></span>`;
+    }
+
+    pegarNomeEmpresa();
+
+    async function pegarNomeEmpresa() {
+        try {
+            const response = await axios.get(`/empresas/${fkEmpresa}`);
+            if (response.status === 200) {
+                const dados = response.data;
+                console.log(dados);
+                document.getElementById('nomeEmpresa').innerHTML = `${dados.nome}`;
+            } else {
+                console.error('Erro na requisição:', response.status, response.statusText);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    // Verificar o privilegio do usuário
+    if (privilegio == "Comum") {
+        document.getElementById("itemMenuEmpresa").style.display = "none";
+        const botoesCrud = document.querySelectorAll(".botao");
+        botoesCrud.forEach(botao => {
+            botao.style.display = "none";
+        });
+        document.querySelector(".botaoAcoesRapidas").style.display = "none";
+    }
+
+
     const ctxRede = document.getElementById('myChartRede');
     const nome = document.getElementById('nomeMaquina')
     const modelo = document.getElementById('modelo')
@@ -339,7 +381,11 @@
 
         data.setHours(data.getHours() + 3)
 
-        const options = { hour: 'numeric', minute: 'numeric', second: 'numeric' }
+        const options = {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric'
+        }
         return new Intl.DateTimeFormat('pt-BR', options).format(data)
     }
 
@@ -349,39 +395,38 @@
             console.log(historico)
             if (historico.status === 200) {
                 const graficoData = {
-                labels: [],
-                datasets: [
-                    {
-                        label: 'Pacotes enviados',
-                        data: [],
-                        borderWidth: 1,
-                        backgroundColor: 'rgba(4, 4, 84, 0.2)',
-                        borderColor: '#040454',
-                        fill: true,
-                        cubicInterpolationMode: 'monotone',
-                    },
-                    {
-                        label: 'Pacotes recebidos',
-                        data: [],
-                        borderWidth: 1,
-                        borderColor: '#00aa47',
-                        fill: false,
-                        cubicInterpolationMode: 'monotone',
-                    },
-                ],
-            };
+                    labels: [],
+                    datasets: [{
+                            label: 'Pacotes enviados',
+                            data: [],
+                            borderWidth: 1,
+                            backgroundColor: 'rgba(4, 4, 84, 0.2)',
+                            borderColor: '#040454',
+                            fill: true,
+                            cubicInterpolationMode: 'monotone',
+                        },
+                        {
+                            label: 'Pacotes recebidos',
+                            data: [],
+                            borderWidth: 1,
+                            borderColor: '#00aa47',
+                            fill: false,
+                            cubicInterpolationMode: 'monotone',
+                        },
+                    ],
+                };
                 const startIndex = Math.max(0, historico.data.length - 10)
                 for (var i = startIndex; i < historico.data.length; i++) {
-                    if('Rede Bytes Enviados'.includes(historico.data[i].nome)){
+                    if ('Rede Bytes Enviados'.includes(historico.data[i].nome)) {
                         console.log(historico.data[i].leitura)
-                    } else if('Rede Bytes Recebidos'.includes(historico.data[i].nome)) {
+                    } else if ('Rede Bytes Recebidos'.includes(historico.data[i].nome)) {
                         console.log(historico.data[i].leitura)
-                    } else if('Rede Pacotes Enviados'.includes(historico.data[i].nome)){
+                    } else if ('Rede Pacotes Enviados'.includes(historico.data[i].nome)) {
                         pacotesEnviados.innerText = `${historico.data[i].leitura}`;
                         const dataHoraFormatada = formatarDataHora(historico.data[i].dataHora);
                         graficoData.labels.push(dataHoraFormatada);
                         graficoData.datasets[0].data.push(parseFloat(historico.data[i].leitura));
-                    } else if('Rede Pacotes Recebidos'.includes(historico.data[i].nome)){
+                    } else if ('Rede Pacotes Recebidos'.includes(historico.data[i].nome)) {
                         pacotesRecebidos.innerText = `${historico.data[i].leitura}`;
                         const dataHoraFormatada = formatarDataHora(historico.data[i].dataHora);
                         graficoData.labels.push(dataHoraFormatada);
@@ -433,15 +478,6 @@
     botaoRede.addEventListener('click', function () {
         window.location.href = `dashboard-rede.html?id=${idMaquina}`;
     });
-
-    var perfil = document.getElementById("perfil");
-    var nomeUser = sessionStorage.getItem("nomeFuncionario");
-    var fkEmpresa = sessionStorage.getItem("fkEmpresa");
-    var idFuncionario = sessionStorage.getItem("idFuncionario");
-
-    if (nomeUser != null) {
-        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${nomeUser}</span></span>`;
-    }
 
     function receberAcaoRapida(acao) {
         axios.post('http://10.18.34.93:8080/inovacao', {
