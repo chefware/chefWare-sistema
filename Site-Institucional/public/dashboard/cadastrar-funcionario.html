@@ -166,7 +166,7 @@
                     const empresas = response.data.empresas
                     empresas.forEach(empresa => {
                         const option = document.createElement('option')
-                        option.value = empresa.id
+                        option.value = empresa.idEmpresa
                         option.innerHTML = empresa.nome
                         form.appendChild(option)
                     })
@@ -232,21 +232,21 @@
     async function cadastrar() {
         try {
 
+            let fkEmpresaFunc;
+
             if (!bufferFoto) {
                 console.error('A foto não foi carregada.')
                 return
             }
 
-            var result = document.getElementById("snackbar")
-
-            const form = new FormData()
-
-            if (fkEmpresa == 1){
-                const select = document.getElementById('sl_empresa')
-                const fkEmpresaFunc = select.value
-            }else{
-                const fkEmpresaFunc = fkEmpresa
+            if (fkEmpresa != 1) {
+                fkEmpresaFunc = fkEmpresa;
+            } else {
+                console.log('entrou no else');
+                fkEmpresaFunc = document.getElementById("sl_empresa").value;
             }
+
+            const form = new FormData();
 
             form.append('nome', input_nome.value)
             form.append('email', input_email.value)
