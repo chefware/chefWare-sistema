@@ -146,72 +146,75 @@
         imagem.src = `${baseUrl}/funcionarios/foto/${idFuncionario}`
     }
     // Trazer o nome do usuário na tela
-    var perfil = document.getElementById("perfil");
-    var nomeUser = sessionStorage.getItem("nomeFuncionario");
-    var fkEmpresa = sessionStorage.getItem("fkEmpresa");
-    var idFuncionario = sessionStorage.getItem("idFuncionario");
-    var privilegio = sessionStorage.getItem("privilegio");
+    var perfil = document.getElementById("perfil")
+    var nomeUser = sessionStorage.getItem("nomeFuncionario")
+    var fkEmpresa = sessionStorage.getItem("fkEmpresa")
+    var idFuncionario = sessionStorage.getItem("idFuncionario")
+    var privilegio = sessionStorage.getItem("privilegio")
 
     if (nomeUser != null) {
-        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${nomeUser}</span></span>`;
+        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${nomeUser}</span></span>`
     }
 
     if (privilegio == "Admin" && fkEmpresa != 1) {
-        document.getElementById("itemMenuEmpresa").style.display = "none";
-    }   
+        document.getElementById("itemMenuEmpresa").style.display = "none"
+    }
 
-    pegarNomeEmpresa();
+    pegarNomeEmpresa()
 
     async function pegarNomeEmpresa() {
         try {
-            const response = await axios.get(`/empresas/${fkEmpresa}`);
+            const response = await axios.get(`/empresas/${fkEmpresa}`)
             if (response.status === 200) {
-                const dados = response.data;
-                console.log(dados);
-                document.getElementById('nomeEmpresa').innerHTML = `${dados.nome}`;
+                const dados = response.data
+                console.log(dados)
+                document.getElementById('nomeEmpresa').innerHTML = `${dados.nome}`
             } else {
-                console.error('Erro na requisição:', response.status, response.statusText);
+                console.error('Erro na requisição:', response.status, response.statusText)
             }
         } catch (error) {
-            console.error(error);
+            console.error(error)
         }
     };
 
     // Quando o usuário clicar no botão de sair, ele limpa o sessionStorage e volta para a tela de login
-    const botaoSair = document.querySelector('.sidebar-sair');
+    const botaoSair = document.querySelector('.sidebar-sair')
     botaoSair.addEventListener('click', function () {
-        sessionStorage.clear();
-        window.location.href = '../index.html';
-    });
+        sessionStorage.clear()
+        window.location.href = '../index.html'
+    })
 
     // Quando o usuário clicar no botão de cancelar, ele volta para a tela de lista de empresas
-    const botaoCancelar = document.getElementById("botao-cancelar");
+    const botaoCancelar = document.getElementById("botao-cancelar")
     botaoCancelar.addEventListener("click", function () {
         window.location.href = 'lista-empresas.html'
-    });
+    })
 
     // Quando o usuário sair do focus do input de CEP, ele chama a função buscarCep()
-    const input_cep = document.getElementById("input_cep");
+    const input_cep = document.getElementById("input_cep")
     input_cep.addEventListener("blur", function () {
-        buscarCep();
-    });
+        buscarCep()
+    })
 
     // Busca o CEP na API ViaCEP e preenche os campos de endereço
     async function buscarCep() {
-        const cep = input_cep.value;
+        const cep = input_cep.value
 
-        const response = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
-        const data = response.data;
+        const response = await axios.get(`https://viacep.com.br/ws/${cep}/json/`)
+        const data = response.data
 
-        input_logradouro.value = data.logradouro;
-        input_bairro.value = data.bairro;
-        sl_estado.value = data.uf;
+        input_logradouro.value = data.logradouro
+        input_bairro.value = data.bairro
+        sl_estado.value = data.uf
     }
 
     // Cadastra a empresa
     async function cadastrar() {
         try {
-            var result = document.getElementById("snackbar");
+            const inner = `<div class="c-loader"></div>`
+            const feedback_user = document.getElementById("feedback_user")
+            const botaoCadastrar = document.getElementById("botao-cadastrar")
+            var result = document.getElementById("snackbar")
             const nome = input_nome.value
             const cnpj = input_cnpj.value
             const telefone = input_telefone.value
@@ -233,19 +236,21 @@
                 }
             }
 
-            const response = await axios.post('/empresas', data);
+            const response = await axios.post('/empresas', data)
 
             if (response.status === 201) {
-                const empresaCriada = response.data;
-                console.log('Empresa cadastrada com sucesso:', empresaCriada);
+                botaoCadastrar.innerHTML = "Cadastrando"
+                botaoCadastrar.innerHTML += inner
+                const empresaCriada = response.data
+                console.log('Empresa cadastrada com sucesso:', empresaCriada)
 
-                result.className = "show";
                 setTimeout(function () {
-                    x.className = result.className.replace("show", "");
-                }, 1500);
-                setTimeout(function () {
+                    result.className = "show"
+                    const loader = document.querySelector(".c-loader")[0]
+                    console.log('Redirecionando para lista-empresas.html')
                     window.location.href = 'lista-empresas.html'
-                }, 2000);
+                    loader.remove()
+                }, 1500)
             } else {
                 console.error('Erro ao cadastrar empresa:', response.status, response.statusText)
             }
