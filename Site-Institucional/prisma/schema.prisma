@@ -67,15 +67,7 @@ model Componente {
   maquina          Maquina           @relation(fields: [fkMaquina], references: [idMaquina])
   historicos       Historico[]
   registro         Dados[]
-  sistemaOperacional SistemaOperacional[]
 }
-
-model SistemaOperacional{
-  idSistemaOperacional Int        @id @default(autoincrement())
-  tipo                 String?
-  componentes          Componente[]
-}
-
 model Dados {
   idDados           Int               @id @default(autoincrement())
   descricao         String?
