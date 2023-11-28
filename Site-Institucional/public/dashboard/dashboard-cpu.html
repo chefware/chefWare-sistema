@@ -288,6 +288,7 @@
     const qtdUsoMenu = document.getElementById('usoMenu')
     var idEsp_grafico
     var idComp_grafico
+    var wlanIPPublico
 
 
     const params = new URLSearchParams(window.location.search)
@@ -295,6 +296,7 @@
 
     maquinaDashboard()
     especificacaoCPU()
+    especificacaoRede()
 
     async function maquinaDashboard() {
         try {
@@ -325,6 +327,38 @@
         }
     }
 
+    async function especificacaoRede() {
+        try {
+            const especificacao = await axios.get(`/dashboard/especificacoes/${idMaquina}/Rede`)
+            console.log(especificacao)
+            if (especificacao.status === 200) {
+                const dadosEspecificacoes = especificacao.data
+                dadosRede(dadosEspecificacoes[0].idComponente)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function dadosRede(idComp) {
+        try {
+            const dadosResult = await axios.get(`/dados/${idMaquina}/${idComp}`)
+            if (dadosResult.status === 200) {
+                const dadosEstaticos = dadosResult.data
+                if (dadosEstaticos.length > 0) {
+                    for(var i = 0; i < dadosEstaticos.length; i++){
+                        if(dadosEstaticos[i].descricao.includes('wlan')){
+                            if(dadosEstaticos[i].descricao.includes('IPV4')){
+                                wlanIPPublico = dadosEstaticos[i].valor
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     async function dados(idComp){
         try {
@@ -540,7 +574,7 @@
     })
 
     function receberAcaoRapida(acao) {
-        axios.post('http://10.18.34.93:8080/inovacao', {
+        axios.post(`http://${wlanIPPublico}:8080/inovacao`, {
             comando: acao
         }, {
             headers: {
