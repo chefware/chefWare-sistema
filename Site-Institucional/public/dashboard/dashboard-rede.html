@@ -283,6 +283,7 @@
     const pacotesEnviados = document.getElementById('pacotesEnviados')
     const tipoComp = "Rede"
     const usoMenu = document.getElementById('usoMenu')
+    var wlanIPPublico
 
     const params = new URLSearchParams(window.location.search)
     const idMaquina = params.get('id')
@@ -345,6 +346,13 @@
                             }
                         }
 
+
+                        if(dadosEstaticos[i].descricao.includes('wlan')){
+                            if(dadosEstaticos[i].descricao.includes('IPV4')){
+                                wlanIPPublico = dadosEstaticos[i].valor
+                            }
+                        }
+                    
                     ipv6.innerText = dadosEstaticos[2].valor
                     }
 
@@ -438,9 +446,7 @@
                 const startIndex = Math.max(0, historico.data.length - 10)
                 for (var i = startIndex; i < historico.data.length; i++) {
                     if (historico.data[i].nome.includes('Rede Bytes Enviados')){
-                        console.log(historico.data[i].leitura)
                     } else if (historico.data[i].nome.includes('Rede Bytes Recebidos')) {
-                        console.log(historico.data[i].leitura)
                     } else if (historico.data[i].nome.includes('Rede Pacotes Enviados')) {
                         pacotesEnviados.innerText = `${historico.data[i].leitura}`;
                         const dataHoraFormatada = formatarDataHora(historico.data[i].dataHora);
@@ -452,7 +458,6 @@
                         graficoData.labels.push(dataHoraFormatada);
                         graficoData.datasets[1].data.push(parseFloat(historico.data[i].leitura));
                     }
-
                 }
                 grafico.data = graficoData
                 grafico.update()
@@ -498,7 +503,7 @@
     });
 
     function receberAcaoRapida(acao) {
-        axios.post(`http://10.18.34.93:8080  /inovacao`, {
+        axios.post(`http://${wlanIPPublico}:8080/inovacao`, {
             comando: acao
         }, {
             headers: {
