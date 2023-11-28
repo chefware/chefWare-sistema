@@ -118,22 +118,22 @@
                                     </div>
                                     <div id="botaoCpu" class="opcaoMenuComponentes">
                                         <h2>CPU</h2>
-                                        <span>Em uso: <span>35%</span></span>
+                                        <span>Em uso: <span id="usoCPU"></span></span>
                                     </div>
 
                                     <div id="botaoDisco" class="opcaoMenuComponentes">
                                         <h2>DISCO 01</h2>
-                                        <span>(C:)</span>
+                                        <span id="discoAlerta"></span>
                                     </div>
 
                                     <div id="botaoMemoria" class="opcaoMenuComponentes">
                                         <h2>MEMÓRIA</h2>
-                                        <span>Em uso: <span id="usoMenu">7,0/8,0 GB</span></span>
+                                        <span>Em uso: <span id="usoMemoriaMenu"></span></span>
                                     </div>
 
                                     <div id="botaoRede" class="opcaoMenuComponentes componente-selecionado">
                                         <h2>REDE</h2>
-                                        <span>Conectada</span>
+                                        <span id="redeAlerta"></span>
                                     </div>
                                 </div>
 
@@ -187,9 +187,8 @@
                                                     <span class="dadoEstatico" id="ipv4Wlan"></span>
                                                 </span>
 
-                                                <span class="tituloDadoEstatico">Endereço eth17  IPv4: <span
-                                                        class="dadoEstatico"
-                                                        id="ipv4Eth17"></span></span>
+                                                <span class="tituloDadoEstatico">Endereço eth17 IPv4: <span
+                                                        class="dadoEstatico" id="ipv4Eth17"></span></span>
                                             </div>
                                             <div class="colunaDado">
                                                 <span class="tituloDadoEstatico">Endereço eth0 IPv6:
@@ -289,7 +288,10 @@
     const idMaquina = params.get('id')
 
     maquinaDashboard()
+    especificacaoRede()
     especificacaoCPU()
+    especificacaoMemoria()
+    especificacaoDisco()
 
     async function maquinaDashboard() {
         try {
@@ -306,6 +308,119 @@
 
     async function especificacaoCPU() {
         try {
+            const especificacao = await axios.get(`/dashboard/especificacoes/${idMaquina}/CPU`)
+            console.log(especificacao)
+            if (especificacao.status === 200 && especificacao.data.length > 0) {
+                const dadosEspecificacoes = especificacao.data
+                historicoCPU(dadosEspecificacoes[0].idComponente)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function historicoCPU(idComp) {
+        try {
+            const historico = await axios.get(`/historico/${idMaquina}/${idComp}`)
+            if (historico.status === 200 && historico.data.length > 0) {
+                const startIndex = Math.max(0, historico.data.length - 10)
+                for (var i = startIndex; i < historico.data.length; i++) {
+                    usoCPU.innerText = `${Number(historico.data[i].leitura).toFixed(2)} ${historico.data[i].unidadeMedida}`
+                    if (historico.data[i].leitura >= 60 && historico.data[i].leitura < 80) {
+                        botaoCpu.style.backgroundColor = '#F4FA58'
+                    } else if (historico.data[i].leitura >= 80) {
+                        botaoCpu.style.backgroundColor = '#FFCDD2'
+                    } else {
+                        botaoCpu.style.backgroundColor = '#FFCDD2'
+                    }
+                }
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function especificacaoMemoria() {
+        try {
+            const especificacao = await axios.get(`/dashboard/especificacoes/${idMaquina}/Memoria`)
+            console.log(especificacao)
+            if (especificacao.status === 200 && especificacao.data.length > 0) {
+                const dadosEspecificacoes = especificacao.data
+                historicoMemoria(dadosEspecificacoes[0].idComponente)            
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function historicoMemoria(idComp) {
+        try {
+            const historico = await axios.get(`/historico/${idMaquina}/${idComp}`)
+            if (historico.status === 200 && historico.data.length > 0) {
+                const startIndex = Math.max(0, historico.data.length - 10)
+                for (var i = startIndex; i < historico.data.length; i++) {
+                    var usoAlerta
+                    if(historico.data[i].nome === 'Memoria em Uso'){
+                        usoMemoriaMenu.innerText = `${historico.data[i].leitura} / ${(Number(historico.data[i].leitura) + Number(historico.data[i + 1].leitura)).toFixed(2)} ${historico.data[i].unidadeMedida}`
+                        usoAlerta = Number(historico.data[i].leitura)
+                    } 
+                    if(historico.data[i].nome === 'Memoria em Uso'){
+                    const alertaMemoria = usoAlerta / (Number(historico.data[i].leitura) + Number(historico.data[i + 1].leitura)) * 100
+                    if (alertaMemoria >= 60 && alertaMemoria < 80) {
+                        botaoMemoria.style.backgroundColor = '#F4FA58'
+                    } else if (alertaMemoria >= 80) {
+                        botaoMemoria.style.backgroundColor = '#FFCDD2'
+                    }
+                    }
+                }
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function especificacaoDisco() {
+        try {
+            const especificacao = await axios.get(`/dashboard/especificacoes/${idMaquina}/Disco`)
+            console.log(especificacao)
+            if (especificacao.status === 200 && especificacao.data.length > 0) {
+                const dadosEspecificacoes = especificacao.data
+                historicoDisco(dadosEspecificacoes[0].idComponente)            
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function historicoDisco(idComp){
+        try {
+            const historico = await axios.get(`/historico/${idMaquina}/${idComp}`)
+            if (historico.status === 200 && historico.data.length > 0) {
+                const startIndex = Math.max(0, historico.data.length - 10)
+                for (var i = startIndex; i < historico.data.length; i++) {
+                    var usoAlerta
+                    if(historico.data[i].nome === 'Disco Tamanho Total'){
+                        discoAlerta.innerText = `${(Number(historico.data[i].leitura) - Number(historico.data[i+1].leitura)).toFixed(2)} / ${historico.data[i].leitura} ${historico.data[i].unidadeMedida}`
+                    }
+
+                    if(historico.data[i].nome === 'Disco Tamanho Total'){
+                        const tamRestante = Number(historico.data[i].leitura) - Number(historico.data[i + 1].leitura)
+                        const alertaDisco = tamRestante / historico.data[i].leitura * 100
+                       if(alertaDisco >= 60 && alertaDisco < 80){
+                        botaoDisco.style.backgroundColor = '#F4FA58'
+                    } else if(alertaDisco >= 80){
+                        botaoDisco.style.backgroundColor = '#FFCDD2'
+                    }
+                    }
+                }
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function especificacaoRede() {
+        try {
             const especificacao = await axios.get(`/dashboard/especificacoes/${idMaquina}/${tipoComp}`)
             console.log(especificacao)
             if (especificacao.status === 200) {
@@ -320,40 +435,40 @@
         }
     }
 
-    async function dados(idComp){
+    async function dados(idComp) {
         try {
             const dadosResult = await axios.get(`/dados/${idMaquina}/${idComp}`)
             if (dadosResult.status === 200) {
                 const dadosEstaticos = dadosResult.data
                 if (dadosEstaticos.length > 0) {
-                    for(var i = 0; i < dadosEstaticos.length; i++){
+                    for (var i = 0; i < dadosEstaticos.length; i++) {
                         nomeEstatico.innerText = dadosEstaticos[0].valor
-                        if(dadosEstaticos[i].descricao.includes('IPV4')){
-                            if(dadosEstaticos[i].descricao.includes('eth0')){
+                        if (dadosEstaticos[i].descricao.includes('IPV4')) {
+                            if (dadosEstaticos[i].descricao.includes('eth')) {
                                 ipv4.innerText = `${dadosEstaticos[i].valor}`
-                            } else if(dadosEstaticos[i].descricao.includes('wlan1')){
+                            } else if (dadosEstaticos[i].descricao.includes('wlan')) {
                                 ipv4Wlan.innerText = `${dadosEstaticos[i].valor}`
-                            } else if(dadosEstaticos[i].descricao.includes('eth17')){
+                            } else if (dadosEstaticos[i].descricao.includes('eth')) {
                                 ipv4Eth17.innerText = `${dadosEstaticos[i].valor}`
                             }
                         }
 
-                        if(dadosEstaticos[i].descricao.includes('IPV6')){
-                            if(dadosEstaticos[i].descricao.includes('eth0')){
+                        if (dadosEstaticos[i].descricao.includes('IPV6')) {
+                            if (dadosEstaticos[i].descricao.includes('eth')) {
                                 ipv6.innerText = `${dadosEstaticos[i].valor}`
-                            }  else if(dadosEstaticos[i].descricao.includes('eth17')){
+                            } else if (dadosEstaticos[i].descricao.includes('eth1')) {
                                 ipv6Eth17.innerText = `${dadosEstaticos[i].valor}`
                             }
                         }
 
 
-                        if(dadosEstaticos[i].descricao.includes('wlan')){
-                            if(dadosEstaticos[i].descricao.includes('IPV4')){
+                        if (dadosEstaticos[i].descricao.includes('wlan')) {
+                            if (dadosEstaticos[i].descricao.includes('IPV4')) {
                                 wlanIPPublico = dadosEstaticos[i].valor
                             }
                         }
-                    
-                    ipv6.innerText = dadosEstaticos[2].valor
+
+                        ipv6.innerText = dadosEstaticos[2].valor
                     }
 
                 }
@@ -370,22 +485,22 @@
                 '18:07:00'
             ],
             datasets: [{
-                    label: 'Pacotes enviados',
-                    data: [],
-                    borderWidth: 1,
-                    backgroundColor: 'rgba(4, 4, 84, 0.2)',
-                    borderColor: '#040454',
-                    fill: true,
-                    cubicInterpolationMode: 'monotone'
-                },
-                {
-                    label: 'Pacotes recebidos',
-                    data: [],
-                    borderWidth: 1,
-                    borderColor: '#00aa47',
-                    fill: false,
-                    cubicInterpolationMode: 'monotone'
-                }
+                label: 'Pacotes enviados',
+                data: [],
+                borderWidth: 1,
+                backgroundColor: 'rgba(4, 4, 84, 0.2)',
+                borderColor: '#040454',
+                fill: true,
+                cubicInterpolationMode: 'monotone'
+            },
+            {
+                label: 'Pacotes recebidos',
+                data: [],
+                borderWidth: 1,
+                borderColor: '#00aa47',
+                fill: false,
+                cubicInterpolationMode: 'monotone'
+            }
             ]
         },
         options: {
@@ -401,7 +516,9 @@
     setInterval(() => {
 
         histórico(idComp_grafico)
-
+        especificacaoCPU()
+        especificacaoMemoria()
+        especificacaoDisco()
     }, 5000)
 
     function formatarDataHora(dataHora) {
@@ -425,27 +542,27 @@
                 const graficoData = {
                     labels: [],
                     datasets: [{
-                            label: 'Pacotes enviados',
-                            data: [],
-                            borderWidth: 1,
-                            backgroundColor: 'rgba(4, 4, 84, 0.2)',
-                            borderColor: '#040454',
-                            fill: true,
-                            cubicInterpolationMode: 'monotone',
-                        },
-                        {
-                            label: 'Pacotes recebidos',
-                            data: [],
-                            borderWidth: 1,
-                            borderColor: '#00aa47',
-                            fill: false,
-                            cubicInterpolationMode: 'monotone',
-                        },
+                        label: 'Pacotes enviados',
+                        data: [],
+                        borderWidth: 1,
+                        backgroundColor: 'rgba(4, 4, 84, 0.2)',
+                        borderColor: '#040454',
+                        fill: true,
+                        cubicInterpolationMode: 'monotone',
+                    },
+                    {
+                        label: 'Pacotes recebidos',
+                        data: [],
+                        borderWidth: 1,
+                        borderColor: '#00aa47',
+                        fill: false,
+                        cubicInterpolationMode: 'monotone',
+                    },
                     ],
                 };
                 const startIndex = Math.max(0, historico.data.length - 10)
                 for (var i = startIndex; i < historico.data.length; i++) {
-                    if (historico.data[i].nome.includes('Rede Bytes Enviados')){
+                    if (historico.data[i].nome.includes('Rede Bytes Enviados')) {
                     } else if (historico.data[i].nome.includes('Rede Bytes Recebidos')) {
                     } else if (historico.data[i].nome.includes('Rede Pacotes Enviados')) {
                         pacotesEnviados.innerText = `${historico.data[i].leitura}`;
@@ -458,6 +575,19 @@
                         graficoData.labels.push(dataHoraFormatada);
                         graficoData.datasets[1].data.push(parseFloat(historico.data[i].leitura));
                     }
+
+                    var dataAtual = new Date()
+                        var dataHistorico = new Date(historico.data[i].dataHora)
+                        dataHistorico.setHours(dataHistorico.getHours() + 3)
+                        var diferencaEmMilissegundos = Math.abs(dataAtual.getTime() - dataHistorico.getTime());
+                        var diferencaEmMinutos = Math.floor(diferencaEmMilissegundos / (1000 * 60));
+
+
+                        if (diferencaEmMinutos >= 1) {
+                            redeAlerta.innerText = 'Desconectada'
+                        } else {
+                            redeAlerta.innerText = 'Conectada'
+                        }
                 }
                 grafico.data = graficoData
                 grafico.update()

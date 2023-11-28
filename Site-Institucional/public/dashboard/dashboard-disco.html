@@ -99,11 +99,11 @@
 
 
                                 <div class="areaBotao">
-                                    <div class="botao" onclick="deletar()">
+                                    <div class="botao" onclick="editar()">
                                         <img src="../assets/img/iconEditar.svg">
                                     </div>
 
-                                    <div class="botao">
+                                    <div class="botao" onclick="deletar()">
                                         <img src="../assets/img/iconExcluir.svg">
                                     </div>
                                 </div>
@@ -117,22 +117,22 @@
                                     </div>
                                     <div id="botaoCpu" class="opcaoMenuComponentes">
                                         <h2>CPU</h2>
-                                        <span>Em uso: <span>35%</span></span>
+                                        <span>Em uso: <span id="usoCPU"></span></span>
                                     </div>
 
                                     <div id="botaoDisco" class="opcaoMenuComponentes componente-selecionado">
                                         <h2>DISCO 01</h2>
-                                        <span>(C:)</span>
+                                        <span id="qtdDiscoMenu"></span>
                                     </div>
 
                                     <div id="botaoMemoria" class="opcaoMenuComponentes">
                                         <h2>MEMÓRIA</h2>
-                                        <span>Em uso: <span id="UsoMenu"></span></span>
+                                        <span>Em uso: <span id="usoMemoriaMenu"></span></span>
                                     </div>
 
                                     <div id="botaoRede" class="opcaoMenuComponentes">
                                         <h2>REDE</h2>
-                                        <span>Conectada</span>
+                                        <span id="redeAlerta"></span>
                                     </div>
                                 </div>
 
@@ -247,6 +247,7 @@
     const situacaoAlerta = document.getElementById('situacaoAlerta')
     const tipoComp = "Disco"
     const usoMenu = document.getElementById('UsoMenu')
+    const qtdDiscoMenu = document.getElementById('qtdDiscoMenu')
     var qtdUsoAlerta
     var wlanIPPublico
 
@@ -254,8 +255,10 @@
     const idMaquina = params.get('id')
 
     maquinaDashboard()
-    especificacaoCPU()
+    especificacaoDisco()
     especificacaoRede()
+    especificacaoCPU()
+    especificacaoMemoria()
 
     async function maquinaDashboard() {
         try {
@@ -274,16 +277,82 @@
         try {
             const especificacao = await axios.get(`/dashboard/especificacoes/${idMaquina}/Rede`)
             console.log(especificacao)
-            if (especificacao.status === 200) {
+            if (especificacao.status === 200 && especificacao.data.length > 0) {
                 const dadosEspecificacoes = especificacao.data
                 dadosRede(dadosEspecificacoes[0].idComponente)
+                historicoRede(dadosEspecificacoes[0].idComponente)            
             }
         } catch (error) {
             console.log(error)
         }
     }
 
-    async function especificacaoCPU() {
+    async function especificacaoMemoria() {
+        try {
+            const especificacao = await axios.get(`/dashboard/especificacoes/${idMaquina}/Memoria`)
+            console.log(especificacao)
+            if (especificacao.status === 200 && especificacao.data.length > 0) {
+                const dadosEspecificacoes = especificacao.data
+                historicoMemoria(dadosEspecificacoes[0].idComponente)            
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function historicoMemoria(idComp) {
+        try {
+            const historico = await axios.get(`/historico/${idMaquina}/${idComp}`)
+            if (historico.status === 200 && historico.data.length > 0) {
+                const startIndex = Math.max(0, historico.data.length - 10)
+                for (var i = startIndex; i < historico.data.length; i++) {
+                    var usoAlerta
+                    if(historico.data[i].nome === 'Memoria em Uso'){
+                        usoMemoriaMenu.innerText = `${historico.data[i].leitura} / ${(Number(historico.data[i].leitura) + Number(historico.data[i + 1].leitura)).toFixed(2)} ${historico.data[i].unidadeMedida}`
+                        usoAlerta = Number(historico.data[i].leitura)
+                    } 
+                    if(historico.data[i].nome === 'Memoria em Uso'){
+                    const alertaMemoria = usoAlerta / (Number(historico.data[i].leitura) + Number(historico.data[i + 1].leitura)) * 100
+                    if (alertaMemoria >= 60 && alertaMemoria < 80) {
+                        botaoMemoria.style.backgroundColor = '#F4FA58'
+                    } else if (alertaMemoria >= 80) {
+                        botaoMemoria.style.backgroundColor = '#FFCDD2'
+                    }
+                    }
+                }
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function historicoRede(idComp) {
+        try {
+            const historico = await axios.get(`/historico/${idMaquina}/${idComp}`)
+            if (historico.status === 200 && historico.data.length > 0) {
+                const startIndex = Math.max(0, historico.data.length - 10)
+                for (var i = startIndex; i < historico.data.length; i++) {
+                    var dataAtual = new Date()
+                    var dataHistorico = new Date(historico.data[i].dataHora)
+                    dataHistorico.setHours(dataHistorico.getHours() + 3)
+                    var diferencaEmMilissegundos = Math.abs(dataAtual.getTime() - dataHistorico.getTime());
+                    var diferencaEmMinutos = Math.floor(diferencaEmMilissegundos / (1000 * 60));
+                    
+                    
+                    if(diferencaEmMinutos >= 1){
+                        redeAlerta.innerText = 'Desconectada' 
+                        botaoRede.style.backgroundColor = '#FFCDD2'
+                    } else {
+                        redeAlerta.innerText = 'Conectada'
+                    }
+                }
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function especificacaoDisco() {
         try {
             const especificacao = await axios.get(`/dashboard/especificacoes/${idMaquina}/${tipoComp}`)
             console.log(especificacao)
@@ -299,19 +368,34 @@
         }
     }
 
-    async function unidadeMedida(idUnidade, tipoFunction) {
+    async function especificacaoCPU() {
         try {
-            const unidadeMedida = await axios.get(`/unidades/${idUnidade}`)
-            if (unidadeMedida.status === 200) {
-                const unidade = unidadeMedida.data
-                if (tipoFunction === 'historico') {
-                    qtdUso.innerText += `${unidade[0].tipo}`
-                    qtdRestante.innerText += `${unidade[0].tipo}`
-                } else {
-                    tamTotal.innerText += `${unidade[0].tipo}`
-                    usoMenu.innerText += `${unidade[0].tipo}`
-                }
+            const especificacao = await axios.get(`/dashboard/especificacoes/${idMaquina}/CPU`)
+            console.log(especificacao)
+            if (especificacao.status === 200 && especificacao.data.length > 0) {
+                const dadosEspecificacoes = especificacao.data
+                historicoCPU(dadosEspecificacoes[0].idComponente)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
+    async function historicoCPU(idComp) {
+        try {
+            const historico = await axios.get(`/historico/${idMaquina}/${idComp}`)
+            if (historico.status === 200 && historico.data.length > 0) {
+                const startIndex = Math.max(0, historico.data.length - 10)
+                for (var i = startIndex; i < historico.data.length; i++) {
+                    usoCPU.innerText = `${Number(historico.data[i].leitura).toFixed(2)} ${historico.data[i].unidadeMedida}`
+                    if (historico.data[i].leitura >= 60 && historico.data[i].leitura < 80) {
+                        botaoCpu.style.backgroundColor = '#F4FA58'
+                    } else if (historico.data[i].leitura >= 80) {
+                        botaoCpu.style.backgroundColor = '#FFCDD2'
+                    } else {
+                        botaoCpu.style.backgroundColor = '#FFCDD2'
+                    }
+                }
             }
         } catch (error) {
             console.log(error)
@@ -401,6 +485,10 @@
     setInterval(() => {
 
         histórico(idComp_grafico)
+        especificacaoDisco()
+        especificacaoRede()
+        especificacaoCPU()
+        especificacaoMemoria()
 
     }, 5000)
 
@@ -420,7 +508,6 @@
     async function histórico(idComp) {
         try {
             const historico = await axios.get(`/historico/${idMaquina}/${idComp}`)
-            console.log(historico)
             if (historico.status === 200) {
                 var graficoData = {
                     labels: [],
@@ -464,6 +551,7 @@
                         const dataHoraFormatada = formatarDataHora(historico.data[i].dataHora)
                         graficoData.labels.push(dataHoraFormatada)
                         graficoData.datasets[0].data.push(parseFloat(historico.data[i].leitura - historico.data[i + 1].leitura))
+                        qtdDiscoMenu.innerText = `${(historico.data[i].leitura - historico.data[i + 1].leitura).toFixed(2)} / ${historico.data[i].leitura} ${historico.data[i].unidadeMedida}`
                         tamTotal.innerText = `${historico.data[i].leitura} ${historico.data[i].unidadeMedida}`
                     } else {
                         qtdRestante.innerText = `${historico.data[i].leitura} ${historico.data[i].unidadeMedida}`
@@ -489,6 +577,10 @@
         } catch (error) {
             console.log(error)
         }
+    }
+
+    async function editar() {
+        window.location.href = `editar-maquina.html?id=${idMaquina}`
     }
 
     async function deletar() {
