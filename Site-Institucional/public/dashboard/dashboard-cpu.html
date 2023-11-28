@@ -72,7 +72,7 @@
 
                         <div class="conteudoEmpresa">
                             <span>Empresa</span>
-                            <h1>Fogo de Chão</h1>
+                            <h1 id="nomeEmpresa">Fogo de Chão</h1>
                         </div>
 
                         <div id="perfil" class="perfil-img">
@@ -134,17 +134,17 @@
 
                                     <div id="botaoDisco" class="opcaoMenuComponentes" onclick="navegacaoDisco()">
                                         <h2>DISCO 01</h2>
-                                        <span>(C:)</span>
+                                        <span id="discoAlerta">(C:)</span>
                                     </div>
 
                                     <div id="botaoMemoria" class="opcaoMenuComponentes" onclick="navegacaoMemoria()">
                                         <h2>MEMÓRIA</h2>
-                                        <span>Em uso: <span>7,0/8,0 GB</span></span>
+                                        <span id="memoriaAlerta">Em uso: <span>7,0/8,0 GB</span></span>
                                     </div>
 
                                     <div id="botaoRede" class="opcaoMenuComponentes" onclick="navegacaoRede()">
                                         <h2>REDE</h2>
-                                        <span>Conectada</span>
+                                        <span id="redeAlerta">Conectada</span>
                                     </div>
 
                                 </div>
@@ -227,12 +227,52 @@
 <script src="../assets/js/graficoCpu.js"></script>
 <script>
     pegarFoto()
+
     function pegarFoto() {
         const idFuncionario = sessionStorage.getItem('idFuncionario')
         const imagem = document.getElementById('foto-perfil')
-        const baseUrl = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
+        const baseUrl = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' +
+            window.location.port : '')
         imagem.src = `${baseUrl}/funcionarios/foto/${idFuncionario}`
     }
+
+    var perfil = document.getElementById("perfil")
+    var nomeUser = sessionStorage.getItem("nomeFuncionario");
+    var fkEmpresa = sessionStorage.getItem("fkEmpresa");
+    var idFuncionario = sessionStorage.getItem("idFuncionario");
+    var privilegio = sessionStorage.getItem("privilegio");
+
+    if (nomeUser != null) {
+        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${nomeUser}</span></span>`;
+    }
+
+    pegarNomeEmpresa();
+
+    async function pegarNomeEmpresa() {
+        try {
+            const response = await axios.get(`/empresas/${fkEmpresa}`);
+            if (response.status === 200) {
+                const dados = response.data;
+                console.log(dados);
+                document.getElementById('nomeEmpresa').innerHTML = `${dados.nome}`;
+            } else {
+                console.error('Erro na requisição:', response.status, response.statusText);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    // Verificar o privilegio do usuário
+    if (privilegio == "Comum") {
+        document.getElementById("itemMenuEmpresa").style.display = "none";
+        const botoesCrud = document.querySelectorAll(".botao");
+        botoesCrud.forEach(botao => {
+            botao.style.display = "none";
+        });
+        document.querySelector(".botaoAcoesRapidas").style.display = "none";
+    }
+
     const nome = document.getElementById('nomeMaquina')
     const modelo = document.getElementById('modelo')
     const fabricante = document.getElementById('fabricante')
@@ -269,38 +309,26 @@
         }
     }
 
-    async function componente(id) {
-        try {
-            const comp = await axios.get(`/componentes/${id}`)
-            if (comp.status === 200) {
-
-            }
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
     async function especificacaoCPU() {
         try {
             const especificacao = await axios.get(`/dashboard/especificacoes/${idMaquina}/${tipoComp}`)
             console.log(especificacao)
             if (especificacao.status === 200) {
                 const dadosEspecificacoes = especificacao.data
-                dados(dadosEspecificacoes[0].idEspecificacoes, dadosEspecificacoes[0].fkComponente)
-                histórico(dadosEspecificacoes[0].fkComponente)
-                componente(dadosEspecificacoes[0].fkComponente)
-                idEsp_grafico = dadosEspecificacoes[0].idEspecificacoes
-                idComp_grafico = dadosEspecificacoes[0].fkComponente
+                await histórico(dadosEspecificacoes[0].idComponente)
+                idComp_grafico = dadosEspecificacoes[0].idComponente
                 comp.innerText = dadosEspecificacoes[0].tipo
+                dados(dadosEspecificacoes[0].idComponente)
             }
         } catch (error) {
             console.log(error)
         }
     }
 
-    async function dados(idEsp, idComp){
+
+    async function dados(idComp){
         try {
-            const dadosResult = await axios.get(`/dados/${idEsp}/${idMaquina}/${idComp}`)
+            const dadosResult = await axios.get(`/dados/${idMaquina}/${idComp}`)
             if(dadosResult.status === 200){
                 const dadosEstaticos = dadosResult.data
                 if (dadosEstaticos.length > 0) {
@@ -309,6 +337,7 @@
                     frequencia.innerText = dadosEstaticos[2].valor || ''
                     fisicas.innerText = dadosEstaticos[3].valor || ''
                     logicas.innerText = dadosEstaticos[4].valor || ''
+                    unidadeMedida(dadosEstaticos[2].unidadeMedida, 'dados')
                 }
             }
         } catch (error) {
@@ -374,14 +403,17 @@
 
         data.setHours(data.getHours() + 3)
 
-        const options = { hour: 'numeric', minute: 'numeric', second: 'numeric' }
+        const options = {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric'
+        }
         return new Intl.DateTimeFormat('pt-BR', options).format(data)
     }
 
     async function histórico(idComp) {
         try {
             const historico = await axios.get(`/historico/${idMaquina}/${idComp}`)
-            console.log(historico)
             if (historico.status === 200) {
                 var graficoData = {
                     labels: [],
@@ -419,22 +451,22 @@
                 }
                 const startIndex = Math.max(0, historico.data.length - 10)
                 for (var i = startIndex; i < historico.data.length; i++) {
-                    qtdUso.innerText = `${historico.data[i].leitura} ${historico.data[i].unidadeMedida}`
-                    qtdUsoMenu.innerText = `${historico.data[i].leitura} ${historico.data[i].unidadeMedida}`
+                    qtdUso.innerText = `${Number(historico.data[i].leitura).toFixed(2)} ${historico.data[i].unidadeMedida}`
+                    qtdUsoMenu.innerText = `${Number(historico.data[i].leitura).toFixed(2)} ${historico.data[i].unidadeMedida}`
 
                     const dataHoraFormatada = formatarDataHora(historico.data[i].dataHora)
                     graficoData.labels.push(dataHoraFormatada)
                     graficoData.datasets[0].data.push(parseFloat(historico.data[i].leitura))
 
-                if(historico.data[i].leitura >= 70 && historico.data[i].leitura < 90){
-                    situacaoAlerta.style.backgroundColor = 'yellow'   
-                } else if (historico.data[i].leitura >= 90){
-                    situacaoAlerta.style.backgroundColor = 'red'
-                } else {
-                    situacaoAlerta.style.backgroundColor = 'green'
-                } 
+                    if (historico.data[i].leitura >= 60 && historico.data[i].leitura < 80) {
+                        situacaoAlerta.style.backgroundColor = 'yellow'
+                    } else if (historico.data[i].leitura >= 80) {
+                        situacaoAlerta.style.backgroundColor = 'red'
+                    } else {
+                        situacaoAlerta.style.backgroundColor = 'green'
+                    }
                 }
-
+                const hist = 'historico'
                 grafico.data = graficoData
                 grafico.update()
             }
@@ -454,7 +486,7 @@
         }
     }
 
-    async function editar(){
+    async function editar() {
         window.location.href = `editar-maquina.html?id=${idMaquina}`
     }
 
@@ -507,31 +539,19 @@
         window.location.href = 'lista-funcionario.html'
     })
 
-    var perfil = document.getElementById("perfil")
-    var nomeUser = sessionStorage.getItem("nomeFuncionario");
-    var fkEmpresa = sessionStorage.getItem("fkEmpresa");
-    var idFuncionario = sessionStorage.getItem("idFuncionario");
-
-    if (nomeUser != null) {
-        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${nomeUser}</span></span>`;
-    }
-
-    function receberAcaoRapida(acao){
+    function receberAcaoRapida(acao) {
         axios.post('http://10.18.34.93:8080/inovacao', {
             comando: acao
-        },
-            {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
+        }, {
+            headers: {
+                'Content-Type': 'application/json'
             }
-        ).then(function (response) {
+        }).then(function (response) {
             console.log(response)
         }).catch(function (error) {
             console.log(error)
         })
     }
-
 </script>
 
 <script src="../assets/js/controle-pages.js"></script>

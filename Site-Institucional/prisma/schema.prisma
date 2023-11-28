@@ -28,9 +28,9 @@ model Maquina {
   fkEmpresa       Int
   ativo           Boolean?          @default(true)
   empresa         Empresa            @relation(fields: [fkEmpresa], references: [idEmpresa])
-  especificacoes  Especificacoes[]
   historicos      Historico[]
-  dados           Dados[]          
+  registros       Dados[]     
+  componentes     Componente[]     
 }
 
 model Funcionario {
@@ -61,53 +61,45 @@ model Endereco {
 
 model Componente {
   idComponente     Int               @id @default(autoincrement())
+  tipo             String?
   marca            String?
   compatibilidade  String?
   dataVencimento   String?
-  especificacoes   Especificacoes[]
+  fkMaquina        Int
+  maquina          Maquina           @relation(fields: [fkMaquina], references: [idMaquina])
   historicos       Historico[]
-  dados           Dados[]
+  registro         Dados[]
+  sistemaOperacional SistemaOperacional[]
 }
 
-model Especificacoes {
-  idEspecificacoes Int              @default(autoincrement()) @unique
-  fkMaquina        Int
-  fkComponente     Int
-  tipo             String?
-  dados            Dados[]           // Adicionando relação inversa com Dados
-  maquina          Maquina           @relation(fields: [fkMaquina], references: [idMaquina])
-  historicos       Historico[]       
-  componente       Componente        @relation(fields: [fkComponente], references: [idComponente])
-  @@id([idEspecificacoes, fkMaquina, fkComponente])
-  @@index([fkMaquina, fkComponente], name: "idx_tipo_maquina_componente")
+model SistemaOperacional{
+  idSistemaOperacional Int        @id @default(autoincrement())
+  tipo                 String?
+  componentes          Componente[]
 }
 
 model Dados {
   idDados           Int               @id @default(autoincrement())
   descricao         String?
   valor             String?
-  unidadeMedida     String?
-  fkEspecificacoes  Int
+  unidadeMedida     String? 
   fkMaquina         Int
   fkComponente      Int
   dataHora         DateTime?
-  especificacoes    Especificacoes    @relation(fields: [fkEspecificacoes], references: [idEspecificacoes])
   componente        Componente        @relation(fields: [fkComponente], references: [idComponente])
   maquina           Maquina           @relation(fields: [fkMaquina], references: [idMaquina])
-  @@index([fkEspecificacoes, fkMaquina, fkComponente], name: "idx_descricao_maquina_componente")
+  @@index([unidadeMedida, fkMaquina, fkComponente], name: "idx_descricao_maquina_componente")
 }
 
 model Historico {
   idHistorico      Int        @id @default(autoincrement())
   fkMaquina        Int
   fkComponente     Int
-  fkEspecificacoes Int
   dataHora         DateTime?
   nome             String?
   leitura          String?
   unidadeMedida    String?
   maquina          Maquina    @relation(fields: [fkMaquina], references: [idMaquina])
-  especificacoes   Especificacoes @relation(fields: [fkEspecificacoes], references: [idEspecificacoes])
   componente       Componente @relation(fields: [fkComponente], references: [idComponente])
 }
 

@@ -71,7 +71,7 @@
                     <div class="header">
                         <div class="conteudoEmpresa">
                             <span>Empresa</span>
-                            <h1>Fogo de Chão</h1>
+                            <h1 id="nomeEmpresa">Fogo de Chão</h1>
                         </div>
 
                         <div id="perfil" class="perfil-img">
@@ -194,12 +194,52 @@
 <script src="../assets/js/graficoCpu.js"></script>
 <script>
     pegarFoto()
+
     function pegarFoto() {
         const idFuncionario = sessionStorage.getItem('idFuncionario')
         const imagem = document.getElementById('foto-perfil')
-        const baseUrl = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
+        const baseUrl = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' +
+            window.location.port : '')
         imagem.src = `${baseUrl}/funcionarios/foto/${idFuncionario}`
     }
+
+    var perfil = document.getElementById("perfil");
+    var nomeUser = sessionStorage.getItem("nomeFuncionario");
+    var fkEmpresa = sessionStorage.getItem("fkEmpresa");
+    var idFuncionario = sessionStorage.getItem("idFuncionario");
+    var privilegio = sessionStorage.getItem("privilegio");
+
+    if (nomeUser != null) {
+        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${nomeUser}</span></span>`;
+    }
+
+    pegarNomeEmpresa();
+
+    async function pegarNomeEmpresa() {
+        try {
+            const response = await axios.get(`/empresas/${fkEmpresa}`);
+            if (response.status === 200) {
+                const dados = response.data;
+                console.log(dados);
+                document.getElementById('nomeEmpresa').innerHTML = `${dados.nome}`;
+            } else {
+                console.error('Erro na requisição:', response.status, response.statusText);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    // Verificar o privilegio do usuário
+    if (privilegio == "Comum") {
+        document.getElementById("itemMenuEmpresa").style.display = "none";
+        const botoesCrud = document.querySelectorAll(".botao");
+        botoesCrud.forEach(botao => {
+            botao.style.display = "none";
+        });
+        document.querySelector(".botaoAcoesRapidas").style.display = "none";
+    }
+
     const ctxMemoria = document.getElementById('myChartMemoria');
     const nome = document.getElementById('nomeMaquina')
     const modelo = document.getElementById('modelo')
@@ -231,29 +271,35 @@
         }
     }
 
-    async function componente(id) {
-        try {
-            const comp = await axios.get(`/componentes/${id}`)
-            if (comp.status === 200) {
-
-            }
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
     async function especificacaoCPU() {
         try {
             const especificacao = await axios.get(`/dashboard/especificacoes/${idMaquina}/${tipoComp}`)
             console.log(especificacao)
             if (especificacao.status === 200) {
                 const dadosEspecificacoes = especificacao.data
-                await histórico(dadosEspecificacoes[0].fkComponente)
-                componente(dadosEspecificacoes[0].fkComponente)
-                idEsp_grafico = dadosEspecificacoes[0].idEspecificacoes
-                idComp_grafico = dadosEspecificacoes[0].fkComponente
+                await histórico(dadosEspecificacoes[0].idComponente)
+                idComp_grafico = dadosEspecificacoes[0].idComponente
                 comp.innerText = dadosEspecificacoes[0].tipo
-                dados(dadosEspecificacoes[0].idEspecificacoes, dadosEspecificacoes[0].fkComponente)
+                dados(dadosEspecificacoes[0].idComponente)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function unidadeMedida(idUnidade, tipoFunction){
+        try {
+            const unidadeMedida = await axios.get(`/unidades/${idUnidade}`)
+            if (unidadeMedida.status === 200) {
+                const unidade = unidadeMedida.data
+                if(tipoFunction === 'historico'){
+                    qtdUso.innerText += `${unidade[0].tipo}`
+                    qtdRestante.innerText += `${unidade[0].tipo}`
+                } else {
+                    total.innerText += `${unidade[0].tipo}`
+                usoMenu.innerText += `${unidade[0].tipo}`
+                }
+                
             }
         } catch (error) {
             console.log(error)
@@ -309,7 +355,7 @@
 
     setInterval(async () => {
         await histórico(idComp_grafico)
-        dados(idEsp_grafico, idComp_grafico)
+        dados(idComp_grafico)
     }, 5000)
 
     function formatarDataHora(dataHora) {
@@ -317,7 +363,11 @@
 
         data.setHours(data.getHours() + 3)
 
-        const options = { hour: 'numeric', minute: 'numeric', second: 'numeric' }
+        const options = {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric'
+        }
         return new Intl.DateTimeFormat('pt-BR', options).format(data)
     }
 
@@ -367,22 +417,26 @@
                         const dataHoraFormatada = formatarDataHora(historico.data[i].dataHora)
                         graficoData.labels.push(dataHoraFormatada)
                         graficoData.datasets[0].data.push(parseFloat(historico.data[i].leitura))
-                        usoMenu.innerText = `${historico.data[i].leitura}`
+                        usoMenu.innerText = `${historico.data[i].leitura} ${historico.data[i].unidadeMedida}`
                     } else {
                         qtdRestante.innerText = `${historico.data[i].leitura} ${historico.data[i].unidadeMedida}`
-                    }
+                    } 
 
                     if(historico.data[i].nome === 'Memoria em Uso'){
-                       if(historico.data[i].leitura >= 70 && historico.data[i].leitura < 90){
-                        situacaoAlerta.style.backgroundColor = 'yellow'
-                    } else if(historico.data[i].leitura - historico.data[i + 1].leitura >= 90){
+                        const totalMemoria = Number(historico.data[i].leitura) + Number(historico.data[i+1].leitura)
+                        const alertaMemoria = (historico.data[i].leitura / totalMemoria) * 100
+                        console.log(alertaMemoria)
+                        console.log(totalMemoria)
+                       if(alertaMemoria >= 80){
                         situacaoAlerta.style.backgroundColor = 'red'
+                    } else if(alertaMemoria >= 60 && alertaMemoria < 80){
+                        situacaoAlerta.style.backgroundColor = 'yellow'
                     } else {
                         situacaoAlerta.style.backgroundColor = 'green'
                     }
                     }
                 }
-
+                        const hist = 'historico'
                 grafico.data = graficoData
                 grafico.update()
             }
@@ -391,14 +445,15 @@
         }
     }
 
-    async function dados(idEsp, idComp){
+    async function dados(idComp){
         try {
-            const dadosResult = await axios.get(`/dados/${idEsp}/${idMaquina}/${idComp}`)
+            const dadosResult = await axios.get(`/dados/${idMaquina}/${idComp}`)
             if(dadosResult.status === 200){
                 const dadosEstaticos = dadosResult.data
                 if (dadosEstaticos.length > 0) {
-                    total.innerText = dadosEstaticos[0].valor + ' ' + dadosEstaticos[0].unidadeMedida || ''
-                    usoMenu.innerText += ` / ${dadosEstaticos[0].valor} ${dadosEstaticos[0].unidadeMedida}`
+                    total.innerText = dadosEstaticos[0].valor
+                    usoMenu.innerText += ` / ${dadosEstaticos[0].valor}`
+                    unidadeMedida(dadosEstaticos[0].unidadeMedida, 'dados')
                 }
             }
         } catch (error) {
@@ -440,15 +495,6 @@
     botaoRede.addEventListener('click', function () {
         window.location.href = `dashboard-rede.html?id=${idMaquina}`;
     });
-
-    var perfil = document.getElementById("perfil");
-    var nomeUser = sessionStorage.getItem("nomeFuncionario");
-    var fkEmpresa = sessionStorage.getItem("fkEmpresa");
-    var idFuncionario = sessionStorage.getItem("idFuncionario");
-
-    if (nomeUser != null) {
-        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${nomeUser}</span></span>`;
-    }
 
     function receberAcaoRapida(acao) {
         axios.post('http://10.18.34.93:8080/inovacao', {

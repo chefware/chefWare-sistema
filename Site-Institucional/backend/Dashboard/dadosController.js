@@ -4,14 +4,12 @@ const prisma = new PrismaClient()
 
 const dadosController = express.Router()
 
-dadosController.get('/:idEsp/:idMaquina/:idComp', async (req, res) => {
-    const idEsp = Number(req.params.idEsp)
+dadosController.get('/:idMaquina/:idComp', async (req, res) => {
     const idMaquina = Number(req.params.idMaquina)
     const idComp = Number(req.params.idComp)
     try {
         const dados = await prisma.dados.findMany({
             where: {
-                fkEspecificacoes: idEsp,
                 fkMaquina: idMaquina,
                 fkComponente: idComp  
             }
