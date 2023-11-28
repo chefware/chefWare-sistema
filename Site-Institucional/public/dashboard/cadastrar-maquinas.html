@@ -140,7 +140,7 @@
 
     if (privilegio == "Admin" && fkEmpresa != 1) {
         document.getElementById("itemMenuEmpresa").style.display = "none";
-    }   
+    }
 
     pegarNomeEmpresa();
 
@@ -161,7 +161,10 @@
 
     async function cadastrar() {
         try {
-            var result = document.getElementById("snackbar");
+            const inner = `<div class="c-loader"></div>`
+            const feedback_user = document.getElementById("feedback_user")
+            const botaoCadastrar = document.getElementById("botao-cadastrar")
+            var result = document.getElementById("snackbar")
             const numSerie = input_numSerie.value
             const nome = input_nome.value
             const hostName = input_hostName.value
@@ -184,14 +187,15 @@
             if (response.status === 201) {
                 const maquinaCriada = response.data;
                 console.log('Máquina cadastrada com sucesso:', maquinaCriada);
-
-                result.className = "show";
+                botaoCadastrar.innerHTML = "Cadastrando"
+                botaoCadastrar.innerHTML += inner
                 setTimeout(function () {
-                    x.className = result.className.replace("show", "");
-                }, 1500);
-                setTimeout(function () {
+                    result.className = "show"
+                    const loader = document.querySelector(".c-loader")[0]
+                    console.log('Redirecionando para lista-maquinas.html')
                     window.location.href = 'lista-maquinas.html'
-                }, 2000);
+                    loader.remove()
+                }, 1500)
             } else {
                 console.error('Erro ao cadastrar máquina:', response.status, response.statusText)
             }

@@ -110,6 +110,9 @@ select {
     background-color: #040454;
     border: none;
     color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #botao-cadastrar:hover {
@@ -173,3 +176,18 @@ select {
         opacity: 0;
     }
 }
+.c-loader {
+    animation: is-rotating 1s infinite;
+    border: 2px solid #808087;
+    border-radius: 50%;
+    border-top-color: #ffffff;
+    height: 12px;
+    width: 12px;
+    margin-left: 10px;
+  }
+
+  @keyframes is-rotating {
+    to {
+      transform: rotate(1turn);
+    }
+  }
