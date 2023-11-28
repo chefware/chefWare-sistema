@@ -414,27 +414,26 @@
                 }
                 const startIndex = Math.max(0, historico.data.length - 10)
                 for (var i = startIndex; i < historico.data.length; i++) {
-                    if (historico.data[i].nome === 'Memoria em Uso') {
-                        qtdUso.innerText = `${historico.data[i].leitura}`
+                    if(historico.data[i].nome === 'Memoria em Uso'){
+                        qtdUso.innerText = `${historico.data[i].leitura} ${historico.data[i].unidadeMedida}`
                         const dataHoraFormatada = formatarDataHora(historico.data[i].dataHora)
                         graficoData.labels.push(dataHoraFormatada)
                         graficoData.datasets[0].data.push(parseFloat(historico.data[i].leitura))
-                        usoMenu.innerText = `${historico.data[i].leitura}`
+                        usoMenu.innerText = `${historico.data[i].leitura} ${historico.data[i].unidadeMedida}`
                     } else {
                         qtdRestante.innerText = `${historico.data[i].leitura}`
                     }
-                    if (historico.data[i].nome === 'Memoria em Uso') {
-                        if (historico.data[i].leitura >= 70 && historico.data[i].leitura < 90) {
-                            situacaoAlerta.style.backgroundColor = 'yellow'
-                        } else if (historico.data[i].leitura - historico.data[i + 1].leitura >= 90) {
-                            situacaoAlerta.style.backgroundColor = 'red'
-                        } else {
-                            situacaoAlerta.style.backgroundColor = 'green'
-                        }
+                    if(historico.data[i].nome === 'Memoria em Uso'){
+                       if(historico.data[i].leitura >= 70 && historico.data[i].leitura < 90){
+                        situacaoAlerta.style.backgroundColor = 'yellow'
+                    } else if(historico.data[i].leitura - historico.data[i + 1].leitura >= 90){
+                        situacaoAlerta.style.backgroundColor = 'red'
+                    } else {
+                        situacaoAlerta.style.backgroundColor = 'green'
+                    }
                     }
                 }
-                const hist = 'historico'
-                unidadeMedida(historico.data[0].unidadeMedida, hist)
+                        const hist = 'historico'
                 grafico.data = graficoData
                 grafico.update()
             }

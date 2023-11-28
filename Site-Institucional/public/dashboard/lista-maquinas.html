@@ -83,12 +83,12 @@
                             <div class="linhaMaquinas" id="linha_maquina">
 
                             </div>
-                            <div class="page">
-                                <div class="pagination">
-                                    <button class="prev-page"><img src="../assets/voltar-icon.png" alt=""></button>
-                                    <div id="pagination"></div>
-                                    <button class="next-page"><img src="../assets/avancar-icon.png" alt=""></button>
-                                </div>
+                        </div>
+                        <div class="page">
+                            <div class="pagination">
+                                <button class="prev-page"><img src="../assets/voltar-icon.png" alt=""></button>
+                                <div id="pagination"></div>
+                                <button class="next-page"><img src="../assets/avancar-icon.png" alt=""></button>
                             </div>
                         </div>
                     </div>
@@ -155,10 +155,9 @@
             console.log(especificacao)
             if (especificacao.status === 200) {
                 const dadosEspecificacoes = especificacao.data
-                idEsp_grafico = dadosEspecificacoes[0].idEspecificacoes
-                idComp = dadosEspecificacoes[0].fkComponente
+                idComp = dadosEspecificacoes[0].idComponente
                 idM = idMaquina
-                await historicoCPU(idMaquina, dadosEspecificacoes[0].fkComponente)
+                await historicoCPU(idMaquina, dadosEspecificacoes[0].idComponente)
             }
         } catch (error) {
             console.log(error)
@@ -171,10 +170,9 @@
             console.log(especificacao)
             if (especificacao.status === 200) {
                 const dadosEspecificacoes = especificacao.data
-                idEsp_grafico = dadosEspecificacoes[0].idEspecificacoes
-                idComp = dadosEspecificacoes[0].fkComponente
+                idComp = dadosEspecificacoes[0].idComponente
                 idM = idMaquina
-                await historicoDisco(dadosEspecificacoes[0].idEspecificacoes, idMaquina, dadosEspecificacoes[0].fkComponente)
+                await historicoDisco(idMaquina, dadosEspecificacoes[0].idComponente)
             }
         } catch (error) {
             console.log(error)
@@ -187,10 +185,9 @@
             console.log(especificacao)
             if (especificacao.status === 200) {
                 const dadosEspecificacoes = especificacao.data
-                idEsp_grafico = dadosEspecificacoes[0].idEspecificacoes
-                idComp = dadosEspecificacoes[0].fkComponente
+                idComp = dadosEspecificacoes[0].idComponente
                 idM = idMaquina
-                await historicoMemoria(idMaquina, dadosEspecificacoes[0].fkComponente)
+                await historicoMemoria(idMaquina, dadosEspecificacoes[0].idComponente)
             }
         } catch (error) {
             console.log(error)
@@ -203,10 +200,9 @@
             console.log(especificacao)
             if (especificacao.status === 200) {
                 const dadosEspecificacoes = especificacao.data
-                idEsp_grafico = dadosEspecificacoes[0].idEspecificacoes
-                idComp = dadosEspecificacoes[0].fkComponente
+                idComp = dadosEspecificacoes[0].idComponente
                 idM = idMaquina
-                await historicoRede(idMaquina, dadosEspecificacoes[0].fkComponente)
+                await historicoRede(idMaquina, dadosEspecificacoes[0].idComponente)
             }
         } catch (error) {
             console.log(error)
@@ -214,6 +210,7 @@
     }
 
     async function historicoGeral() {
+        console.log(qtdEmAlerta)
         try {
             if (qtdEmAlerta === 1) {
                 situacaoAlerta = 'yellow'
@@ -225,6 +222,8 @@
                 situacaoAlerta = 'green'
                 sit = 'Normal'
             }
+
+            qtdEmAlerta = 0
         } catch (error) {
             console.log(error)
         }
@@ -237,7 +236,8 @@
             var alertaQtd = 0
             var alerta = false
             for (var i = 0; i < historico.data.length; i++) {
-
+                alerta = false
+                alerta = false
                 if (historico.data[i].leitura >= 70 && historico.data[i].leitura < 90) {
                     alertaQtd = 1
                     alerta = true
@@ -252,25 +252,26 @@
                                             CPU
                                         </li>`
             }
-            qtdEmAlerta = alertaQtd
+            qtdEmAlerta += alertaQtd
         } catch (error) {
             console.log(error)
         }
     }
 
-    async function historicoDisco(idEsp, idMaquina, idComp) {
+    async function historicoDisco(idMaquina, idComp) {
         try {
-            const historico = await axios.get(`/dados/${idEsp}/${idMaquina}/${idComp}`)
+            const historico = await axios.get(`/dados/${idMaquina}/${idComp}`)
             const startIndex = Math.max(0, historico.data.length - 1)
             var alertaQtd = false
             for (var i = 0; i < historico.data.length; i++) {
+                alerta = false
                 var alertaQtd = 0
                 if (historico.data[i].descricao === 'Disco Tamanho Total') {
                     if (historico.data[i].valor - historico.data[i + 1].valor >= 70 && historico.data[i].valor - historico.data[i + 1].valor < 90) {
-                        alertaQtd = 1
+                        alertaQtd += 1
                         alerta = true
                     } else if (historico.data[i].valor - historico.data[i + 1].valor >= 90) {
-                        alertaQtd = 1
+                        alertaQtd += 1
                         alerta = true
                     }
                 }
@@ -281,7 +282,7 @@
                                             Disco
                                         </li>`
             }
-            qtdEmAlerta = alertaQtd
+            qtdEmAlerta += alertaQtd
         } catch (error) {
             console.log(error)
         }
@@ -293,13 +294,17 @@
             const startIndex = Math.max(0, historico.data.length - 1)
             var alerta = false
             for (var i = 0; i < historico.data.length; i++) {
+                
                 var alertaQtd = 0
-                if (historico.data[i].leitura >= 70 && historico.data[i].leitura < 90) {
-                    alertaQtd = 1
+                if(historico.data[i].nome === 'Memoria em Uso'){
+                    alerta = false
+                    if (historico.data[i].leitura >= 70 && historico.data[i].leitura < 90) {
+                    alertaQtd += 1
                     alerta = true
                 } else if (historico.data[i].leitura >= 90) {
                     alerta = true
-                    alertaQtd = 1
+                    alertaQtd += 1
+                }
                 }
             }
 
@@ -308,7 +313,7 @@
                                             Memória
                                         </li>`
             }
-            qtdEmAlerta = alertaQtd
+            qtdEmAlerta += alertaQtd
         } catch (error) {
             console.log(error)
         }
@@ -321,21 +326,22 @@
             var alerta = false
             for (var i = 0; i < historico.data.length; i++) {
                 var alertaQtd = 0
+                if(historico.data[i].dataHora <= (Number(new Date().getHours() + ':' + new Date().getMinutes() +':'+ new Date().getSeconds() - 20)))
+                alerta = false
                 if (historico.data[i].leitura >= 70 && historico.data[i].leitura < 90) {
                     alerta = true
-                    alertaQtd = 1
+                    alertaQtd += 1
                 } else if (historico.data[i].leitura >= 90) {
                     alerta = true
-                    alertaQtd = 1
+                    alertaQtd += 1
                 }
             }
-
             if (alerta === true) {
-                listaCompAlertas = `<li class="componenteEspecifico">
+                listaCompAlertas += `<li class="componenteEspecifico">
                                             Rede
-                                        </li>`
+                                    </li>`
             }
-            qtdEmAlerta = alertaQtd
+            qtdEmAlerta += alertaQtd
         } catch (error) {
             console.log(error)
         }
@@ -406,7 +412,9 @@
                                             <div class="componentes">
                                                 <p>Componentens em alertas:</p>
                                                 <div class="listaComponentes>
-                                                    ${listaCompAlertas}
+                                                    <li class="componenteEspecifico">
+                                                        ${listaCompAlertas}
+                                                    </li>
                                                 </div>
                                             </div>
                                             <div class="situacao">
@@ -440,11 +448,10 @@
         }
     }
 
-
-    console.log(qtdEmAlerta)
     setInterval(() => {
 
         historicoGeral(idM, idComp)
+        especificacaoGeral(idM)
 
     }, 5000)
 
@@ -533,7 +540,7 @@
 
         try {
             if (termoPesquisa.trim() !== '') {
-                const response = await axios.get(`/maquinas/search/${termoPesquisa}`)
+                const response = await axios.get(`/maquinas/search/${termoPesquisa}?fkEmpresa=${fkEmpresa}`)
                 const maquinasPesquisadas = response.data
 
                 linha_maquina.innerHTML = ""

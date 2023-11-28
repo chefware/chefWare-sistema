@@ -179,13 +179,26 @@
                                             </div>
 
                                             <div class="colunaDado">
-                                                <span class="tituloDadoEstatico">Endereço IPv4:
-                                                    <span class="dadoEstatico" id="ipv4">111.122.11.6</span>
+                                                <span class="tituloDadoEstatico">Endereço eth0 IPv4:
+                                                    <span class="dadoEstatico" id="ipv4"></span>
                                                 </span>
 
-                                                <span class="tituloDadoEstatico">Endereço IPv6: <span
+                                                <span class="tituloDadoEstatico">Endereço wlan1 IPv4:
+                                                    <span class="dadoEstatico" id="ipv4Wlan"></span>
+                                                </span>
+
+                                                <span class="tituloDadoEstatico">Endereço eth17  IPv4: <span
                                                         class="dadoEstatico"
-                                                        id="ipv6">fe80:1:1:0:21f:4ba1:cc39:ba50</span></span>
+                                                        id="ipv4Eth17"></span></span>
+                                            </div>
+                                            <div class="colunaDado">
+                                                <span class="tituloDadoEstatico">Endereço eth0 IPv6:
+                                                    <span class="dadoEstatico" id="ipv6"></span>
+                                                </span>
+
+                                                <span class="tituloDadoEstatico">Endereço eth17 IPv6: <span
+                                                        class="dadoEstatico"
+                                                        id="ipv6Eth17">fe80:1:1:0:21f:4ba1:cc39:ba50</span></span>
                                             </div>
                                         </div>
 
@@ -223,6 +236,7 @@
     var fkEmpresa = sessionStorage.getItem("fkEmpresa");
     var idFuncionario = sessionStorage.getItem("idFuncionario");
     var privilegio = sessionStorage.getItem("privilegio");
+    var ipPublico
 
     if (nomeUser != null) {
         perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${nomeUser}</span></span>`;
@@ -305,31 +319,35 @@
         }
     }
 
-    async function unidadeMedida(idUnidade, tipoFunction) {
-        try {
-            const unidadeMedida = await axios.get(`/unidades/${idUnidade}`)
-            if (unidadeMedida.status === 200) {
-                const unidade = unidadeMedida.data
-
-                usoMenu.innerText += `${unidade[0].tipo}`
-
-
-            }
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    async function dados(idComp) {
+    async function dados(idComp){
         try {
             const dadosResult = await axios.get(`/dados/${idMaquina}/${idComp}`)
             if (dadosResult.status === 200) {
                 const dadosEstaticos = dadosResult.data
                 if (dadosEstaticos.length > 0) {
-                    nomeEstatico.innerText = dadosEstaticos[0].valor
-                    ipv4.innerText = dadosEstaticos[1].valor
+                    for(var i = 0; i < dadosEstaticos.length; i++){
+                        nomeEstatico.innerText = dadosEstaticos[0].valor
+                        if(dadosEstaticos[i].descricao.includes('IPV4')){
+                            if(dadosEstaticos[i].descricao.includes('eth0')){
+                                ipv4.innerText = `${dadosEstaticos[i].valor}`
+                            } else if(dadosEstaticos[i].descricao.includes('wlan1')){
+                                ipv4Wlan.innerText = `${dadosEstaticos[i].valor}`
+                            } else if(dadosEstaticos[i].descricao.includes('eth17')){
+                                ipv4Eth17.innerText = `${dadosEstaticos[i].valor}`
+                            }
+                        }
+
+                        if(dadosEstaticos[i].descricao.includes('IPV6')){
+                            if(dadosEstaticos[i].descricao.includes('eth0')){
+                                ipv6.innerText = `${dadosEstaticos[i].valor}`
+                            }  else if(dadosEstaticos[i].descricao.includes('eth17')){
+                                ipv6Eth17.innerText = `${dadosEstaticos[i].valor}`
+                            }
+                        }
+
                     ipv6.innerText = dadosEstaticos[2].valor
-                    unidadeMedida(dadosEstaticos[0].unidadeMedida, 'dados')
+                    }
+
                 }
             }
         } catch (error) {
@@ -419,16 +437,16 @@
                 };
                 const startIndex = Math.max(0, historico.data.length - 10)
                 for (var i = startIndex; i < historico.data.length; i++) {
-                    if ('Rede Bytes Enviados'.includes(historico.data[i].nome)) {
+                    if (historico.data[i].nome.includes('Rede Bytes Enviados')){
                         console.log(historico.data[i].leitura)
-                    } else if ('Rede Bytes Recebidos'.includes(historico.data[i].nome)) {
+                    } else if (historico.data[i].nome.includes('Rede Bytes Recebidos')) {
                         console.log(historico.data[i].leitura)
-                    } else if ('Rede Pacotes Enviados'.includes(historico.data[i].nome)) {
+                    } else if (historico.data[i].nome.includes('Rede Pacotes Enviados')) {
                         pacotesEnviados.innerText = `${historico.data[i].leitura}`;
                         const dataHoraFormatada = formatarDataHora(historico.data[i].dataHora);
                         graficoData.labels.push(dataHoraFormatada);
                         graficoData.datasets[0].data.push(parseFloat(historico.data[i].leitura));
-                    } else if ('Rede Pacotes Recebidos'.includes(historico.data[i].nome)) {
+                    } else if (historico.data[i].nome.includes('Rede Pacotes Recebidos')) {
                         pacotesRecebidos.innerText = `${historico.data[i].leitura}`;
                         const dataHoraFormatada = formatarDataHora(historico.data[i].dataHora);
                         graficoData.labels.push(dataHoraFormatada);
@@ -436,8 +454,6 @@
                     }
 
                 }
-                const hist = 'historico'
-                unidadeMedida(historico.data[0].unidadeMedida, hist)
                 grafico.data = graficoData
                 grafico.update()
             }
@@ -482,7 +498,7 @@
     });
 
     function receberAcaoRapida(acao) {
-        axios.post('http://10.18.34.93:8080/inovacao', {
+        axios.post(`http://10.18.34.93:8080  /inovacao`, {
             comando: acao
         }, {
             headers: {

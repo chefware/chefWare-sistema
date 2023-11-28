@@ -134,17 +134,17 @@
 
                                     <div id="botaoDisco" class="opcaoMenuComponentes" onclick="navegacaoDisco()">
                                         <h2>DISCO 01</h2>
-                                        <span>(C:)</span>
+                                        <span id="discoAlerta">(C:)</span>
                                     </div>
 
                                     <div id="botaoMemoria" class="opcaoMenuComponentes" onclick="navegacaoMemoria()">
                                         <h2>MEMÓRIA</h2>
-                                        <span>Em uso: <span>7,0/8,0 GB</span></span>
+                                        <span id="memoriaAlerta">Em uso: <span>7,0/8,0 GB</span></span>
                                     </div>
 
                                     <div id="botaoRede" class="opcaoMenuComponentes" onclick="navegacaoRede()">
                                         <h2>REDE</h2>
-                                        <span>Conectada</span>
+                                        <span id="redeAlerta">Conectada</span>
                                     </div>
 
                                 </div>
@@ -470,23 +470,22 @@
                 }
                 const startIndex = Math.max(0, historico.data.length - 10)
                 for (var i = startIndex; i < historico.data.length; i++) {
-                    qtdUso.innerText = `${historico.data[i].leitura}`
-                    qtdUsoMenu.innerText = `${historico.data[i].leitura} ${historico.data[i].unidadeMedida}`
+                    qtdUso.innerText = `${Number(historico.data[i].leitura).toFixed(2)} ${historico.data[i].unidadeMedida}`
+                    qtdUsoMenu.innerText = `${Number(historico.data[i].leitura).toFixed(2)} ${historico.data[i].unidadeMedida}`
 
                     const dataHoraFormatada = formatarDataHora(historico.data[i].dataHora)
                     graficoData.labels.push(dataHoraFormatada)
                     graficoData.datasets[0].data.push(parseFloat(historico.data[i].leitura))
 
-                    if (historico.data[i].leitura >= 70 && historico.data[i].leitura < 90) {
+                    if (historico.data[i].leitura >= 60 && historico.data[i].leitura < 80) {
                         situacaoAlerta.style.backgroundColor = 'yellow'
-                    } else if (historico.data[i].leitura >= 90) {
+                    } else if (historico.data[i].leitura >= 80) {
                         situacaoAlerta.style.backgroundColor = 'red'
                     } else {
                         situacaoAlerta.style.backgroundColor = 'green'
                     }
                 }
                 const hist = 'historico'
-                unidadeMedida(historico.data[0].unidadeMedida, hist)
                 grafico.data = graficoData
                 grafico.update()
             }

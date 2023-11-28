@@ -309,8 +309,7 @@
             if (dadosResult.status === 200) {
                 const dadosEstaticos = dadosResult.data
                 if (dadosEstaticos.length > 0) {
-                    tamTotal.innerText = dadosEstaticos[0].valor
-                    unidadeMedida(dadosEstaticos[0].unidadeMedida, 'dados')
+                    console.log(dadosEstaticos)
                 }
             }
         } catch (error) {
@@ -388,7 +387,7 @@
 
     async function histórico(idComp) {
         try {
-            const historico = await axios.get(`/dados/${idMaquina}/${idComp}`)
+            const historico = await axios.get(`/historico/${idMaquina}/${idComp}`)
             console.log(historico)
             if (historico.status === 200) {
                 var graficoData = {
@@ -427,31 +426,32 @@
                 }
                 const startIndex = Math.max(0, historico.data.length - 10)
                 for (var i = startIndex; i < historico.data.length; i++) {
-                    if (historico.data[i].descricao === 'Disco Tamanho Total') {
-                        qtdUso.innerText = `${(historico.data[i].valor - historico.data[i + 1].valor).toFixed(2)}`
-                        qtdUsoAlerta = historico.data[i].valor - historico.data[i + 1].valor
+                    if (historico.data[i].nome === 'Disco Tamanho Total') {
+                        qtdUso.innerText = `${(historico.data[i].leitura - historico.data[i + 1].leitura).toFixed(2)} ${historico.data[i].unidadeMedida}`
+                        qtdUsoAlerta = historico.data[i].leitura - historico.data[i + 1].leitura
                         const dataHoraFormatada = formatarDataHora(historico.data[i].dataHora)
                         graficoData.labels.push(dataHoraFormatada)
-                        graficoData.datasets[0].data.push(parseFloat(historico.data[i].valor - historico.data[i + 1]
-                            .valor))
+                        graficoData.datasets[0].data.push(parseFloat(historico.data[i].leitura - historico.data[i + 1].leitura))
+                        tamTotal.innerText = `${historico.data[i].leitura} ${historico.data[i].unidadeMedida}`
                     } else {
-                        qtdRestante.innerText = `${historico.data[i].valor}`
+                        qtdRestante.innerText = `${historico.data[i].leitura} ${historico.data[i].unidadeMedida}`
                     }
 
-                    if (historico.data[i].descricao === 'Disco Tamanho Total') {
-                        if (historico.data[i].valor - historico.data[i + 1].valor >= 70 && historico.data[i].valor -
-                            historico.data[i + 1].valor < 90) {
-                            situacaoAlerta.style.backgroundColor = 'yellow'
-                        } else if (historico.data[i].valor - historico.data[i + 1].valor >= 90) {
-                            situacaoAlerta.style.backgroundColor = 'red'
-                        } else {
-                            situacaoAlerta.style.backgroundColor = 'green'
-                        }
+                    if(historico.data[i].nome === 'Disco Tamanho Total'){
+                        const tamRestante = Number(historico.data[i].leitura) - Number(historico.data[i + 1].leitura)
+                        const alertaDisco = tamRestante / historico.data[i].leitura * 100
+                        console.log(alertaDisco)
+                       if(alertaDisco >= 60 && alertaDisco < 80){
+                        situacaoAlerta.style.backgroundColor = 'yellow'
+                    } else if(alertaDisco >= 80){
+                        situacaoAlerta.style.backgroundColor = 'red'
+                    } else {
+                        situacaoAlerta.style.backgroundColor = 'green'
+                    }
                     }
                 }
 
-                const hist = 'historico'
-                unidadeMedida(historico.data[0].unidadeMedida, hist)
+
                 grafico.data = graficoData
                 grafico.update()
             }
