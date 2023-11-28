@@ -39,9 +39,9 @@
             <input class="input_form" type="password" id="inp_password" placeholder="Senha" />
           </div>
           <div class="areaBotao">
-            <a href="./index.html" id="botaoVoltarLogin"><button class="bt_cadastro cancelar"">Voltar</button></a
-              >
-              <button class=" bt_cadastro" id="loginbotao" onclick="logar()">Entrar</button>
+            <a href="./index.html" id="botaoVoltarLogin"><button class="bt_cadastro cancelar">Voltar</button></a>
+            <button class=" bt_cadastro" id="loginbotao" onclick="logar()">Entrar</button>
+
           </div>
           <div id="feedback_user"></div>
         </div>
@@ -54,41 +54,49 @@
 
 <script>
 
-function logar() {
-    var email = document.getElementById("inp_user").value;
-    var senha = document.getElementById("inp_password").value;
+  function logar() {
+    var email = document.getElementById("inp_user").value
+    var senha = document.getElementById("inp_password").value
+    const inner = `<div class="c-loader"></div>`
+    const divForm = document.querySelector(".div_form")
 
     axios.post('/funcionarios/login', {
-        email: email,
-        senha: senha
+      email: email,
+      senha: senha
     }, {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(function(response) {
-        if (response.status === 200) {
-            sessionStorage.setItem("fkEmpresa", response.data.fkEmpresa);
-            sessionStorage.setItem("idFuncionario", response.data.idFuncionario);
-            sessionStorage.setItem("nomeFuncionario", response.data.nome);
-            sessionStorage.setItem("privilegio", response.data.privilegio);
-            window.location.href = "./dashboard/lista-maquinas.html";
-        }
-    })
-    .catch(function(error) {
-        console.log(error);
-        if(error.response && error.response.status === 404){
-            document.getElementById("feedback_user").innerHTML = "Usuário ou senha incorretos";
-        }
-    });
-}
-
-
-window.addEventListener("keyup", capturarTecla)
-    function capturarTecla(event) {
-      if (event.key == "Enter") {
-        logar();
+      headers: {
+        'Content-Type': 'application/json'
       }
+    })
+      .then(function (response) {
+        divForm.innerHTML += inner
+        if (response.status === 200) {
+          sessionStorage.setItem("fkEmpresa", response.data.fkEmpresa)
+          sessionStorage.setItem("idFuncionario", response.data.idFuncionario)
+          sessionStorage.setItem("nomeFuncionario", response.data.nome)
+          sessionStorage.setItem("privilegio", response.data.privilegio)
+          setTimeout(() => {
+            const loader = document.querySelector(".c-loader")[0]
+            console.log("Redirecionando para ./dashboard/lista-maquinas.html")
+            window.location.href = "./dashboard/lista-maquinas.html"
+            loader.remove()
+          }, 1500)
+        }
+      })
+      .catch(function (error) {
+        console.log(error)
+        if (error.response && error.response.status === 404) {
+          document.getElementById("feedback_user").innerHTML = "Usuário ou senha incorretos"
+        }
+      })
+  }
+
+
+  window.addEventListener("keyup", capturarTecla)
+  function capturarTecla(event) {
+    if (event.key == "Enter") {
+      logar()
+    }
 
 
   }
