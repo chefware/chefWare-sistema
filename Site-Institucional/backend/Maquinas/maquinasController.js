@@ -7,9 +7,9 @@ const prisma = new PrismaClient()
 const maquinasController = express.Router()
 
 maquinasController.get('/page/:page', async (req, res) => {
-    const take = 6;
-    const page = Number(req.params.page) || 0;
-    const skip = page * take;
+    const take = 6
+    const page = Number(req.params.page) || 0
+    const skip = page * take
     var fkEmpresa = Number(req.query.fkEmpresa)
 
     if (fkEmpresa === 1) { // se for chefware, mostre todas as maquinas de todas as empresas
@@ -31,24 +31,24 @@ maquinasController.get('/page/:page', async (req, res) => {
                     fkEmpresa: fkEmpresa || undefined
                 }
             })
-        ]);
+        ])
 
-        const totalPaginas = Math.ceil(total / take);
+        const totalPaginas = Math.ceil(total / take)
 
         const resposta = {
             maquinas,
             totalPaginas,
             paginaAtual: page,
             totalMaquinas: total
-        };
+        }
 
-        res.status(200).json(resposta);
+        res.status(200).json(resposta)
 
     } catch (error) {
-        res.status(400).json(error);
-        console.log(error);
+        res.status(400).json(error)
+        console.log(error)
     }
-});
+})
 
 maquinasController.get('/:id', async (req, res) => {
     const idEmpresa = Number(req.params.id)
@@ -68,11 +68,11 @@ maquinasController.get('/:id', async (req, res) => {
     } catch (error) {
         res.status(400).json(error)
     }
-});
+})
 
 maquinasController.get('/search/:termo', async (req, res) => {
-    const termoPesquisa = req.params.termo.toLowerCase();
-    const fkEmpresa = Number(req.query.fkEmpresa);
+    const termoPesquisa = req.params.termo.toLowerCase()
+    const fkEmpresa = Number(req.query.fkEmpresa)
     if (fkEmpresa === 1) { // se for chefware, mostre todas as maquinas de todas as empresas
         fkEmpresa = null
     }
@@ -87,14 +87,14 @@ maquinasController.get('/search/:termo', async (req, res) => {
                     fkEmpresa: fkEmpresa
                 }]
             }
-        });
+        })
 
-        res.status(200).json(maquinas);
+        res.status(200).json(maquinas)
     } catch (error) {
-        res.status(500).json(error);
-        console.error(error);
+        res.status(500).json(error)
+        console.error(error)
     }
-});
+})
 
 maquinasController.post('/', async (req, res) => {
     try {
@@ -104,25 +104,36 @@ maquinasController.post('/', async (req, res) => {
             hostName,
             modelo,
             local,
-            descComponentes,
-            fkEmpresa
+            fkEmpresa,
+            tipo,
+            marca,
+            compatibilidade,
         } = req.body
 
-        const fkEmpresaInt = Number(fkEmpresa);
+        const fkEmpresaInt = Number(fkEmpresa)
+        const maquinaCriada = await prisma$transaction([
 
-        const maquinaCriada = await prisma.maquina.create({
-            data: {
-                numSerie,
-                nome,
-                hostName,
-                modelo,
-                local,
-                descComponentes,
-                fkEmpresa: fkEmpresaInt
-            }
-        })
+            await prisma.maquina.create({
+                data: {
+                    numSerie,
+                    nome,
+                    hostName,
+                    modelo,
+                    local,
+                    fkEmpresa: fkEmpresaInt
+                }
+            }),
+            await prisma.componente.create({
+                data: {
+                    tipo,
+                    marca,
+                    compatibilidade,
+                    fkMaquina: maquinaCriada.idMaquina
+                }
+            })
+        ])
 
-        res.status(201).json(maquinaCriada)
+            res.status(201).json(maquinaCriada)
     } catch (e) {
         res.status(500).json(e)
     }
