@@ -12,7 +12,7 @@ model Empresa {
   nome          String?
   cnpj          String?
   telefone      String?
-  maquinas      Maquina[]  
+  maquinas      Maquina[]
   funcionarios  Funcionario[]
   enderecos     Endereco[]
 }
@@ -24,13 +24,12 @@ model Maquina {
   hostName        String?
   modelo          String?
   local           String?
-  descComponentes String?
   fkEmpresa       Int
   ativo           Boolean?          @default(true)
   empresa         Empresa            @relation(fields: [fkEmpresa], references: [idEmpresa])
   historicos      Historico[]
-  registros       Dados[]     
-  componentes     Componente[]     
+  registros       Dados[]
+  componentes     Componente[]
 }
 
 model Funcionario {
@@ -69,20 +68,13 @@ model Componente {
   maquina          Maquina           @relation(fields: [fkMaquina], references: [idMaquina])
   historicos       Historico[]
   registro         Dados[]
-  sistemaOperacional SistemaOperacional[]
-}
-
-model SistemaOperacional{
-  idSistemaOperacional Int        @id @default(autoincrement())
-  tipo                 String?
-  componentes          Componente[]
 }
 
 model Dados {
   idDados           Int               @id @default(autoincrement())
   descricao         String?
   valor             String?
-  unidadeMedida     String? 
+  unidadeMedida     String?
   fkMaquina         Int
   fkComponente      Int
   dataHora         DateTime?
