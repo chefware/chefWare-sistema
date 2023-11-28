@@ -105,39 +105,51 @@ maquinasController.post('/', async (req, res) => {
             modelo,
             local,
             fkEmpresa,
-            tipo,
-            marca,
-            compatibilidade,
         } = req.body
 
         const fkEmpresaInt = Number(fkEmpresa)
-        const maquinaCriada = await prisma$transaction([
 
-            await prisma.maquina.create({
-                data: {
-                    numSerie,
-                    nome,
-                    hostName,
-                    modelo,
-                    local,
-                    fkEmpresa: fkEmpresaInt
-                }
-            }),
-            await prisma.componente.create({
-                data: {
-                    tipo,
-                    marca,
-                    compatibilidade,
-                    fkMaquina: maquinaCriada.idMaquina
-                }
+        const maquinaCriada = await prisma.maquina.create({
+            data: {
+                numSerie,
+                nome,
+                hostName,
+                modelo,
+                local,
+                fkEmpresa: fkEmpresaInt,
+            },
+        })
+
+        const componentesHardcoded = [
+            { tipo: 'Memória', marca: 'Marca da Memória', compatibilidade: 'Compatibilidade da Memória' },
+            { tipo: 'Disco', marca: 'Marca do Disco', compatibilidade: 'Compatibilidade do Disco' },
+            { tipo: 'Rede', marca: 'Marca da Placa de Rede', compatibilidade: 'Compatibilidade da Placa de Rede' },
+            { tipo: 'CPU', marca: 'Marca da CPU', compatibilidade: 'Compatibilidade da CPU' },
+        ]
+
+        const componentesCriados = await Promise.all(
+            componentesHardcoded.map(async (componente) => {
+                return prisma.componente.create({
+                    data: {
+                        tipo: componente.tipo,
+                        marca: componente.marca,
+                        compatibilidade: componente.compatibilidade,
+                        fkMaquina: maquinaCriada.idMaquina,
+                    },
+                })
             })
-        ])
+        )
 
-            res.status(201).json(maquinaCriada)
+        res.status(201).json({
+            maquina: maquinaCriada,
+            componentes: componentesCriados,
+        })
     } catch (e) {
-        res.status(500).json(e)
+        console.error(e)
+        res.status(500).json({ error: 'Erro interno do servidor' })
     }
 })
+
 
 maquinasController.patch('/:id', async (req, res) => {
     const idMaquina = Number(req.params.id)
