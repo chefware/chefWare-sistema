@@ -41,7 +41,6 @@
           <div class="areaBotao">
             <a href="./index.html" id="botaoVoltarLogin"><button class="bt_cadastro cancelar">Voltar</button></a>
             <button class=" bt_cadastro" id="loginbotao" onclick="logar()">Entrar</button>
-
           </div>
           <div id="feedback_user"></div>
         </div>
@@ -59,6 +58,7 @@
     var senha = document.getElementById("inp_password").value
     const inner = `<div class="c-loader"></div>`
     const divForm = document.querySelector(".div_form")
+    const feedback_user = document.getElementById("feedback_user")
 
     axios.post('/funcionarios/login', {
       email: email,
