@@ -176,6 +176,7 @@ select {
         opacity: 0;
     }
 }
+
 .c-loader {
     animation: is-rotating 1s infinite;
     border: 2px solid #808087;
