@@ -24,7 +24,6 @@ model Maquina {
   hostName        String?
   modelo          String?
   local           String?
-  descComponentes String?
   fkEmpresa       Int
   ativo           Boolean?          @default(true)
   empresa         Empresa            @relation(fields: [fkEmpresa], references: [idEmpresa])
@@ -64,7 +63,6 @@ model Componente {
   tipo             String?
   marca            String?
   compatibilidade  String?
-  dataVencimento   String?
   fkMaquina        Int
   maquina          Maquina           @relation(fields: [fkMaquina], references: [idMaquina])
   historicos       Historico[]
