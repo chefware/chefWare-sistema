@@ -115,6 +115,14 @@
                                 <button class="bt_edicao" id="botao-cancelar" onclick="cancelar()">Cancelar</button>
                                 <button class="bt_edicao" id="botao-editar" onclick="cadastrar()">Cadastrar</button>
                             </div>
+
+                            <div id="snackbar">
+                                <img src="../assets/img/sucessoSnackbar.png" alt="símbolo de correto">
+                                <div class="snackbar-area-texto">
+                                    <h4>Sucesso!</h4>
+                                    <span>Funcionário cadastrado com sucesso!</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -208,6 +216,15 @@
             if (response.status === 201) {
                 const funcionarioCriado = response.data;
                 console.log('Funcionário cadastrada com sucesso:', funcionarioCriado);
+
+                result.className = "show";
+                setTimeout(function () {
+                    x.className = result.className.replace("show", "");
+                }, 1500);
+                setTimeout(function () {
+                    window.location.href = 'lista-funcionario.html'
+                }, 2000);
+
             } else {
                 console.error('Erro ao cadastrar funcionario:', response.status, response.statusText)
             }
