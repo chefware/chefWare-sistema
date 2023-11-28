@@ -1,4 +1,6 @@
 import express from 'express';
+import https from 'https';
+import fs from 'fs';
 import funcionariosController from './backend/Funcionarios/funcionariosController.js';
 import maquinasController from './backend/Maquinas/maquinasController.js';
 import empresasController from './backend/Empresas/empresasController.js';
@@ -9,7 +11,7 @@ import dadosController from './backend/Dashboard/dadosController.js';
 import unidadeMedidaController from './backend/Dashboard/unidadeMedidaController.js';
 
 const app = express();
-const link = 'http://localhost:3000';
+const port = 3000;
 
 app.use(express.static('public'));
 app.use(express.json());
@@ -23,6 +25,14 @@ app.use('/historico', historicoController);
 app.use('/unidades', unidadeMedidaController);
 app.use('/dados', dadosController);
 
-app.listen(3000, () => console.log(`Servidor rodando em ${link}`));
+const privateKey = fs.readFileSync('./ssl/code.key', 'utf8');
+const certificate = fs.readFileSync('./ssl/code.crt', 'utf8');
+const credentials = { key: privateKey, cert: certificate };
+
+const httpsServer = https.createServer(credentials, app);
+
+httpsServer.listen(port, () => {
+  console.log(`Servidor rodando em HTTPS na porta ${port}`);
+});
 
 export default app;
