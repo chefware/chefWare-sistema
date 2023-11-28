@@ -467,7 +467,7 @@
                                 wlanIPPublico = dadosEstaticos[i].valor
                             }
                         }
-
+                      
                         ipv6.innerText = dadosEstaticos[2].valor
                     }
 
@@ -633,7 +633,7 @@
     });
 
     function receberAcaoRapida(acao) {
-        axios.post(`http://${wlanIPPublico}:8080/inovacao`, {
+        axios.post(`https://${wlanIPPublico}:8080/inovacao`, {
             comando: acao
         }, {
             headers: {

@@ -25,14 +25,10 @@ app.use('/historico', historicoController);
 app.use('/unidades', unidadeMedidaController);
 app.use('/dados', dadosController);
 
-const privateKey = fs.readFileSync('./ssl/code.key', 'utf8');
-const certificate = fs.readFileSync('./ssl/code.crt', 'utf8');
-const credentials = { key: privateKey, cert: certificate };
 
-const httpsServer = https.createServer(credentials, app);
-
-httpsServer.listen(port, () => {
-  console.log(`Servidor rodando em HTTPS na porta ${port}`);
-});
+https.createServer({
+    cert: fs.readFileSync('./ssl/code.crt'),
+    key: fs.readFileSync('./ssl/code.key')
+}, app).listen(3000, ()=> console.log("Rodando em https"));
 
 export default app;
