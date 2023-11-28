@@ -391,7 +391,7 @@ async function fetchData(page, fkEmpresa) {
 
         try {
             if (termoPesquisa.trim() !== '') {
-                const response = await axios.get(`/funcionarios/search/${termoPesquisa}`);
+                const response = await axios.get(`/funcionarios/search/${termoPesquisa}?fkEmpresa=${fkEmpresa}`);
                 const funcionariosPesquisados = response.data;
 
                 listaFuncionariosCards.innerHTML = "";

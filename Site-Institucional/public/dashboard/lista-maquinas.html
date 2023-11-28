@@ -538,7 +538,7 @@
 
         try {
             if (termoPesquisa.trim() !== '') {
-                const response = await axios.get(`/maquinas/search/${termoPesquisa}`)
+                const response = await axios.get(`/maquinas/search/${termoPesquisa}?fkEmpresa=${fkEmpresa}`)
                 const maquinasPesquisadas = response.data
 
                 linha_maquina.innerHTML = ""

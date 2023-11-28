@@ -69,7 +69,8 @@
                         <div class="form-editar">
                             <div class="campo">
                                 <h4 class="label-editar">Nome:</h4>
-                                <input type="text" id="input_nome" class="input-form-editar" placeholder="Nome funcionário">
+                                <input type="text" id="input_nome" class="input-form-editar"
+                                    placeholder="Nome funcionário">
                             </div>
 
                             <div class="campo">
@@ -81,12 +82,14 @@
 
                             <div class="campo">
                                 <h4 class="label-editar">E-mail:</h4>
-                                <input type="text" id="input_email" class="input-form-editar" placeholder="chefware@gmail.com">
+                                <input type="text" id="input_email" class="input-form-editar"
+                                    placeholder="chefware@gmail.com">
                             </div>
 
                             <div class="campo">
                                 <h4 class="label-editar">Senha:</h4>
-                                <input type="password" id="input_senha" class="input-form-editar" placeholder="********">
+                                <input type="password" id="input_senha" class="input-form-editar"
+                                    placeholder="********">
                             </div>
 
                             <div class="campo" id="campo-cargo">
@@ -108,7 +111,8 @@
 
                             <div class="campo">
                                 <h4 class="label-editar">Foto:</h4>
-                                <input type="File" id="input_foto" class="input-form-editar" placeholder="Nome funcionário" onchange="handleFileSelect(event)">
+                                <input type="File" id="input_foto" class="input-form-editar"
+                                    placeholder="Nome funcionário" onchange="handleFileSelect(event)">
                             </div>
 
                             <div class="campo-botoes campo-horizontal">
@@ -136,6 +140,42 @@
 
 <script>
     pegarFoto()
+    selectBoxEmpresas()
+    async function selectBoxEmpresas() {
+        const privilegio = sessionStorage.getItem('privilegio')
+        const fkEmpresa = sessionStorage.getItem('fkEmpresa')
+        if (privilegio === 'Admin' && fkEmpresa === '1') {
+            const inner =
+                `
+            <div class="campo">
+                <h4 class="label-editar">Nome da Empresa</h4>
+                    <select class="input-form-editar sl-edicao selectEmpresa" id="sl_empresa">
+                </select>
+            </div>
+            `
+            const formCadastrar = document.getElementsByClassName('form-editar')[0]
+            formCadastrar.innerHTML += inner
+
+            const form = document.getElementsByClassName('selectEmpresa')[0]
+            let numeroDePaginas
+            const primeiraRequisicao = await axios.get(`/empresas/page/${0}`).then(response => {
+                numeroDePaginas = response.data.totalPaginas
+            })
+            for (let i = 0; i < numeroDePaginas; i++) {
+                const empresas = await axios.get(`/empresas/page/${i}`).then(response => {
+                    const empresas = response.data.empresas
+                    empresas.forEach(empresa => {
+                        const option = document.createElement('option')
+                        option.value = empresa.id
+                        option.innerHTML = empresa.nome
+                        form.appendChild(option)
+                    })
+                })
+            }
+        } else {
+            console.log('nao é admin')
+        }
+    }
     function pegarFoto() {
         const idFuncionario = sessionStorage.getItem('idFuncionario')
         const imagem = document.getElementById('foto-perfil')
@@ -143,76 +183,82 @@
         imagem.src = `${baseUrl}/funcionarios/foto/${idFuncionario}`
     }
     $("#input_cpf").keypress(function () {
-        $(this).mask('000.000.000-00');
-    });
+        $(this).mask('000.000.000-00')
+    })
 
-    var perfil = document.getElementById("perfil");
-    var nomeUser = sessionStorage.getItem("nomeFuncionario");
-    var fkEmpresa = sessionStorage.getItem("fkEmpresa");
-    var idFuncionario = sessionStorage.getItem("idFuncionario");
+    var perfil = document.getElementById("perfil")
+    var nomeUser = sessionStorage.getItem("nomeFuncionario")
+    var fkEmpresa = sessionStorage.getItem("fkEmpresa")
+    var idFuncionario = sessionStorage.getItem("idFuncionario")
 
     if (nomeUser != null) {
-        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${nomeUser}</span></span>`;
+        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${nomeUser}</span></span>`
     }
 
-    pegarNomeEmpresa();
+    pegarNomeEmpresa()
 
     async function pegarNomeEmpresa() {
         try {
-            const response = await axios.get(`/empresas/${fkEmpresa}`);
+            const response = await axios.get(`/empresas/${fkEmpresa}`)
             if (response.status === 200) {
-                const dados = response.data;
-                console.log(dados);
-                document.getElementById('nomeEmpresa').innerHTML = `${dados.nome}`;
+                const dados = response.data
+                console.log(dados)
+                document.getElementById('nomeEmpresa').innerHTML = `${dados.nome}`
             } else {
-                console.error('Erro na requisição:', response.status, response.statusText);
+                console.error('Erro na requisição:', response.status, response.statusText)
             }
         } catch (error) {
-            console.error(error);
+            console.error(error)
         }
     };
 
-    let bufferFoto;
+    let bufferFoto
 
     function handleFileSelect(event) {
-        const fileInput = event.target;
-        const file = fileInput.files[0];
+        const fileInput = event.target
+        const file = fileInput.files[0]
 
         if (file) {
-            bufferFoto = file;
-            console.log('Arquivo da imagem:', bufferFoto);
-    }
+            bufferFoto = file
+            console.log('Arquivo da imagem:', bufferFoto)
+        }
     }
 
     async function cadastrar() {
         try {
 
             if (!bufferFoto) {
-            console.error('A foto não foi carregada.');
-            return;
-        }
+                console.error('A foto não foi carregada.')
+                return
+            }
 
-            var result = document.getElementById("snackbar");
+            var result = document.getElementById("snackbar")
 
-            const form = new FormData();
-            const fkEmpresaFunc = fkEmpresa;
+            const form = new FormData()
 
-            form.append('nome', input_nome.value);
-            form.append('email', input_email.value);
-            form.append('senha', input_senha.value);
-            form.append('cpf', input_cpf.value);
-            form.append('cargo', sl_cargo.value);
-            form.append('privilegio', sl_privilegio.value);
-            form.append('foto', bufferFoto);
-            form.append('fkEmpresa', fkEmpresaFunc);
-            
+            if (fkEmpresa == 1){
+                const select = document.getElementById('sl_empresa')
+                const fkEmpresaFunc = select.value
+            }else{
+                const fkEmpresaFunc = fkEmpresa
+            }
+
+            form.append('nome', input_nome.value)
+            form.append('email', input_email.value)
+            form.append('senha', input_senha.value)
+            form.append('cpf', input_cpf.value)
+            form.append('cargo', sl_cargo.value)
+            form.append('privilegio', sl_privilegio.value)
+            form.append('foto', bufferFoto)
+            form.append('fkEmpresa', fkEmpresaFunc)
+
             const config = {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
-            };
+            }
 
-            const response = await axios.post('/funcionarios', form, config);
+            const response = await axios.post('/funcionarios', form, config)
             if (response.status === 201) {
                 const funcionarioCriado = response.data;
                 console.log('Funcionário cadastrada com sucesso:', funcionarioCriado);
