@@ -413,26 +413,30 @@
                 const startIndex = Math.max(0, historico.data.length - 10)
                 for (var i = startIndex; i < historico.data.length; i++) {
                     if(historico.data[i].nome === 'Memoria em Uso'){
-                        qtdUso.innerText = `${historico.data[i].leitura}`
+                        qtdUso.innerText = `${historico.data[i].leitura} ${historico.data[i].unidadeMedida}`
                         const dataHoraFormatada = formatarDataHora(historico.data[i].dataHora)
                         graficoData.labels.push(dataHoraFormatada)
                         graficoData.datasets[0].data.push(parseFloat(historico.data[i].leitura))
-                        usoMenu.innerText = `${historico.data[i].leitura}`
+                        usoMenu.innerText = `${historico.data[i].leitura} ${historico.data[i].unidadeMedida}`
                     } else {
-                        qtdRestante.innerText = `${historico.data[i].leitura}`
-                    }
+                        qtdRestante.innerText = `${historico.data[i].leitura} ${historico.data[i].unidadeMedida}`
+                    } 
+
                     if(historico.data[i].nome === 'Memoria em Uso'){
-                       if(historico.data[i].leitura >= 70 && historico.data[i].leitura < 90){
-                        situacaoAlerta.style.backgroundColor = 'yellow'
-                    } else if(historico.data[i].leitura - historico.data[i + 1].leitura >= 90){
+                        const totalMemoria = Number(historico.data[i].leitura) + Number(historico.data[i+1].leitura)
+                        const alertaMemoria = (historico.data[i].leitura / totalMemoria) * 100
+                        console.log(alertaMemoria)
+                        console.log(totalMemoria)
+                       if(alertaMemoria >= 80){
                         situacaoAlerta.style.backgroundColor = 'red'
+                    } else if(alertaMemoria >= 60 && alertaMemoria < 80){
+                        situacaoAlerta.style.backgroundColor = 'yellow'
                     } else {
                         situacaoAlerta.style.backgroundColor = 'green'
                     }
                     }
                 }
                         const hist = 'historico'
-                        unidadeMedida(historico.data[0].unidadeMedida, hist)
                 grafico.data = graficoData
                 grafico.update()
             }
