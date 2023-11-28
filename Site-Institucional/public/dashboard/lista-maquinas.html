@@ -83,12 +83,12 @@
                             <div class="linhaMaquinas" id="linha_maquina">
 
                             </div>
-                            <div class="page">
-                                <div class="pagination">
-                                    <button class="prev-page"><img src="../assets/voltar-icon.png" alt=""></button>
-                                    <div id="pagination"></div>
-                                    <button class="next-page"><img src="../assets/avancar-icon.png" alt=""></button>
-                                </div>
+                        </div>
+                        <div class="page">
+                            <div class="pagination">
+                                <button class="prev-page"><img src="../assets/voltar-icon.png" alt=""></button>
+                                <div id="pagination"></div>
+                                <button class="next-page"><img src="../assets/avancar-icon.png" alt=""></button>
                             </div>
                         </div>
                     </div>
@@ -120,6 +120,8 @@
     if (privilegio == "Comum") {
         document.getElementById("itemMenuEmpresa").style.display = "none"
         document.getElementById("botaoAdicionarMaquina").style.display = "none"
+    } else if(privilegio = 'Admin' && fkEmpresa != 1) {
+        document.getElementById("itemMenuEmpresa").style.display = "none"
     }
 
     pegarFoto() // Chamar a função para pegar a foto do funcionario
@@ -538,7 +540,7 @@
 
         try {
             if (termoPesquisa.trim() !== '') {
-                const response = await axios.get(`/maquinas/search/${termoPesquisa}`)
+                const response = await axios.get(`/maquinas/search/${termoPesquisa}?fkEmpresa=${fkEmpresa}`)
                 const maquinasPesquisadas = response.data
 
                 linha_maquina.innerHTML = ""

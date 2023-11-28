@@ -123,6 +123,7 @@
     var nomeUser = sessionStorage.getItem("nomeFuncionario");
     var fkEmpresaAtual = sessionStorage.getItem("fkEmpresa");
     var idFuncionario = sessionStorage.getItem("idFuncionario");
+    var privilegio = sessionStorage.getItem("privilegio");
 
     pegarFoto();
     pegarNomeEmpresa();
@@ -131,6 +132,10 @@
     if (nomeUser != null) {
         perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${nomeUser}</span></span>`;
     }
+
+    if (privilegio == "Admin" && fkEmpresaAtual != 1) {
+        document.getElementById("itemMenuEmpresa").style.display = "none";
+    }   
 
     // Pegar a foto do usuário
     function pegarFoto() {
