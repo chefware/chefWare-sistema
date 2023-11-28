@@ -267,6 +267,8 @@
             botao.style.display = "none";
         });
         document.querySelector(".botaoAcoesRapidas").style.display = "none";
+    } else if (privilegio = 'Admin' && fkEmpresa != 1) {
+        document.getElementById("itemMenuEmpresa").style.display = "none"
     }
 
 
@@ -320,7 +322,7 @@
     async function dados(idComp){
         try {
             const dadosResult = await axios.get(`/dados/${idMaquina}/${idComp}`)
-            if(dadosResult.status === 200){
+            if (dadosResult.status === 200) {
                 const dadosEstaticos = dadosResult.data
                 if (dadosEstaticos.length > 0) {
                     for(var i = 0; i < dadosEstaticos.length; i++){
@@ -342,10 +344,10 @@
                                 ipv6Eth17.innerText = `${dadosEstaticos[i].valor}`
                             }
                         }
-                    
+
                     ipv6.innerText = dadosEstaticos[2].valor
                     }
-                    
+
                 }
             }
         } catch (error) {

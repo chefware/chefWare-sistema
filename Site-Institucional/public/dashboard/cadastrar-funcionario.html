@@ -186,13 +186,18 @@
         $(this).mask('000.000.000-00')
     })
 
-    var perfil = document.getElementById("perfil")
-    var nomeUser = sessionStorage.getItem("nomeFuncionario")
-    var fkEmpresa = sessionStorage.getItem("fkEmpresa")
-    var idFuncionario = sessionStorage.getItem("idFuncionario")
+    var perfil = document.getElementById("perfil");
+    var nomeUser = sessionStorage.getItem("nomeFuncionario");
+    var fkEmpresa = sessionStorage.getItem("fkEmpresa");
+    var idFuncionario = sessionStorage.getItem("idFuncionario");
+    var privilegio = sessionStorage.getItem("privilegio");
 
     if (nomeUser != null) {
         perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${nomeUser}</span></span>`
+    }
+
+    if (privilegio == "Admin" && fkEmpresa != 1) {
+        document.getElementById("itemMenuEmpresa").style.display = "none";
     }
 
     pegarNomeEmpresa()

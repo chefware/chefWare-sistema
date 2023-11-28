@@ -189,10 +189,12 @@
 <script src="../assets/js/graficoCpu.js"></script>
 <script>
     pegarFoto()
+
     function pegarFoto() {
         const idFuncionario = sessionStorage.getItem('idFuncionario')
         const imagem = document.getElementById('foto-perfil')
-        const baseUrl = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
+        const baseUrl = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' +
+            window.location.port : '')
         imagem.src = `${baseUrl}/funcionarios/foto/${idFuncionario}`
     }
 
@@ -231,6 +233,8 @@
             botao.style.display = "none";
         });
         document.querySelector(".botaoAcoesRapidas").style.display = "none";
+    } else if (privilegio = 'Admin' && fkEmpresa != 1) {
+        document.getElementById("itemMenuEmpresa").style.display = "none"
     }
 
     const ctxDisco = document.getElementById('myChartDisco');
@@ -274,6 +278,25 @@
                 histórico(dadosEspecificacoes[0].idComponente)
                 idComp_grafico = dadosEspecificacoes[0].idComponente
                 comp.innerText = dadosEspecificacoes[0].tipo
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function unidadeMedida(idUnidade, tipoFunction) {
+        try {
+            const unidadeMedida = await axios.get(`/unidades/${idUnidade}`)
+            if (unidadeMedida.status === 200) {
+                const unidade = unidadeMedida.data
+                if (tipoFunction === 'historico') {
+                    qtdUso.innerText += `${unidade[0].tipo}`
+                    qtdRestante.innerText += `${unidade[0].tipo}`
+                } else {
+                    tamTotal.innerText += `${unidade[0].tipo}`
+                    usoMenu.innerText += `${unidade[0].tipo}`
+                }
+
             }
         } catch (error) {
             console.log(error)
@@ -354,7 +377,11 @@
 
         data.setHours(data.getHours() + 3)
 
-        const options = { hour: 'numeric', minute: 'numeric', second: 'numeric' }
+        const options = {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric'
+        }
         return new Intl.DateTimeFormat('pt-BR', options).format(data)
     }
 
@@ -424,7 +451,7 @@
                     }
                 }
 
-                
+
                 grafico.data = graficoData
                 grafico.update()
             }

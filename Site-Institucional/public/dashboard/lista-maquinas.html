@@ -120,6 +120,8 @@
     if (privilegio == "Comum") {
         document.getElementById("itemMenuEmpresa").style.display = "none"
         document.getElementById("botaoAdicionarMaquina").style.display = "none"
+    } else if(privilegio = 'Admin' && fkEmpresa != 1) {
+        document.getElementById("itemMenuEmpresa").style.display = "none"
     }
 
     pegarFoto() // Chamar a função para pegar a foto do funcionario

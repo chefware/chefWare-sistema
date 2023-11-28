@@ -238,6 +238,8 @@
             botao.style.display = "none";
         });
         document.querySelector(".botaoAcoesRapidas").style.display = "none";
+    } else if (privilegio = 'Admin' && fkEmpresa != 1) {
+        document.getElementById("itemMenuEmpresa").style.display = "none"
     }
 
     const ctxMemoria = document.getElementById('myChartMemoria');
@@ -287,19 +289,19 @@
         }
     }
 
-    async function unidadeMedida(idUnidade, tipoFunction){
+    async function unidadeMedida(idUnidade, tipoFunction) {
         try {
             const unidadeMedida = await axios.get(`/unidades/${idUnidade}`)
             if (unidadeMedida.status === 200) {
                 const unidade = unidadeMedida.data
-                if(tipoFunction === 'historico'){
+                if (tipoFunction === 'historico') {
                     qtdUso.innerText += `${unidade[0].tipo}`
                     qtdRestante.innerText += `${unidade[0].tipo}`
                 } else {
                     total.innerText += `${unidade[0].tipo}`
-                usoMenu.innerText += `${unidade[0].tipo}`
+                    usoMenu.innerText += `${unidade[0].tipo}`
                 }
-                
+
             }
         } catch (error) {
             console.log(error)
@@ -419,18 +421,13 @@
                         graficoData.datasets[0].data.push(parseFloat(historico.data[i].leitura))
                         usoMenu.innerText = `${historico.data[i].leitura} ${historico.data[i].unidadeMedida}`
                     } else {
-                        qtdRestante.innerText = `${historico.data[i].leitura} ${historico.data[i].unidadeMedida}`
-                    } 
-
+                        qtdRestante.innerText = `${historico.data[i].leitura}`
+                    }
                     if(historico.data[i].nome === 'Memoria em Uso'){
-                        const totalMemoria = Number(historico.data[i].leitura) + Number(historico.data[i+1].leitura)
-                        const alertaMemoria = (historico.data[i].leitura / totalMemoria) * 100
-                        console.log(alertaMemoria)
-                        console.log(totalMemoria)
-                       if(alertaMemoria >= 80){
-                        situacaoAlerta.style.backgroundColor = 'red'
-                    } else if(alertaMemoria >= 60 && alertaMemoria < 80){
+                       if(historico.data[i].leitura >= 70 && historico.data[i].leitura < 90){
                         situacaoAlerta.style.backgroundColor = 'yellow'
+                    } else if(historico.data[i].leitura - historico.data[i + 1].leitura >= 90){
+                        situacaoAlerta.style.backgroundColor = 'red'
                     } else {
                         situacaoAlerta.style.backgroundColor = 'green'
                     }
@@ -445,10 +442,10 @@
         }
     }
 
-    async function dados(idComp){
+    async function dados(idComp) {
         try {
             const dadosResult = await axios.get(`/dados/${idMaquina}/${idComp}`)
-            if(dadosResult.status === 200){
+            if (dadosResult.status === 200) {
                 const dadosEstaticos = dadosResult.data
                 if (dadosEstaticos.length > 0) {
                     total.innerText = dadosEstaticos[0].valor
