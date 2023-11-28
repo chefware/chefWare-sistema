@@ -120,7 +120,7 @@
     if (privilegio == "Comum") {
         document.getElementById("itemMenuEmpresa").style.display = "none"
         document.getElementById("botaoAdicionarMaquina").style.display = "none"
-    } else if(privilegio = 'Admin' && fkEmpresa != 1) {
+    } else if (privilegio = 'Admin' && fkEmpresa != 1) {
         document.getElementById("itemMenuEmpresa").style.display = "none"
     }
 
@@ -134,6 +134,7 @@
     var sit
     var qtdEmAlerta = 0
     var listaCompAlertas
+    var TamanhoMaquina
 
     async function especificacaoGeral(idMaquina) {
         try {
@@ -154,10 +155,12 @@
             const especificacao = await axios.get(`/dashboard/especificacoes/${idMaquina}/CPU`)
             console.log(especificacao)
             if (especificacao.status === 200) {
-                const dadosEspecificacoes = especificacao.data
-                idComp = dadosEspecificacoes[0].idComponente
-                idM = idMaquina
-                await historicoCPU(idMaquina, dadosEspecificacoes[0].idComponente)
+                if (especificacao.data.length > 0) {
+                    const dadosEspecificacoes = especificacao.data
+                    idComp = dadosEspecificacoes[0].idComponente
+                    idM = idMaquina
+                    await historicoCPU(idMaquina, dadosEspecificacoes[0].idComponente)
+                }
             }
         } catch (error) {
             console.log(error)
@@ -169,10 +172,12 @@
             const especificacao = await axios.get(`/dashboard/especificacoes/${idMaquina}/Disco`)
             console.log(especificacao)
             if (especificacao.status === 200) {
-                const dadosEspecificacoes = especificacao.data
-                idComp = dadosEspecificacoes[0].idComponente
-                idM = idMaquina
-                await historicoDisco(idMaquina, dadosEspecificacoes[0].idComponente)
+                if (especificacao.data.length > 0) {
+                    const dadosEspecificacoes = especificacao.data
+                    idComp = dadosEspecificacoes[0].idComponente
+                    idM = idMaquina
+                    await historicoDisco(idMaquina, dadosEspecificacoes[0].idComponente)
+                }
             }
         } catch (error) {
             console.log(error)
@@ -184,10 +189,12 @@
             const especificacao = await axios.get(`/dashboard/especificacoes/${idMaquina}/Memória`)
             console.log(especificacao)
             if (especificacao.status === 200) {
-                const dadosEspecificacoes = especificacao.data
-                idComp = dadosEspecificacoes[0].idComponente
-                idM = idMaquina
-                await historicoMemoria(idMaquina, dadosEspecificacoes[0].idComponente)
+                if (especificacao.data.length > 0) {
+                    const dadosEspecificacoes = especificacao.data
+                    idComp = dadosEspecificacoes[0].idComponente
+                    idM = idMaquina
+                    await historicoMemoria(idMaquina, dadosEspecificacoes[0].idComponente)
+                }
             }
         } catch (error) {
             console.log(error)
@@ -199,10 +206,12 @@
             const especificacao = await axios.get(`/dashboard/especificacoes/${idMaquina}/Rede`)
             console.log(especificacao)
             if (especificacao.status === 200) {
-                const dadosEspecificacoes = especificacao.data
-                idComp = dadosEspecificacoes[0].idComponente
-                idM = idMaquina
-                await historicoRede(idMaquina, dadosEspecificacoes[0].idComponente)
+                if (especificacao.data.length > 0) {
+                    const dadosEspecificacoes = especificacao.data
+                    idComp = dadosEspecificacoes[0].idComponente
+                    idM = idMaquina
+                    await historicoRede(idMaquina, dadosEspecificacoes[0].idComponente)
+                }
             }
         } catch (error) {
             console.log(error)
@@ -235,18 +244,19 @@
             const startIndex = Math.max(0, historico.data.length - 1)
             var alertaQtd = 0
             var alerta = false
-            for (var i = 0; i < historico.data.length; i++) {
-                alerta = false
-                alerta = false
-                if (historico.data[i].leitura >= 70 && historico.data[i].leitura < 90) {
-                    alertaQtd = 1
-                    alerta = true
-                } else if (historico.data[i].leitura >= 90) {
-                    alerta = true
-                    alertaQtd = 1
+            if (historico.data.length > 0) {
+                for (var i = 0; i < historico.data.length; i++) {
+                    alerta = false
+                    alerta = false
+                    if (historico.data[i].leitura >= 70 && historico.data[i].leitura < 90) {
+                        alertaQtd = 1
+                        alerta = true
+                    } else if (historico.data[i].leitura >= 90) {
+                        alerta = true
+                        alertaQtd = 1
+                    }
                 }
             }
-
             if (alerta === true) {
                 listaCompAlertas += `<li class="componenteEspecifico">
                                             CPU
@@ -266,13 +276,15 @@
             for (var i = 0; i < historico.data.length; i++) {
                 alerta = false
                 var alertaQtd = 0
-                if (historico.data[i].descricao === 'Disco Tamanho Total') {
-                    if (historico.data[i].valor - historico.data[i + 1].valor >= 70 && historico.data[i].valor - historico.data[i + 1].valor < 90) {
-                        alertaQtd += 1
-                        alerta = true
-                    } else if (historico.data[i].valor - historico.data[i + 1].valor >= 90) {
-                        alertaQtd += 1
-                        alerta = true
+                if (historico.data.length > 0) {
+                    if (historico.data[i].descricao === 'Disco Tamanho Total') {
+                        if (historico.data[i].valor - historico.data[i + 1].valor >= 70 && historico.data[i].valor - historico.data[i + 1].valor < 90) {
+                            alertaQtd += 1
+                            alerta = true
+                        } else if (historico.data[i].valor - historico.data[i + 1].valor >= 90) {
+                            alertaQtd += 1
+                            alerta = true
+                        }
                     }
                 }
             }
@@ -293,18 +305,20 @@
             const historico = await axios.get(`/historico/${idMaquina}/${idComp}`)
             const startIndex = Math.max(0, historico.data.length - 1)
             var alerta = false
-            for (var i = 0; i < historico.data.length; i++) {
-                
-                var alertaQtd = 0
-                if(historico.data[i].nome === 'Memoria em Uso'){
-                    alerta = false
-                    if (historico.data[i].leitura >= 70 && historico.data[i].leitura < 90) {
-                    alertaQtd += 1
-                    alerta = true
-                } else if (historico.data[i].leitura >= 90) {
-                    alerta = true
-                    alertaQtd += 1
-                }
+            if (historico.data.length > 0) {
+                for (var i = 0; i < historico.data.length; i++) {
+
+                    var alertaQtd = 0
+                    if (historico.data[i].nome === 'Memoria em Uso') {
+                        alerta = false
+                        if (historico.data[i].leitura >= 70 && historico.data[i].leitura < 90) {
+                            alertaQtd += 1
+                            alerta = true
+                        } else if (historico.data[i].leitura >= 90) {
+                            alerta = true
+                            alertaQtd += 1
+                        }
+                    }
                 }
             }
 
@@ -324,16 +338,18 @@
             const historico = await axios.get(`/historico/${idMaquina}/${idComp}`)
             const startIndex = Math.max(0, historico.data.length - 10)
             var alerta = false
-            for (var i = 0; i < historico.data.length; i++) {
-                var alertaQtd = 0
-                if(historico.data[i].dataHora <= (Number(new Date().getHours() + ':' + new Date().getMinutes() +':'+ new Date().getSeconds() - 20)))
-                alerta = false
-                if (historico.data[i].leitura >= 70 && historico.data[i].leitura < 90) {
-                    alerta = true
-                    alertaQtd += 1
-                } else if (historico.data[i].leitura >= 90) {
-                    alerta = true
-                    alertaQtd += 1
+            if (historico.data.length > 0) {
+                for (var i = 0; i < historico.data.length; i++) {
+                    var alertaQtd = 0
+                    if (historico.data[i].dataHora <= (Number(new Date().getHours() + ':' + new Date().getMinutes() + ':' + new Date().getSeconds() - 20)))
+                        alerta = false
+                    if (historico.data[i].leitura >= 70 && historico.data[i].leitura < 90) {
+                        alerta = true
+                        alertaQtd += 1
+                    } else if (historico.data[i].leitura >= 90) {
+                        alerta = true
+                        alertaQtd += 1
+                    }
                 }
             }
             if (alerta === true) {
@@ -396,11 +412,12 @@
             } = await fetchData(page, fkEmpresa)
 
             console.log('Dados recebidos: ', maquinas)
+            TamanhoMaquina = maquinas.length
+            if (maquinas.length > 0) {
+                maquinas.forEach((maquina) => {
 
-            maquinas.forEach((maquina) => {
-
-                especificacaoGeral(maquina.idMaquina).then(() => {
-                    linha_maquina.innerHTML += `<div class="cardMaquina" onclick="navegacao(${maquina.idMaquina})">
+                    especificacaoGeral(maquina.idMaquina).then(() => {
+                        linha_maquina.innerHTML += `<div class="cardMaquina" onclick="navegacao(${maquina.idMaquina})">
                                     <div class="alerta" style="background-color: ${situacaoAlerta}">
                                     </div>
                                     <div class="informacoes">
@@ -429,8 +446,9 @@
                                         </div>
                                     </div>
                                 </div>`
+                    });
                 });
-            });
+            }
 
 
             if (totalPaginas > 0) {
@@ -448,12 +466,14 @@
         }
     }
 
-    setInterval(() => {
+    if (TamanhoMaquina > 0) {
+        setInterval(() => {
 
-        historicoGeral(idM, idComp)
-        especificacaoGeral(idM)
+            historicoGeral(idM, idComp)
+            especificacaoGeral(idM)
 
-    }, 5000)
+        }, 5000)
+    }
 
     var isFetchingData = false; // Flag para evitar múltiplas requisições simultâneas // Total de páginas disponíveis
 
