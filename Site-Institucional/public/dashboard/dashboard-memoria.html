@@ -120,12 +120,12 @@
                                     </div>
                                     <div id="botaoCpu" class="opcaoMenuComponentes">
                                         <h2>CPU</h2>
-                                        <span>Em uso: <span>35%</span></span>
+                                        <span>Em uso: <span id="usoCPU"></span></span>
                                     </div>
 
                                     <div id="botaoDisco" class="opcaoMenuComponentes">
                                         <h2>DISCO 01</h2>
-                                        <span>(C:)</span>
+                                        <span id="discoAlerta"></span> </span>
                                     </div>
 
                                     <div id="botaoMemoria" class="opcaoMenuComponentes componente-selecionado">
@@ -135,7 +135,7 @@
 
                                     <div id="botaoRede" class="opcaoMenuComponentes">
                                         <h2>REDE</h2>
-                                        <span>Conectada</span>
+                                        <span id="redeAlerta"></span>
                                     </div>
                                 </div>
 
@@ -229,8 +229,7 @@
             console.error(error);
         }
     };
-
-    // Verificar o privilegio do usuário
+ 
     if (privilegio == "Comum") {
         document.getElementById("itemMenuEmpresa").style.display = "none";
         const botoesCrud = document.querySelectorAll(".botao");
@@ -259,8 +258,10 @@
     var wlanIPPublico
 
     maquinaDashboard()
-    especificacaoCPU()
+    especificacaoMemoria()
     especificacaoRede()
+    especificacaoDisco()
+    especificacaoCPU()
 
     async function maquinaDashboard() {
         try {
@@ -275,16 +276,18 @@
         }
     }
 
-    async function especificacaoCPU() {
+    async function especificacaoMemoria() {
         try {
             const especificacao = await axios.get(`/dashboard/especificacoes/${idMaquina}/${tipoComp}`)
             console.log(especificacao)
             if (especificacao.status === 200) {
-                const dadosEspecificacoes = especificacao.data
-                await histórico(dadosEspecificacoes[0].idComponente)
-                idComp_grafico = dadosEspecificacoes[0].idComponente
-                comp.innerText = dadosEspecificacoes[0].tipo
-                dados(dadosEspecificacoes[0].idComponente)
+                if (especificacao.data.length > 0) {
+                    const dadosEspecificacoes = especificacao.data
+                    await dados(dadosEspecificacoes[0].idComponente)
+                    histórico(dadosEspecificacoes[0].idComponente)
+                    idComp_grafico = dadosEspecificacoes[0].idComponente
+                    comp.innerText = dadosEspecificacoes[0].tipo
+                }
             }
         } catch (error) {
             console.log(error)
@@ -297,8 +300,11 @@
             const especificacao = await axios.get(`/dashboard/especificacoes/${idMaquina}/Rede`)
             console.log(especificacao)
             if (especificacao.status === 200) {
-                const dadosEspecificacoes = especificacao.data
-                dadosRede(dadosEspecificacoes[0].idComponente)
+                if (especificacao.data.length > 0) {
+                    const dadosEspecificacoes = especificacao.data
+                    dadosRede(dadosEspecificacoes[0].idComponente)
+                    historicoRede(dadosEspecificacoes[0].idComponente)
+                }
             }
         } catch (error) {
             console.log(error)
@@ -311,15 +317,115 @@
             if (dadosResult.status === 200) {
                 const dadosEstaticos = dadosResult.data
                 if (dadosEstaticos.length > 0) {
-                    for(var i = 0; i < dadosEstaticos.length; i++){
-                        if(dadosEstaticos[i].descricao.includes('wlan')){
-                            if(dadosEstaticos[i].descricao.includes('IPV4')){
+                    for (var i = 0; i < dadosEstaticos.length; i++) {
+                        if (dadosEstaticos[i].descricao.includes('wlan')) {
+                            if (dadosEstaticos[i].descricao.includes('IPV4')) {
                                 wlanIPPublico = dadosEstaticos[i].valor
                             }
                         }
                     }
                 }
 
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function historicoRede(idComp) {
+        try {
+            const historico = await axios.get(`/historico/${idMaquina}/${idComp}`)
+            if (historico.status === 200 && historico.data.length > 0) {
+                const startIndex = Math.max(0, historico.data.length - 10)
+                for (var i = startIndex; i < historico.data.length; i++) {
+                    var dataAtual = new Date()
+                    var dataHistorico = new Date(historico.data[i].dataHora)
+                    dataHistorico.setHours(dataHistorico.getHours() + 3)
+                    var diferencaEmMilissegundos = Math.abs(dataAtual.getTime() - dataHistorico.getTime());
+                    var diferencaEmMinutos = Math.floor(diferencaEmMilissegundos / (1000 * 60));
+
+
+                    if (diferencaEmMinutos >= 1) {
+                        redeAlerta.innerText = 'Desconectada'
+                        botaoRede.style.backgroundColor = '#FFCDD2'
+                    } else {
+                        redeAlerta.innerText = 'Conectada'
+                    }
+                }
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function especificacaoCPU() {
+        try {
+            const especificacao = await axios.get(`/dashboard/especificacoes/${idMaquina}/CPU`)
+            console.log(especificacao)
+            if (especificacao.status === 200 && especificacao.data.length > 0) {
+                const dadosEspecificacoes = especificacao.data
+                historicoCPU(dadosEspecificacoes[0].idComponente)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function historicoCPU(idComp) {
+        try {
+            const historico = await axios.get(`/historico/${idMaquina}/${idComp}`)
+            if (historico.status === 200 && historico.data.length > 0) {
+                const startIndex = Math.max(0, historico.data.length - 10)
+                for (var i = startIndex; i < historico.data.length; i++) {
+                    usoCPU.innerText = `${Number(historico.data[i].leitura).toFixed(2)} ${historico.data[i].unidadeMedida}`
+                    if (historico.data[i].leitura >= 60 && historico.data[i].leitura < 80) {
+                        botaoCpu.style.backgroundColor = '#F4FA58'
+                    } else if (historico.data[i].leitura >= 80) {
+                        botaoCpu.style.backgroundColor = '#FFCDD2'
+                    } else {
+                        botaoCpu.style.backgroundColor = '#FFCDD2'
+                    }
+                }
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function especificacaoDisco() {
+        try {
+            const especificacao = await axios.get(`/dashboard/especificacoes/${idMaquina}/Disco`)
+            console.log(especificacao)
+            if (especificacao.status === 200 && especificacao.data.length > 0) {
+                const dadosEspecificacoes = especificacao.data
+                historicoDisco(dadosEspecificacoes[0].idComponente)            
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function historicoDisco(idComp){
+        try {
+            const historico = await axios.get(`/historico/${idMaquina}/${idComp}`)
+            if (historico.status === 200 && historico.data.length > 0) {
+                const startIndex = Math.max(0, historico.data.length - 10)
+                for (var i = startIndex; i < historico.data.length; i++) {
+                    var usoAlerta
+                    if(historico.data[i].nome === 'Disco Tamanho Total'){
+                        discoAlerta.innerText = `Em uso: ${(Number(historico.data[i].leitura) - Number(historico.data[i+1].leitura)).toFixed(2)} / ${historico.data[i].leitura} ${historico.data[i].unidadeMedida}`
+                    }
+
+                    if(historico.data[i].nome === 'Disco Tamanho Total'){
+                        const tamRestante = Number(historico.data[i].leitura) - Number(historico.data[i + 1].leitura)
+                        const alertaDisco = tamRestante / historico.data[i].leitura * 100
+                       if(alertaDisco >= 60 && alertaDisco < 80){
+                        botaoDisco.style.backgroundColor = '#F4FA58'
+                    } else if(alertaDisco >= 80){
+                        botaoDisco.style.backgroundColor = '#FFCDD2'
+                    } 
+                    }
+                }
             }
         } catch (error) {
             console.log(error)
@@ -374,8 +480,11 @@
     });
 
     setInterval(async () => {
-        await histórico(idComp_grafico)
         dados(idComp_grafico)
+        especificacaoRede()
+        especificacaoDisco()
+        especificacaoMemoria()
+        especificacaoCPU()
     }, 5000)
 
     function formatarDataHora(dataHora) {
@@ -389,6 +498,20 @@
             second: 'numeric'
         }
         return new Intl.DateTimeFormat('pt-BR', options).format(data)
+    }
+
+    async function dados(idComp) {
+        try {
+            const dadosResult = await axios.get(`/dados/${idMaquina}/${idComp}`)
+            if (dadosResult.status === 200) {
+                const dadosEstaticos = dadosResult.data
+                if (dadosEstaticos.length > 0) {
+                    total.innerText = dadosEstaticos[0].valor
+                }
+            }
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     async function histórico(idComp) {
@@ -431,27 +554,30 @@
                     }]
                 }
                 const startIndex = Math.max(0, historico.data.length - 10)
+                var usoAlerta
                 for (var i = startIndex; i < historico.data.length; i++) {
-                    if(historico.data[i].nome === 'Memoria em Uso'){
+                    if (historico.data[i].nome === 'Memoria em Uso') {
                         qtdUso.innerText = `${historico.data[i].leitura} ${historico.data[i].unidadeMedida}`
                         const dataHoraFormatada = formatarDataHora(historico.data[i].dataHora)
                         graficoData.labels.push(dataHoraFormatada)
                         graficoData.datasets[0].data.push(parseFloat(historico.data[i].leitura))
-                        usoMenu.innerText = `${historico.data[i].leitura} ${historico.data[i].unidadeMedida}`
+                        usoMenu.innerText = `${historico.data[i].leitura} / ${(Number(historico.data[i].leitura) + Number(historico.data[i + 1].leitura)).toFixed(2)} ${historico.data[i].unidadeMedida}`
+                        usoAlerta = Number(historico.data[i].leitura)
                     } else {
-                        qtdRestante.innerText = `${historico.data[i].leitura}`
+                        qtdRestante.innerText = `${historico.data[i].leitura} ${historico.data[i].unidadeMedida}`
                     }
                     if(historico.data[i].nome === 'Memoria em Uso'){
-                       if(historico.data[i].leitura >= 70 && historico.data[i].leitura < 90){
+                    const alertaMemoria = usoAlerta / (Number(historico.data[i].leitura) + Number(historico.data[i + 1].leitura)) * 100
+                    if (alertaMemoria >= 70 && alertaMemoria < 90) {
                         situacaoAlerta.style.backgroundColor = 'yellow'
-                    } else if(historico.data[i].leitura - historico.data[i + 1].leitura >= 90){
+                    } else if (alertaMemoria) {
                         situacaoAlerta.style.backgroundColor = 'red'
                     } else {
                         situacaoAlerta.style.backgroundColor = 'green'
                     }
                     }
                 }
-                        const hist = 'historico'
+                const hist = 'historico'
                 grafico.data = graficoData
                 grafico.update()
             }
@@ -460,20 +586,6 @@
         }
     }
 
-    async function dados(idComp) {
-        try {
-            const dadosResult = await axios.get(`/dados/${idMaquina}/${idComp}`)
-            if (dadosResult.status === 200) {
-                const dadosEstaticos = dadosResult.data
-                if (dadosEstaticos.length > 0) {
-                    total.innerText = dadosEstaticos[0].valor
-                    usoMenu.innerText += ` / ${dadosEstaticos[0].valor}`
-                }
-            }
-        } catch (error) {
-            console.log(error)
-        }
-    }
 
     async function deletar() {
         try {
