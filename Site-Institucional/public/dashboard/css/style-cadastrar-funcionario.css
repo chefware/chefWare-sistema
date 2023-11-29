@@ -20,7 +20,7 @@
     padding: 0;
     height: 100%;
     width: 45%;
-}   
+}
 
 .campo{
     display: flex;
@@ -115,20 +115,3 @@ select{
 #botao-cancelar:hover{
     background-color: #eee;
 }
-
-
-.c-loader {
-    animation: is-rotating 1s infinite;
-    border: 2px solid #808087;
-    border-radius: 50%;
-    border-top-color: #ffffff;
-    height: 12px;
-    width: 12px;
-    margin-left: 10px;
-  }
-
-  @keyframes is-rotating {
-    to {
-      transform: rotate(1turn);
-    }
-  }
