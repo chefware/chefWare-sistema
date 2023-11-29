@@ -19,7 +19,6 @@ maquinasController.get('/page/:page', async (req, res) => {
         const [maquinas, total] = await prisma.$transaction([
             prisma.maquina.findMany({
                 where: {
-                    ativo: true,
                     fkEmpresa: fkEmpresa || undefined
                 },
                 take: take,
@@ -27,7 +26,6 @@ maquinasController.get('/page/:page', async (req, res) => {
             }),
             prisma.maquina.count({
                 where: {
-                    ativo: true,
                     fkEmpresa: fkEmpresa || undefined
                 }
             })
