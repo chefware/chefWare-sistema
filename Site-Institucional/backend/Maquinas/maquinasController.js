@@ -157,7 +157,6 @@ maquinasController.patch('/:id', async (req, res) => {
         hostName,
         modelo,
         local,
-        descComponentes,
         fkEmpresa
     } = req.body
     try {
@@ -172,7 +171,6 @@ maquinasController.patch('/:id', async (req, res) => {
                 hostName: hostName,
                 modelo: modelo,
                 local: local,
-                descComponentes: descComponentes,
                 fkEmpresa: fkEmpresa
             }
         })
