@@ -114,22 +114,22 @@
 
 <script>
     // Variaveis globais
-    var perfil = document.getElementById("perfil");
-    var nomeUser = sessionStorage.getItem("nomeFuncionario");
-    var fkEmpresaAtual = sessionStorage.getItem("fkEmpresa");
-    var idFuncionario = sessionStorage.getItem("idFuncionario");
-    var privilegio = sessionStorage.getItem("privilegio");
+    var perfil = document.getElementById("perfil")
+    var nomeUser = sessionStorage.getItem("nomeFuncionario")
+    var fkEmpresaAtual = sessionStorage.getItem("fkEmpresa")
+    var idFuncionario = sessionStorage.getItem("idFuncionario")
+    var privilegio = sessionStorage.getItem("privilegio")
 
-    pegarFoto();
-    pegarNomeEmpresa();
+    pegarFoto()
+    pegarNomeEmpresa()
 
     // Pegar o nome do usuário
     if (nomeUser != null) {
-        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${nomeUser}</span></span>`;
+        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${nomeUser}</span></span>`
     }
 
     if (privilegio == "Admin" && fkEmpresaAtual != 1) {
-        document.getElementById("itemMenuEmpresa").style.display = "none";
+        document.getElementById("itemMenuEmpresa").style.display = "none"
     }
 
     // Pegar a foto do usuário
@@ -143,23 +143,23 @@
 
     async function pegarNomeEmpresa() {
         try {
-            const response = await axios.get(`/empresas/${fkEmpresaAtual}`);
+            const response = await axios.get(`/empresas/${fkEmpresaAtual}`)
             if (response.status === 200) {
-                const dados = response.data;
-                console.log(dados);
-                document.getElementById('nomeEmpresa').innerHTML = `${dados.nome}`;
+                const dados = response.data
+                console.log(dados)
+                document.getElementById('nomeEmpresa').innerHTML = `${dados.nome}`
             } else {
-                console.error('Erro na requisição:', response.status, response.statusText);
+                console.error('Erro na requisição:', response.status, response.statusText)
             }
         } catch (error) {
-            console.error(error);
+            console.error(error)
         }
     };
 
     const params = new URLSearchParams(window.location.search)
     const idMaquina = params.get('id')
 
-    var result = document.getElementById("snackbar");
+    var result = document.getElementById("snackbar")
     const numSerie = document.getElementById('input_numSerie')
     const nome = document.getElementById('input_nome')
     const hostName = document.getElementById('input_hostName')
@@ -186,6 +186,10 @@
     }
 
     async function editar() {
+        const inner = `<div class="c-loader"></div>`
+        const feedback_user = document.getElementById("feedback_user")
+        const botaoCadastrar = document.getElementById("botao-cadastrar")
+        var result = document.getElementById("snackbar")
         const data = {
             numSerie: numSerie.value,
             nome: nome.value,
@@ -193,20 +197,19 @@
             modelo: modelo.value,
             local: local.value,
             fkEmpresa: fkEmpresa
-        };
+        }
 
-        const response = await axios.patch(`/maquinas/${idMaquina}`, data);
+        const response = await axios.patch(`/maquinas/${idMaquina}`, data)
         if (response.status === 200) {
-            const maquinaCriada = response.data;
-            console.log('Máquina cadastrada com sucesso:', maquinaCriada);
-
-            result.className = "show";
+            const maquinaCriada = response.data
+            console.log('Máquina cadastrada com sucesso:', maquinaCriada)
             setTimeout(function () {
-                x.className = result.className.replace("show", "");
-            }, 1500);
-            setTimeout(function () {
-                window.location.href = `dashboard-cpu.html?id=${idMaquina}`
-            }, 2000);
+                    result.className = "show"
+                    const loader = document.querySelector(".c-loader")[0]
+                    console.log('Redirecionando para lista-funcionario.html')
+                    window.location.href = 'lista-funcionario.html'
+                    loader.remove()
+                }, 1500)
         } else {
             console.error('Erro ao eidtar máquina:', response.status, response.statusText)
         }
@@ -217,11 +220,11 @@
     }
 
     sidebarItems.forEach(item => {
-    item.addEventListener('click', function() {
-        sidebarItems.forEach(i => i.classList.remove('active'));
-        item.classList.add('active');
+        item.addEventListener('click', function () {
+            sidebarItems.forEach(i => i.classList.remove('active'))
+            item.classList.add('active')
+        })
     });
-});
 
 </script>
 

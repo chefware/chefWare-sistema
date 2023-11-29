@@ -176,3 +176,40 @@ select {
         opacity: 0;
     }
 }
+
+<<<<<<<<< Temporary merge branch 1
+.c-loader {
+    animation: is-rotating 1s infinite;
+    border: 2px solid #808087;
+    border-radius: 50%;
+    border-top-color: #ffffff;
+    height: 12px;
+    width: 12px;
+    margin-left: 10px;
+  }
+
+  @keyframes is-rotating {
+    to {
+      transform: rotate(1turn);
+    }
+  }
+=========
+#sidebar .areaSideBar {
+    position: relative;
+}
+
+.sidebar-item.active {
+    position: relative;
+}
+
+.sidebar-item.active::before {
+    content: '';
+    position: absolute;
+    left: -20px;
+    top: 0;
+    bottom: 0;
+    width: 5px;
+    background: white;
+    border-radius: 2px;
+}
+>>>>>>>>> Temporary merge branch 2
