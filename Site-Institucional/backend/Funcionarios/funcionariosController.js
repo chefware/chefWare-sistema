@@ -93,7 +93,7 @@ funcionariosController.get('/:id', async (req, res) => {
 
 funcionariosController.get('/search/:termo', async (req, res) => {
     const termoPesquisa = req.params.termo.toLowerCase()
-    const fkEmpresa = Number(req.query.fkEmpresa)
+    let fkEmpresa = Number(req.query.fkEmpresa)
     if (fkEmpresa === 1) { // se for chefware, mostre todos os funcionários de todas as empresas
         fkEmpresa = null
     }
