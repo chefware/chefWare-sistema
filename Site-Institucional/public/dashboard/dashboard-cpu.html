@@ -292,6 +292,8 @@
     var idComp_grafico
     var wlanIPPublico
     const redeMenu = document.getElementById('redeMenu')
+    var vetor_grafico = [] 
+    var vetor_dataHora = []
 
 
     const params = new URLSearchParams(window.location.search)
@@ -563,6 +565,7 @@
         try {
             const historico = await axios.get(`/historico/${idMaquina}/${idComp}`)
             if (historico.status === 200) {
+                console.log(historico.data[2].leitura)
                 var graficoData = {
                     labels: [],
                     datasets: [{
@@ -597,14 +600,21 @@
                         cubicInterpolationMode: 'monotone'
                     }]
                 }
-                const startIndex = Math.max(0, historico.data.length - 10)
-                for (var i = startIndex; i < historico.data.length; i++) {
-                    qtdUso.innerText = `${Number(historico.data[i].leitura).toFixed(2)} ${historico.data[i].unidadeMedida}`
-                    qtdUsoMenu.innerText = `${Number(historico.data[i].leitura).toFixed(2)} ${historico.data[i].unidadeMedida}`
+                for (var i = 0; i < historico.data.length; i++) {
+                    if(vetor_grafico.length >= 10){
+                        vetor_grafico.shift()
+                    }
+                    vetor_grafico.push(historico.data[i].leitura)
 
-                    const dataHoraFormatada = formatarDataHora(historico.data[i].dataHora)
-                    graficoData.labels.push(dataHoraFormatada)
-                    graficoData.datasets[0].data.push(parseFloat(historico.data[i].leitura))
+                    if(vetor_dataHora.length >= 10){
+                        vetor_dataHora.shift()
+                    }
+                    vetor_dataHora.push(formatarDataHora(historico.data[i].dataHora))
+
+                    qtdUso.innerText = `${Number(historico.data[i].leitura).toFixed(2)} ${historico.data[i].unidadeMedida}`
+                    qtdUsoMenu.innerText = `${Number(historico.data[i].leitura).toFixed(2)} ${historico.data[i].unidadeMedida}` 
+                    
+            
 
                     if (historico.data[i].leitura >= 60 && historico.data[i].leitura < 80) {
                         situacaoAlerta.style.backgroundColor = 'yellow'
@@ -614,12 +624,21 @@
                         situacaoAlerta.style.backgroundColor = 'green'
                     }
                 }
-                const hist = 'historico'
-                grafico.data = graficoData
-                grafico.update()
+
+                plotar_grafico()
             }
         } catch (error) {
             console.log(error)
+        }
+    }
+
+    function plotar_grafico(){
+        try {
+            grafico.data.labels = vetor_dataHora.slice(0, 10)
+            grafico.data.datasets[0].data =  vetor_grafico.slice(0, 10)
+            grafico.update()
+        } catch (error) {
+            
         }
     }
 

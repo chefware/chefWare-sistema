@@ -250,6 +250,8 @@
     const qtdDiscoMenu = document.getElementById('qtdDiscoMenu')
     var qtdUsoAlerta
     var wlanIPPublico
+    var vetor_grafico = []
+    var vetor_dataHora = []
 
     const params = new URLSearchParams(window.location.search)
     const idMaquina = params.get('id')
@@ -307,9 +309,10 @@
                 const startIndex = Math.max(0, historico.data.length - 10)
                 for (var i = startIndex; i < historico.data.length; i++) {
                     var usoAlerta
-                    if(historico.data[i].nome === 'Memoria em Uso'){
+                    if (historico.data[i].nome === 'Memoria em Uso') {
                         usoMemoriaMenu.innerText = `${historico.data[i].leitura} / ${(Number(historico.data[i].leitura) + Number(historico.data[i + 1].leitura)).toFixed(2)} ${historico.data[i].unidadeMedida}`
                         usoAlerta = Number(historico.data[i].leitura)
+
                     }
                     if(historico.data[i].nome === 'Memoria em Uso'){
                     const alertaMemoria = usoAlerta / (Number(historico.data[i].leitura) + Number(historico.data[i + 1].leitura)) * 100
@@ -317,7 +320,15 @@
                         botaoMemoria.style.backgroundColor = '#F4FA58'
                     } else if (alertaMemoria >= 80) {
                         botaoMemoria.style.backgroundColor = '#FFCDD2'
+
                     }
+                    if (historico.data[i].nome === 'Memoria em Uso') {
+                        const alertaMemoria = usoAlerta / (Number(historico.data[i].leitura) + Number(historico.data[i + 1].leitura)) * 100
+                        if (alertaMemoria >= 60 && alertaMemoria < 80) {
+                            botaoMemoria.style.backgroundColor = '#F4FA58'
+                        } else if (alertaMemoria >= 80) {
+                            botaoMemoria.style.backgroundColor = '#FFCDD2'
+                        }
                     }
                 }
             }
@@ -338,8 +349,8 @@
                     var diferencaEmMilissegundos = Math.abs(dataAtual.getTime() - dataHistorico.getTime());
                     var diferencaEmMinutos = Math.floor(diferencaEmMilissegundos / (1000 * 60));
 
+                    if (diferencaEmMinutos >= 1) {
 
-                    if(diferencaEmMinutos >= 1){
                         redeAlerta.innerText = 'Desconectada'
                         botaoRede.style.backgroundColor = '#FFCDD2'
                     } else {
@@ -419,9 +430,9 @@
             if (dadosResult.status === 200) {
                 const dadosEstaticos = dadosResult.data
                 if (dadosEstaticos.length > 0) {
-                    for(var i = 0; i < dadosEstaticos.length; i++){
-                        if(dadosEstaticos[i].descricao.includes('wlan')){
-                            if(dadosEstaticos[i].descricao.includes('IPV4')){
+                    for (var i = 0; i < dadosEstaticos.length; i++) {
+                        if (dadosEstaticos[i].descricao.includes('wlan')) {
+                            if (dadosEstaticos[i].descricao.includes('IPV4')) {
                                 wlanIPPublico = dadosEstaticos[i].valor
                             }
                         }
@@ -475,8 +486,7 @@
         options: {
             scales: {
                 y: {
-                    beginAtZero: true,
-                    max: 120
+                    beginAtZero: true
                 }
             }
         }
@@ -548,34 +558,48 @@
                     if (historico.data[i].nome === 'Disco Tamanho Total') {
                         qtdUso.innerText = `${(historico.data[i].leitura - historico.data[i + 1].leitura).toFixed(2)} ${historico.data[i].unidadeMedida}`
                         qtdUsoAlerta = historico.data[i].leitura - historico.data[i + 1].leitura
-                        const dataHoraFormatada = formatarDataHora(historico.data[i].dataHora)
-                        graficoData.labels.push(dataHoraFormatada)
-                        graficoData.datasets[0].data.push(parseFloat(historico.data[i].leitura - historico.data[i + 1].leitura))
+                        if (vetor_grafico.length >= 10) {
+                            vetor_grafico.shift()
+                        }
+                        vetor_grafico.push(historico.data[i].leitura)
+
+                        if (vetor_dataHora.length >= 10) {
+                            vetor_dataHora.shift()
+                        }
+                        vetor_dataHora.push(formatarDataHora(historico.data[i].dataHora))
                         qtdDiscoMenu.innerText = `${(historico.data[i].leitura - historico.data[i + 1].leitura).toFixed(2)} / ${historico.data[i].leitura} ${historico.data[i].unidadeMedida}`
                         tamTotal.innerText = `${historico.data[i].leitura} ${historico.data[i].unidadeMedida}`
                     } else {
                         qtdRestante.innerText = `${historico.data[i].leitura} ${historico.data[i].unidadeMedida}`
                     }
 
-                    if(historico.data[i].nome === 'Disco Tamanho Total'){
+                    if (historico.data[i].nome === 'Disco Tamanho Total') {
                         const tamRestante = Number(historico.data[i].leitura) - Number(historico.data[i + 1].leitura)
                         const alertaDisco = tamRestante / historico.data[i].leitura * 100
-                       if(alertaDisco >= 60 && alertaDisco < 80){
-                        situacaoAlerta.style.backgroundColor = 'yellow'
-                    } else if(alertaDisco >= 80){
-                        situacaoAlerta.style.backgroundColor = 'red'
-                    } else {
-                        situacaoAlerta.style.backgroundColor = 'green'
-                    }
+                        if (alertaDisco >= 60 && alertaDisco < 80) {
+                            situacaoAlerta.style.backgroundColor = 'yellow'
+                        } else if (alertaDisco >= 80) {
+                            situacaoAlerta.style.backgroundColor = 'red'
+                        } else {
+                            situacaoAlerta.style.backgroundColor = 'green'
+                        }
                     }
                 }
 
-
-                grafico.data = graficoData
-                grafico.update()
+                plotar_grafico()
             }
         } catch (error) {
             console.log(error)
+        }
+    }
+
+    function plotar_grafico() {
+        try {
+            grafico.data.labels = vetor_dataHora.slice(0, 10)
+            grafico.data.datasets[0].data = vetor_grafico.slice(0, 10)
+            grafico.update()
+        } catch (error) {
+
         }
     }
 

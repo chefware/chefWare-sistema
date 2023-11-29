@@ -283,6 +283,9 @@
     const tipoComp = "Rede"
     const usoMenu = document.getElementById('usoMenu')
     var wlanIPPublico
+    var vetor_grafico = []
+    var vetor_grafico2 = []
+    var vetor_dataHora = []
 
     const params = new URLSearchParams(window.location.search)
     const idMaquina = params.get('id')
@@ -360,9 +363,10 @@
                 const startIndex = Math.max(0, historico.data.length - 10)
                 for (var i = startIndex; i < historico.data.length; i++) {
                     var usoAlerta
-                    if(historico.data[i].nome === 'Memoria em Uso'){
+                    if (historico.data[i].nome === 'Memoria em Uso') {
                         usoMemoriaMenu.innerText = `${historico.data[i].leitura} / ${(Number(historico.data[i].leitura) + Number(historico.data[i + 1].leitura)).toFixed(2)} ${historico.data[i].unidadeMedida}`
                         usoAlerta = Number(historico.data[i].leitura)
+
                     }
                     if(historico.data[i].nome === 'Memoria em Uso'){
                     const alertaMemoria = usoAlerta / (Number(historico.data[i].leitura) + Number(historico.data[i + 1].leitura)) * 100
@@ -370,7 +374,15 @@
                         botaoMemoria.style.backgroundColor = '#F4FA58'
                     } else if (alertaMemoria >= 80) {
                         botaoMemoria.style.backgroundColor = '#FFCDD2'
+
                     }
+                    if (historico.data[i].nome === 'Memoria em Uso') {
+                        const alertaMemoria = usoAlerta / (Number(historico.data[i].leitura) + Number(historico.data[i + 1].leitura)) * 100
+                        if (alertaMemoria >= 60 && alertaMemoria < 80) {
+                            botaoMemoria.style.backgroundColor = '#F4FA58'
+                        } else if (alertaMemoria >= 80) {
+                            botaoMemoria.style.backgroundColor = '#FFCDD2'
+                        }
                     }
                 }
             }
@@ -392,25 +404,25 @@
         }
     }
 
-    async function historicoDisco(idComp){
+    async function historicoDisco(idComp) {
         try {
             const historico = await axios.get(`/historico/${idMaquina}/${idComp}`)
             if (historico.status === 200 && historico.data.length > 0) {
                 const startIndex = Math.max(0, historico.data.length - 10)
                 for (var i = startIndex; i < historico.data.length; i++) {
                     var usoAlerta
-                    if(historico.data[i].nome === 'Disco Tamanho Total'){
-                        discoAlerta.innerText = `${(Number(historico.data[i].leitura) - Number(historico.data[i+1].leitura)).toFixed(2)} / ${historico.data[i].leitura} ${historico.data[i].unidadeMedida}`
+                    if (historico.data[i].nome === 'Disco Tamanho Total') {
+                        discoAlerta.innerText = `${(Number(historico.data[i].leitura) - Number(historico.data[i + 1].leitura)).toFixed(2)} / ${historico.data[i].leitura} ${historico.data[i].unidadeMedida}`
                     }
 
-                    if(historico.data[i].nome === 'Disco Tamanho Total'){
+                    if (historico.data[i].nome === 'Disco Tamanho Total') {
                         const tamRestante = Number(historico.data[i].leitura) - Number(historico.data[i + 1].leitura)
                         const alertaDisco = tamRestante / historico.data[i].leitura * 100
-                       if(alertaDisco >= 60 && alertaDisco < 80){
-                        botaoDisco.style.backgroundColor = '#F4FA58'
-                    } else if(alertaDisco >= 80){
-                        botaoDisco.style.backgroundColor = '#FFCDD2'
-                    }
+                        if (alertaDisco >= 60 && alertaDisco < 80) {
+                            botaoDisco.style.backgroundColor = '#F4FA58'
+                        } else if (alertaDisco >= 80) {
+                            botaoDisco.style.backgroundColor = '#FFCDD2'
+                        }
                     }
                 }
             }
@@ -506,8 +518,7 @@
         options: {
             scales: {
                 y: {
-                    beginAtZero: true,
-                    max: 250
+                    beginAtZero: true
                 }
             }
         }
@@ -564,36 +575,53 @@
                 for (var i = startIndex; i < historico.data.length; i++) {
                     if (historico.data[i].nome.includes('Rede Bytes Enviados')) {
                     } else if (historico.data[i].nome.includes('Rede Bytes Recebidos')) {
-                    } else if (historico.data[i].nome.includes('Rede Pacotes Enviados')) {
+                    } else if (historico.data[i].nome.includes('Rede Pacotes Enviados wlan')) {
                         pacotesEnviados.innerText = `${historico.data[i].leitura}`;
-                        const dataHoraFormatada = formatarDataHora(historico.data[i].dataHora);
-                        graficoData.labels.push(dataHoraFormatada);
-                        graficoData.datasets[0].data.push(parseFloat(historico.data[i].leitura));
-                    } else if (historico.data[i].nome.includes('Rede Pacotes Recebidos')) {
+                        if (vetor_grafico.length >= 10) {
+                            vetor_grafico.shift()
+                        }
+                        vetor_grafico.push(historico.data[i].leitura)
+
+                        if (vetor_dataHora.length >= 10) {
+                            vetor_dataHora.shift()
+                        }
+                        vetor_dataHora.push(formatarDataHora(historico.data[i].dataHora))
+                    } else if (historico.data[i].nome.includes('Rede Pacotes Recebidos wlan')) {
                         pacotesRecebidos.innerText = `${historico.data[i].leitura}`;
-                        const dataHoraFormatada = formatarDataHora(historico.data[i].dataHora);
-                        graficoData.labels.push(dataHoraFormatada);
-                        graficoData.datasets[1].data.push(parseFloat(historico.data[i].leitura));
+                        if (vetor_grafico2.length >= 10) {
+                            vetor_grafico2.shift()
+                        }
+                        vetor_grafico2.push(historico.data[i].leitura)
                     }
 
                     var dataAtual = new Date()
-                        var dataHistorico = new Date(historico.data[i].dataHora)
-                        dataHistorico.setHours(dataHistorico.getHours() + 3)
-                        var diferencaEmMilissegundos = Math.abs(dataAtual.getTime() - dataHistorico.getTime());
-                        var diferencaEmMinutos = Math.floor(diferencaEmMilissegundos / (1000 * 60));
+                    var dataHistorico = new Date(historico.data[i].dataHora)
+                    dataHistorico.setHours(dataHistorico.getHours() + 3)
+                    var diferencaEmMilissegundos = Math.abs(dataAtual.getTime() - dataHistorico.getTime());
+                    var diferencaEmMinutos = Math.floor(diferencaEmMilissegundos / (1000 * 60));
 
 
-                        if (diferencaEmMinutos >= 1) {
-                            redeAlerta.innerText = 'Desconectada'
-                        } else {
-                            redeAlerta.innerText = 'Conectada'
-                        }
+                    if (diferencaEmMinutos >= 1) {
+                        redeAlerta.innerText = 'Desconectada'
+                    } else {
+                        redeAlerta.innerText = 'Conectada'
+                    }
                 }
-                grafico.data = graficoData
-                grafico.update()
+                plotar_grafico()
             }
         } catch (error) {
             console.log(error)
+        }
+    }
+
+    function plotar_grafico() {
+        try {
+            grafico.data.labels = vetor_dataHora.slice(0, 10)
+            grafico.data.datasets[0].data = vetor_grafico.slice(0, 10)
+            grafico.data.datasets[1].data = vetor_grafico2.slice(0, 10)
+            grafico.update()
+        } catch (error) {
+
         }
     }
 
