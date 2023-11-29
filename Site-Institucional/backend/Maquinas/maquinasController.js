@@ -185,14 +185,11 @@ maquinasController.patch('/:id', async (req, res) => {
     }
 })
 
-maquinasController.patch('/deletar/:id', async (req, res) => {
+maquinasController.delete('/deletar/:id', async (req, res) => {
     const idMaquina = Number(req.params.id)
-    await prisma.maquina.update({
+    await prisma.maquina.delete({
         where: {
             idMaquina: idMaquina
-        },
-        data: {
-            ativo: false
         }
     })
 
