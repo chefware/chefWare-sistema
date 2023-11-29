@@ -192,12 +192,22 @@ empresasController.patch('/:id', async (req, res) => {
 empresasController.delete('/:id', async (req, res) => {
     const idEmpresa = Number(req.params.id)
     try {
+        const enderecoDeletado = await prisma.endereco.deleteMany({
+            where: {
+                fkEmpresa: idEmpresa
+            }
+        })
+        const maquinasDeletadas = await prisma.maquina.deleteMany({
+            where: {
+                fkEmpresa: idEmpresa
+            }
+        })
         const empresaDeletada = await prisma.empresa.delete({
             where: {
                 idEmpresa: idEmpresa
             }
         })
-        res.status(200).json(empresaDeletada)
+        res.status(200).json(empresaDeletada, enderecoDeletado, maquinasDeletadas)
     } catch (e) {
         res.status(500).json(e)
         console.log(e)
