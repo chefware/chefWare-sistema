@@ -666,7 +666,7 @@
     });
 
     function receberAcaoRapida(acao) {
-        axios.post(`https://${wlanIPPublico}:8080/inovacao`, {
+        axios.post(`https://${sessionStorage.getItem('wlanIPPublico')}:8080/inovacao`, {
             comando: acao
         }, {
             headers: {
