@@ -91,13 +91,6 @@
                                 <input type="text" class="input-form-cadastrar" placeholder="Cozinha" id="input_local">
                             </div>
 
-                            <div class="campo campo-descricao">
-                                <h4 class="label-cadastrar">Descrição dos Componentes:</h4>
-                                <textarea id="input_descricao">
-
-                                </textarea>
-                            </div>
-
                             <div class="campo-botoes campo-horizontal">
                                 <button class="bt_edicao" id="botao-cancelar" onclick="cancelar()">Cancelar</button>
                                 <button class="bt_edicao" id="botao-cadastrar" onclick="cadastrar()">Cadastrar</button>
@@ -161,10 +154,7 @@
 
     async function cadastrar() {
         try {
-            const inner = `<div class="c-loader"></div>`
-            const feedback_user = document.getElementById("feedback_user")
-            const botaoCadastrar = document.getElementById("botao-cadastrar")
-            var result = document.getElementById("snackbar")
+            var result = document.getElementById("snackbar");
             const numSerie = input_numSerie.value
             const nome = input_nome.value
             const hostName = input_hostName.value
@@ -187,15 +177,14 @@
             if (response.status === 201) {
                 const maquinaCriada = response.data;
                 console.log('Máquina cadastrada com sucesso:', maquinaCriada);
-                botaoCadastrar.innerHTML = "Cadastrando"
-                botaoCadastrar.innerHTML += inner
+
+                result.className = "show";
                 setTimeout(function () {
-                    result.className = "show"
-                    const loader = document.querySelector(".c-loader")[0]
-                    console.log('Redirecionando para lista-maquinas.html')
+                    x.className = result.className.replace("show", "");
+                }, 1500);
+                setTimeout(function () {
                     window.location.href = 'lista-maquinas.html'
-                    loader.remove()
-                }, 1500)
+                }, 2000);
             } else {
                 console.error('Erro ao cadastrar máquina:', response.status, response.statusText)
             }

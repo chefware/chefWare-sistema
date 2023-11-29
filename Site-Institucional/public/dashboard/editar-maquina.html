@@ -24,7 +24,7 @@
 
 
                 <div class="itensMenu">
-                    <div class="sidebar-item" id="itemMenuMaquina">
+                    <div class="sidebar-item active" id="itemMenuMaquina">
                         <img src="../assets/pc.png" class="sidebar-icon">
                         <span class="sidebar-text">Máquinas</span>
                     </div>
@@ -94,11 +94,6 @@
                                 <input id="input_local" type="text" class="input-form-editar" placeholder="Cozinha">
                             </div>
 
-                            <div class="campo maior">
-                                <h4 class="label-editar">Descrição dos componentes:</h4>
-                                <textarea id="input_descricao" class="input-form-editar" cols="30" rows="30"></textarea>
-                            </div>
-
                             <div class="campo-botoes campo-horizontal">
                                 <button class="bt_edicao" id="botao-cancelar" onclick="cancelar()">Cancelar</button>
                                 <button class="bt_edicao" id="botao-editar" onclick="editar()">Editar</button>
@@ -135,7 +130,7 @@
 
     if (privilegio == "Admin" && fkEmpresaAtual != 1) {
         document.getElementById("itemMenuEmpresa").style.display = "none";
-    }   
+    }
 
     // Pegar a foto do usuário
     function pegarFoto() {
@@ -170,7 +165,6 @@
     const hostName = document.getElementById('input_hostName')
     const modelo = document.getElementById('input_modelo')
     const local = document.getElementById('input_local')
-    const descComponentes = document.getElementById('input_descricao')
     const fkEmpresa = 1
 
     maquinaDashboard()
@@ -185,7 +179,6 @@
                 modelo.value = `${dados.modelo}`
                 hostName.value = `${dados.hostName}`
                 local.value = `${dados.local}`
-                descComponentes.value = `${dados.descComponentes}`
             }
         } catch (error) {
             console.log(error)
@@ -199,7 +192,6 @@
             hostName: hostName.value,
             modelo: modelo.value,
             local: local.value,
-            descComponentes: descComponentes.value,
             fkEmpresa: fkEmpresa
         };
 
@@ -223,6 +215,14 @@
     async function cancelar() {
         window.location.href = `dashboard-cpu.html?id=${idMaquina}`
     }
+
+    sidebarItems.forEach(item => {
+    item.addEventListener('click', function() {
+        sidebarItems.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+    });
+});
+
 </script>
 
 <script src="../assets/js/navegacao-menu.js"></script>

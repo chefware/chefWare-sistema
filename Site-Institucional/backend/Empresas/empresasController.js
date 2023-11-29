@@ -19,8 +19,13 @@ empresasController.get('/page/:page', async (req, res) => {
 
         const totalPaginas = Math.ceil(total / take)
 
-        const empresasComEndereco = await Promise.all(empresas.map(async (empresa) => {
+        const empresasComEnderecoEMaquinasMonitoradas = await Promise.all(empresas.map(async (empresa) => {
             const endereco = await prisma.endereco.findFirst({
+                where: {
+                    fkEmpresa: empresa.idEmpresa
+                }
+            })
+            const maquinasMonitoradas = await prisma.maquina.count({
                 where: {
                     fkEmpresa: empresa.idEmpresa
                 }
@@ -29,11 +34,12 @@ empresasController.get('/page/:page', async (req, res) => {
             return {
                 ...empresa,
                 endereco,
+                maquinasMonitoradas
             }
         }))
 
         const resposta = {
-            empresas: empresasComEndereco,
+            empresas: empresasComEnderecoEMaquinasMonitoradas,
             totalPaginas,
             paginaAtual: page,
             totalEmpresas: total

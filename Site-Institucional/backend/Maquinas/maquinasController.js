@@ -19,7 +19,6 @@ maquinasController.get('/page/:page', async (req, res) => {
         const [maquinas, total] = await prisma.$transaction([
             prisma.maquina.findMany({
                 where: {
-                    ativo: true,
                     fkEmpresa: fkEmpresa || undefined
                 },
                 take: take,
@@ -27,7 +26,6 @@ maquinasController.get('/page/:page', async (req, res) => {
             }),
             prisma.maquina.count({
                 where: {
-                    ativo: true,
                     fkEmpresa: fkEmpresa || undefined
                 }
             })
@@ -159,7 +157,6 @@ maquinasController.patch('/:id', async (req, res) => {
         hostName,
         modelo,
         local,
-        descComponentes,
         fkEmpresa
     } = req.body
     try {
@@ -174,7 +171,6 @@ maquinasController.patch('/:id', async (req, res) => {
                 hostName: hostName,
                 modelo: modelo,
                 local: local,
-                descComponentes: descComponentes,
                 fkEmpresa: fkEmpresa
             }
         })
@@ -185,14 +181,11 @@ maquinasController.patch('/:id', async (req, res) => {
     }
 })
 
-maquinasController.patch('/deletar/:id', async (req, res) => {
+maquinasController.delete('/deletar/:id', async (req, res) => {
     const idMaquina = Number(req.params.id)
-    await prisma.maquina.update({
+    await prisma.maquina.delete({
         where: {
             idMaquina: idMaquina
-        },
-        data: {
-            ativo: false
         }
     })
 

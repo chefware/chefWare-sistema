@@ -58,7 +58,7 @@
                         <span class="sidebar-text">Máquinas</span>
                     </div>
 
-                    <div class="sidebar-item" id="itemMenuEmpresa">
+                    <div class="sidebar-item active" id="itemMenuEmpresa">
                         <img src="../assets/escritorio 1.png" class="sidebar-icon">
                         <span class="sidebar-text">Empresas</span>
                     </div>
@@ -146,7 +146,7 @@
 
     if (privilegio == "Admin" && fkEmpresa != 1) {
         document.getElementById("itemMenuEmpresa").style.display = "none";
-    }   
+    }
 
     pegarFoto();
     pegarNomeEmpresa();
@@ -240,8 +240,7 @@
                             Máquinas monitoradas
                         </span>
                         <span class="resultDados">
-                            29
-                        </span>
+                            ${empresa.maquinasMonitoradas}
                     </div>
                 </div>
                 <div class="acoes">
@@ -439,6 +438,14 @@
             console.error(error);
         }
     }
+
+    sidebarItems.forEach(item => {
+    item.addEventListener('click', function() {
+        sidebarItems.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+    });
+});
+
 </script>
 
 <script src="../assets/js/navegacao-menu.js"></script>

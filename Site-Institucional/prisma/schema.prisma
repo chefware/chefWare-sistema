@@ -25,8 +25,7 @@ model Maquina {
   modelo          String?
   local           String?
   fkEmpresa       Int
-  ativo           Boolean?          @default(true)
-  empresa         Empresa            @relation(fields: [fkEmpresa], references: [idEmpresa])
+  empresa         Empresa            @relation(fields: [fkEmpresa], references: [idEmpresa], onDelete: Cascade)
   historicos      Historico[]
   registros       Dados[]
   componentes     Componente[]
@@ -64,7 +63,7 @@ model Componente {
   marca            String?
   compatibilidade  String?
   fkMaquina        Int
-  maquina          Maquina           @relation(fields: [fkMaquina], references: [idMaquina])
+  maquina          Maquina           @relation(fields: [fkMaquina], references: [idMaquina], onDelete: Cascade)
   historicos       Historico[]
   registro         Dados[]
 }
@@ -77,7 +76,7 @@ model Dados {
   fkComponente      Int
   dataHora         DateTime?
   componente        Componente        @relation(fields: [fkComponente], references: [idComponente])
-  maquina           Maquina           @relation(fields: [fkMaquina], references: [idMaquina])
+  maquina           Maquina           @relation(fields: [fkMaquina], references: [idMaquina], onDelete: Cascade)
   @@index([unidadeMedida, fkMaquina, fkComponente], name: "idx_descricao_maquina_componente")
 }
 
@@ -89,7 +88,7 @@ model Historico {
   nome             String?
   leitura          String?
   unidadeMedida    String?
-  maquina          Maquina    @relation(fields: [fkMaquina], references: [idMaquina])
+  maquina          Maquina    @relation(fields: [fkMaquina], references: [idMaquina], onDelete: Cascade)
   componente       Componente @relation(fields: [fkComponente], references: [idComponente])
 }
 
