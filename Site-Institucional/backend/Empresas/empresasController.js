@@ -27,8 +27,7 @@ empresasController.get('/page/:page', async (req, res) => {
             })
             const maquinasMonitoradas = await prisma.maquina.count({
                 where: {
-                    fkEmpresa: empresa.idEmpresa,
-                    monitoramento: true
+                    fkEmpresa: empresa.idEmpresa
                 }
             })
 
