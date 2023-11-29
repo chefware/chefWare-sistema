@@ -343,3 +343,29 @@ body {
     -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
     animation: fadein 0.5s, fadeout 0.5s 2.5s;
 }
+
+.parametros {
+    display: flex;
+    flex-direction: column;
+}
+
+.parametros-titulo {
+    color: #545454;
+    font-weight: 300;
+    font-size: 14px;
+}
+
+.parametros-dados{
+    display: flex;
+    gap: 10px;
+}
+
+
+.parametro-dados-condicao {
+    font-size: 13px;
+}
+
+.parametro-dados-condicao-negrito {
+    color: #040454;
+}
+
