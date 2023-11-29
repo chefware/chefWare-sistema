@@ -94,11 +94,6 @@
                                 <input id="input_local" type="text" class="input-form-editar" placeholder="Cozinha">
                             </div>
 
-                            <div class="campo maior">
-                                <h4 class="label-editar">Descrição dos componentes:</h4>
-                                <textarea id="input_descricao" class="input-form-editar" cols="30" rows="30"></textarea>
-                            </div>
-
                             <div class="campo-botoes campo-horizontal">
                                 <button class="bt_edicao" id="botao-cancelar" onclick="cancelar()">Cancelar</button>
                                 <button class="bt_edicao" id="botao-editar" onclick="editar()">Editar</button>
@@ -170,7 +165,6 @@
     const hostName = document.getElementById('input_hostName')
     const modelo = document.getElementById('input_modelo')
     const local = document.getElementById('input_local')
-    const descComponentes = document.getElementById('input_descricao')
     const fkEmpresa = 1
 
     maquinaDashboard()
@@ -185,7 +179,6 @@
                 modelo.value = `${dados.modelo}`
                 hostName.value = `${dados.hostName}`
                 local.value = `${dados.local}`
-                descComponentes.value = `${dados.descComponentes}`
             }
         } catch (error) {
             console.log(error)
@@ -199,7 +192,6 @@
             hostName: hostName.value,
             modelo: modelo.value,
             local: local.value,
-            descComponentes: descComponentes.value,
             fkEmpresa: fkEmpresa
         };
 
