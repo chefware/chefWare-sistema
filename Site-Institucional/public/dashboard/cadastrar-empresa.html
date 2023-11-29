@@ -28,7 +28,7 @@
                         <img src="../assets/pc.png" class="sidebar-icon">
                         <span class="sidebar-text">Máquinas</span>
                     </div>
-                    <div class="sidebar-item" id="itemMenuEmpresa">
+                    <div class="sidebar-item active" id="itemMenuEmpresa">
                         <img src="../assets/escritorio 1.png" class="sidebar-icon">
                         <span class="sidebar-text">Empresas</span>
                     </div>
@@ -158,7 +158,7 @@
 
     if (privilegio == "Admin" && fkEmpresa != 1) {
         document.getElementById("itemMenuEmpresa").style.display = "none";
-    }   
+    }
 
     pegarNomeEmpresa();
 
@@ -254,6 +254,14 @@
             console.log(error)
         }
     }
+
+    sidebarItems.forEach(item => {
+    item.addEventListener('click', function() {
+        sidebarItems.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+    });
+});
+
 </script>
 
 <script src="../assets/js/navegacao-menu.js"></script>

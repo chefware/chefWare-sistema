@@ -62,7 +62,7 @@
                         <span class="sidebar-text">Empresas</span>
                     </div>
 
-                    <div class="sidebar-item" id="itemMenuFuncionario">
+                    <div class="sidebar-item active" id="itemMenuFuncionario">
                         <img src="../assets/funcionarios 1.png" class="sidebar-icon">
                         <span class="sidebar-text">Funcionários</span>
                     </div>
@@ -106,7 +106,7 @@
                         </div>
 
                         <div id="listaFuncionariosCards" class="listaFuncionarios">
-                            
+
                         </div>
                         <div class="page">
                             <div class="pagination">
@@ -465,6 +465,14 @@
             console.error(error);
         }
     }
+
+    sidebarItems.forEach(item => {
+    item.addEventListener('click', function() {
+        sidebarItems.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+    });
+});
+
 </script>
 
 <script src="../assets/js/navegacao-menu.js"></script>

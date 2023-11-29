@@ -40,7 +40,7 @@
 
 
                 <div class="itensMenu">
-                    <div class="sidebar-item" id="itemMenuMaquina">
+                    <div class="sidebar-item active" id="itemMenuMaquina">
                         <img src="../assets/pc.png" class="sidebar-icon">
                         <span class="sidebar-text">Máquinas</span>
                     </div>
@@ -346,7 +346,7 @@
             console.log(especificacao)
             if (especificacao.status === 200 && especificacao.data.length > 0) {
                 const dadosEspecificacoes = especificacao.data
-                historicoMemoria(dadosEspecificacoes[0].idComponente)            
+                historicoMemoria(dadosEspecificacoes[0].idComponente)
             }
         } catch (error) {
             console.log(error)
@@ -363,7 +363,7 @@
                     if(historico.data[i].nome === 'Memoria em Uso'){
                         usoMemoriaMenu.innerText = `${historico.data[i].leitura} / ${(Number(historico.data[i].leitura) + Number(historico.data[i + 1].leitura)).toFixed(2)} ${historico.data[i].unidadeMedida}`
                         usoAlerta = Number(historico.data[i].leitura)
-                    } 
+                    }
                     if(historico.data[i].nome === 'Memoria em Uso'){
                     const alertaMemoria = usoAlerta / (Number(historico.data[i].leitura) + Number(historico.data[i + 1].leitura)) * 100
                     if (alertaMemoria >= 60 && alertaMemoria < 80) {
@@ -385,7 +385,7 @@
             console.log(especificacao)
             if (especificacao.status === 200 && especificacao.data.length > 0) {
                 const dadosEspecificacoes = especificacao.data
-                historicoDisco(dadosEspecificacoes[0].idComponente)            
+                historicoDisco(dadosEspecificacoes[0].idComponente)
             }
         } catch (error) {
             console.log(error)
@@ -467,7 +467,7 @@
                                 wlanIPPublico = dadosEstaticos[i].valor
                             }
                         }
-                      
+
                         ipv6.innerText = dadosEstaticos[2].valor
                     }
 
@@ -645,6 +645,13 @@
             console.log(error)
         })
     }
+
+    sidebarItems.forEach(item => {
+    item.addEventListener('click', function() {
+        sidebarItems.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+    });
+});
 </script>
 
 <script src="../assets/js/controle-pages.js"></script>

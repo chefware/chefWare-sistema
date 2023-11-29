@@ -40,7 +40,7 @@
 
 
                 <div class="itensMenu">
-                    <div class="sidebar-item" id="itemMenuMaquina">
+                    <div class="sidebar-item active" id="itemMenuMaquina">
                         <img src="../assets/pc.png" class="sidebar-icon">
                         <span class="sidebar-text">Máquinas</span>
                     </div>
@@ -280,7 +280,7 @@
             if (especificacao.status === 200 && especificacao.data.length > 0) {
                 const dadosEspecificacoes = especificacao.data
                 dadosRede(dadosEspecificacoes[0].idComponente)
-                historicoRede(dadosEspecificacoes[0].idComponente)            
+                historicoRede(dadosEspecificacoes[0].idComponente)
             }
         } catch (error) {
             console.log(error)
@@ -293,7 +293,7 @@
             console.log(especificacao)
             if (especificacao.status === 200 && especificacao.data.length > 0) {
                 const dadosEspecificacoes = especificacao.data
-                historicoMemoria(dadosEspecificacoes[0].idComponente)            
+                historicoMemoria(dadosEspecificacoes[0].idComponente)
             }
         } catch (error) {
             console.log(error)
@@ -310,7 +310,7 @@
                     if(historico.data[i].nome === 'Memoria em Uso'){
                         usoMemoriaMenu.innerText = `${historico.data[i].leitura} / ${(Number(historico.data[i].leitura) + Number(historico.data[i + 1].leitura)).toFixed(2)} ${historico.data[i].unidadeMedida}`
                         usoAlerta = Number(historico.data[i].leitura)
-                    } 
+                    }
                     if(historico.data[i].nome === 'Memoria em Uso'){
                     const alertaMemoria = usoAlerta / (Number(historico.data[i].leitura) + Number(historico.data[i + 1].leitura)) * 100
                     if (alertaMemoria >= 60 && alertaMemoria < 80) {
@@ -337,10 +337,10 @@
                     dataHistorico.setHours(dataHistorico.getHours() + 3)
                     var diferencaEmMilissegundos = Math.abs(dataAtual.getTime() - dataHistorico.getTime());
                     var diferencaEmMinutos = Math.floor(diferencaEmMilissegundos / (1000 * 60));
-                    
-                    
+
+
                     if(diferencaEmMinutos >= 1){
-                        redeAlerta.innerText = 'Desconectada' 
+                        redeAlerta.innerText = 'Desconectada'
                         botaoRede.style.backgroundColor = '#FFCDD2'
                     } else {
                         redeAlerta.innerText = 'Conectada'
@@ -632,6 +632,12 @@
             console.log(error)
         })
     }
+    sidebarItems.forEach(item => {
+    item.addEventListener('click', function() {
+        sidebarItems.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+    });
+});
 </script>
 
 <script src="../assets/js/navegacao-menu.js"></script>

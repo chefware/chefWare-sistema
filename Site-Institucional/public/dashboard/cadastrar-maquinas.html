@@ -22,7 +22,7 @@
                     <img src="../assets/logoBRANCA.png" class="logo">
                 </div>
                 <div class="itensMenu">
-                    <div class="sidebar-item" id="itemMenuMaquina">
+                    <div class="sidebar-item active" id="itemMenuMaquina">
                         <img src="../assets/pc.png" class="sidebar-icon">
                         <span class="sidebar-text">Máquinas</span>
                     </div>
@@ -196,6 +196,13 @@
     function cancelar() {
         window.location.href = 'lista-maquinas.html'
     }
+
+    sidebarItems.forEach(item => {
+    item.addEventListener('click', function() {
+        sidebarItems.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+    });
+});
 
 </script>
 
