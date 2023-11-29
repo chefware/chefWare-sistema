@@ -165,7 +165,6 @@
     const hostName = document.getElementById('input_hostName')
     const modelo = document.getElementById('input_modelo')
     const local = document.getElementById('input_local')
-    const descComponentes = document.getElementById('input_descricao')
     const fkEmpresa = 1
 
     maquinaDashboard()
@@ -180,7 +179,6 @@
                 modelo.value = `${dados.modelo}`
                 hostName.value = `${dados.hostName}`
                 local.value = `${dados.local}`
-                descComponentes.value = `${dados.descComponentes}`
             }
         } catch (error) {
             console.log(error)
@@ -194,7 +192,6 @@
             hostName: hostName.value,
             modelo: modelo.value,
             local: local.value,
-            descComponentes: descComponentes.value,
             fkEmpresa: fkEmpresa
         };
 

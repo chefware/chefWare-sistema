@@ -585,7 +585,7 @@
 
     async function deletar() {
         try {
-            const result = await axios.patch(`/maquinas/deletar/${idMaquina}`)
+            const result = await axios.delete(`/maquinas/deletar/${idMaquina}`)
             if (result.status === 204) {
                 window.location.href = 'lista-maquinas.html'
             }
