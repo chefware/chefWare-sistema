@@ -292,6 +292,10 @@
         }
     }
 
+    function cancelar() {
+        window.location.href = 'lista-funcionario.html'
+    }
+    
     sidebarItems.forEach(item => {
     item.addEventListener('click', function() {
         sidebarItems.forEach(i => i.classList.remove('active'));
