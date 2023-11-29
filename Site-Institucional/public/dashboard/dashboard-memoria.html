@@ -229,7 +229,7 @@
             console.error(error);
         }
     };
- 
+
     if (privilegio == "Comum") {
         document.getElementById("itemMenuEmpresa").style.display = "none";
         const botoesCrud = document.querySelectorAll(".botao");
@@ -256,6 +256,8 @@
     const params = new URLSearchParams(window.location.search)
     const idMaquina = params.get('id')
     var wlanIPPublico
+    var vetor_grafico = []
+    var vetor_dataHora = []
 
     maquinaDashboard()
     especificacaoMemoria()
@@ -398,32 +400,32 @@
             console.log(especificacao)
             if (especificacao.status === 200 && especificacao.data.length > 0) {
                 const dadosEspecificacoes = especificacao.data
-                historicoDisco(dadosEspecificacoes[0].idComponente)            
+                historicoDisco(dadosEspecificacoes[0].idComponente)
             }
         } catch (error) {
             console.log(error)
         }
     }
 
-    async function historicoDisco(idComp){
+    async function historicoDisco(idComp) {
         try {
             const historico = await axios.get(`/historico/${idMaquina}/${idComp}`)
             if (historico.status === 200 && historico.data.length > 0) {
                 const startIndex = Math.max(0, historico.data.length - 10)
                 for (var i = startIndex; i < historico.data.length; i++) {
                     var usoAlerta
-                    if(historico.data[i].nome === 'Disco Tamanho Total'){
-                        discoAlerta.innerText = `Em uso: ${(Number(historico.data[i].leitura) - Number(historico.data[i+1].leitura)).toFixed(2)} / ${historico.data[i].leitura} ${historico.data[i].unidadeMedida}`
+                    if (historico.data[i].nome === 'Disco Tamanho Total') {
+                        discoAlerta.innerText = `Em uso: ${(Number(historico.data[i].leitura) - Number(historico.data[i + 1].leitura)).toFixed(2)} / ${historico.data[i].leitura} ${historico.data[i].unidadeMedida}`
                     }
 
-                    if(historico.data[i].nome === 'Disco Tamanho Total'){
+                    if (historico.data[i].nome === 'Disco Tamanho Total') {
                         const tamRestante = Number(historico.data[i].leitura) - Number(historico.data[i + 1].leitura)
                         const alertaDisco = tamRestante / historico.data[i].leitura * 100
-                       if(alertaDisco >= 60 && alertaDisco < 80){
-                        botaoDisco.style.backgroundColor = '#F4FA58'
-                    } else if(alertaDisco >= 80){
-                        botaoDisco.style.backgroundColor = '#FFCDD2'
-                    } 
+                        if (alertaDisco >= 60 && alertaDisco < 80) {
+                            botaoDisco.style.backgroundColor = '#F4FA58'
+                        } else if (alertaDisco >= 80) {
+                            botaoDisco.style.backgroundColor = '#FFCDD2'
+                        }
                     }
                 }
             }
@@ -558,34 +560,48 @@
                 for (var i = startIndex; i < historico.data.length; i++) {
                     if (historico.data[i].nome === 'Memoria em Uso') {
                         qtdUso.innerText = `${historico.data[i].leitura} ${historico.data[i].unidadeMedida}`
-                        const dataHoraFormatada = formatarDataHora(historico.data[i].dataHora)
-                        graficoData.labels.push(dataHoraFormatada)
-                        graficoData.datasets[0].data.push(parseFloat(historico.data[i].leitura))
+                        if (vetor_grafico.length >= 10) {
+                            vetor_grafico.shift()
+                        }
+                        vetor_grafico.push(historico.data[i].leitura)
+
+                        if (vetor_dataHora.length >= 10) {
+                            vetor_dataHora.shift()
+                        }
+                        vetor_dataHora.push(formatarDataHora(historico.data[i].dataHora))
                         usoMenu.innerText = `${historico.data[i].leitura} / ${(Number(historico.data[i].leitura) + Number(historico.data[i + 1].leitura)).toFixed(2)} ${historico.data[i].unidadeMedida}`
                         usoAlerta = Number(historico.data[i].leitura)
                     } else {
                         qtdRestante.innerText = `${historico.data[i].leitura} ${historico.data[i].unidadeMedida}`
                     }
-                    if(historico.data[i].nome === 'Memoria em Uso'){
-                    const alertaMemoria = usoAlerta / (Number(historico.data[i].leitura) + Number(historico.data[i + 1].leitura)) * 100
-                    if (alertaMemoria >= 70 && alertaMemoria < 90) {
-                        situacaoAlerta.style.backgroundColor = 'yellow'
-                    } else if (alertaMemoria) {
-                        situacaoAlerta.style.backgroundColor = 'red'
-                    } else {
-                        situacaoAlerta.style.backgroundColor = 'green'
-                    }
+                    if (historico.data[i].nome === 'Memoria em Uso') {
+                        const alertaMemoria = usoAlerta / (Number(historico.data[i].leitura) + Number(historico.data[i + 1].leitura)) * 100
+                        if (alertaMemoria >= 70 && alertaMemoria < 90) {
+                            situacaoAlerta.style.backgroundColor = 'yellow'
+                        } else if (alertaMemoria) {
+                            situacaoAlerta.style.backgroundColor = 'red'
+                        } else {
+                            situacaoAlerta.style.backgroundColor = 'green'
+                        }
                     }
                 }
-                const hist = 'historico'
-                grafico.data = graficoData
-                grafico.update()
+
+                plotar_grafico()
             }
         } catch (error) {
             console.log(error)
         }
     }
 
+    function plotar_grafico() {
+        try {
+            grafico.data.labels = vetor_dataHora.slice(0, 10)
+            grafico.data.datasets[0].data =  vetor_grafico.slice(0, 10)
+            grafico.update()
+        } catch (error) {
+
+        }
+    }
 
     async function deletar() {
         try {
