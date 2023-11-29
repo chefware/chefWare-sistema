@@ -91,13 +91,6 @@
                                 <input type="text" class="input-form-cadastrar" placeholder="Cozinha" id="input_local">
                             </div>
 
-                            <div class="campo campo-descricao">
-                                <h4 class="label-cadastrar">Descrição dos Componentes:</h4>
-                                <textarea id="input_descricao">
-
-                                </textarea>
-                            </div>
-
                             <div class="campo-botoes campo-horizontal">
                                 <button class="bt_edicao" id="botao-cancelar" onclick="cancelar()">Cancelar</button>
                                 <button class="bt_edicao" id="botao-cadastrar" onclick="cadastrar()">Cadastrar</button>
@@ -140,7 +133,7 @@
 
     if (privilegio == "Admin" && fkEmpresa != 1) {
         document.getElementById("itemMenuEmpresa").style.display = "none";
-    }   
+    }
 
     pegarNomeEmpresa();
 

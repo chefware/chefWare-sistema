@@ -94,11 +94,6 @@
                                 <input id="input_local" type="text" class="input-form-editar" placeholder="Cozinha">
                             </div>
 
-                            <div class="campo maior">
-                                <h4 class="label-editar">Descrição dos componentes:</h4>
-                                <textarea id="input_descricao" class="input-form-editar" cols="30" rows="30"></textarea>
-                            </div>
-
                             <div class="campo-botoes campo-horizontal">
                                 <button class="bt_edicao" id="botao-cancelar" onclick="cancelar()">Cancelar</button>
                                 <button class="bt_edicao" id="botao-editar" onclick="editar()">Editar</button>
@@ -135,7 +130,7 @@
 
     if (privilegio == "Admin" && fkEmpresaAtual != 1) {
         document.getElementById("itemMenuEmpresa").style.display = "none";
-    }   
+    }
 
     // Pegar a foto do usuário
     function pegarFoto() {
