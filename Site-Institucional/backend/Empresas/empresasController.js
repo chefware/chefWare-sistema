@@ -61,15 +61,11 @@ empresasController.get('/search/:termo', async (req, res) => {
     try {
         const empresas = await prisma.empresa.findMany({
             where: {
-                OR: [
-                    {
-                        nome: { contains: termoPesquisa },
-                        idEmpresa: fkEmpresa
-                    },
-                ]
+                nome: {
+                    contains: termoPesquisa
+                }
             }
         })
-
         res.status(200).json(empresas)
     } catch (error) {
         res.status(500).json(error)

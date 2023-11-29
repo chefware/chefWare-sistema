@@ -99,6 +99,18 @@ funcionariosController.get('/search/:termo', async (req, res) => {
     }
 
     try {
+        if (fkEmpresa === null) {
+            const funcionario = await prisma.funcionario.findMany({
+                where: {
+                    OR: [
+                        {
+                            nome: { contains: termoPesquisa },
+                        },
+                    ]
+                }
+            })
+            return res.status(200).json(funcionario)
+        }
         const funcionario = await prisma.funcionario.findMany({
             where: {
                 OR: [
