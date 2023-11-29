@@ -233,6 +233,10 @@
 
     async function cadastrar() {
         try {
+            const inner = `<div class="c-loader"></div>`
+            const feedback_user = document.getElementById("feedback_user")
+            const botaoCadastrar = document.getElementById("botao-cadastrar")
+            var result = document.getElementById("snackbar")
 
             let fkEmpresaFunc;
 
@@ -267,16 +271,17 @@
 
             const response = await axios.post('/funcionarios', form, config)
             if (response.status === 201) {
+                botaoCadastrar.innerHTML = "Cadastrando"
+                botaoCadastrar.innerHTML += inner
                 const funcionarioCriado = response.data;
                 console.log('Funcionário cadastrada com sucesso:', funcionarioCriado);
-
-                result.className = "show";
                 setTimeout(function () {
-                    x.className = result.className.replace("show", "");
-                }, 1500);
-                setTimeout(function () {
+                    result.className = "show"
+                    const loader = document.querySelector(".c-loader")[0]
+                    console.log('Redirecionando para lista-funcionario.html')
                     window.location.href = 'lista-funcionario.html'
-                }, 2000);
+                    loader.remove()
+                }, 1500)
 
             } else {
                 console.error('Erro ao cadastrar funcionario:', response.status, response.statusText)

@@ -217,7 +217,10 @@
 
     async function editar() {
         try {
-            var result = document.getElementById("snackbar");
+            const inner = `<div class="c-loader"></div>`
+            const feedback_user = document.getElementById("feedback_user")
+            const botaoCadastrar = document.getElementById("botao-cadastrar")
+            var result = document.getElementById("snackbar")
             const nome = input_nome.value
             const cnpj = input_cnpj.value
             const telefone = input_telefone.value
@@ -240,13 +243,13 @@
             }
             const response = await axios.patch(`/empresas/${idEmpresa}`, data);
             if (response.status === 200) {
-                result.className = "show";
                 setTimeout(function () {
-                    result.className = result.className.replace("show", "");
-                }, 3000);
-                setTimeout(function () {
-                    window.location.href = 'lista-empresas.html'
-                }, 2000);
+                    result.className = "show"
+                    const loader = document.querySelector(".c-loader")[0]
+                    console.log('Redirecionando para lista-funcionario.html')
+                    window.location.href = 'lista-empresa.html'
+                    loader.remove()
+                }, 1500)
             }
         } catch (error) {
             console.error(error);

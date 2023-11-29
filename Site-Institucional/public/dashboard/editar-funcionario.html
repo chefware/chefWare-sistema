@@ -129,8 +129,8 @@
 </html>
 
 <script>
-    const idFuncionario = sessionStorage.getItem('idFuncionario');
-    pegarFoto();
+    const idFuncionario = sessionStorage.getItem('idFuncionario')
+    pegarFoto()
 
     function pegarFoto() {
         const imagem = document.getElementById('foto-perfil')
@@ -139,101 +139,110 @@
         imagem.src = `${baseUrl}/funcionarios/foto/${idFuncionario}`
     }
 
-    var perfil = document.getElementById("perfil");
-    var nomeUser = sessionStorage.getItem("nomeFuncionario");
-    var fkEmpresa = sessionStorage.getItem("fkEmpresa");
-    var privilegio = sessionStorage.getItem("privilegio");
+    var perfil = document.getElementById("perfil")
+    var nomeUser = sessionStorage.getItem("nomeFuncionario")
+    var fkEmpresa = sessionStorage.getItem("fkEmpresa")
+    var privilegio = sessionStorage.getItem("privilegio")
 
     if (nomeUser != null) {
-        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${nomeUser}</span></span>`;
+        perfil.innerHTML += `<span class='user'>Olá, <span id="text-user">${nomeUser}</span></span>`
     }
 
     if (privilegio == "Admin" && fkEmpresa != 1) {
-        document.getElementById("itemMenuEmpresa").style.display = "none";
+        document.getElementById("itemMenuEmpresa").style.display = "none"
     }
 
-    pegarNomeEmpresa();
+    pegarNomeEmpresa()
 
     async function pegarNomeEmpresa() {
         try {
-            const response = await axios.get(`/empresas/${fkEmpresa}`);
+            const response = await axios.get(`/empresas/${fkEmpresa}`)
             if (response.status === 200) {
-                const dados = response.data;
-                console.log(dados);
-                document.getElementById('nomeEmpresa').innerHTML = `${dados.nome}`;
+                const dados = response.data
+                console.log(dados)
+                document.getElementById('nomeEmpresa').innerHTML = `${dados.nome}`
             } else {
-                console.error('Erro na requisição:', response.status, response.statusText);
+                console.error('Erro na requisição:', response.status, response.statusText)
             }
         } catch (error) {
-            console.error(error);
+            console.error(error)
         }
     }
 
-    let bufferFoto;
+    let bufferFoto
 
     function handleFileSelect(event) {
-        const fileInput = event.target;
-        const file = fileInput.files[0];
+        const fileInput = event.target
+        const file = fileInput.files[0]
 
         if (file) {
-            bufferFoto = file;
-            console.log('Arquivo da imagem:', bufferFoto);
+            bufferFoto = file
+            console.log('Arquivo da imagem:', bufferFoto)
         }
     }
 
-    const params = new URLSearchParams(window.location.search);
-    const idFuncionarioEditar = params.get('id');
-    console.log(idFuncionario);
+    const params = new URLSearchParams(window.location.search)
+    const idFuncionarioEditar = params.get('id')
+    console.log(idFuncionario)
 
-    trazerDados();
+    trazerDados()
 
     async function trazerDados() {
 
         try {
-            const response = await axios.get(`/funcionarios/${idFuncionarioEditar}`);
-            const funcionario = response.data;
-            console.log(funcionario);
+            const response = await axios.get(`/funcionarios/${idFuncionarioEditar}`)
+            const funcionario = response.data
+            console.log(funcionario)
 
-            document.getElementById("input_nome").value = funcionario.nome;
-            document.getElementById("input_cpf").value = funcionario.cpf;
-            document.getElementById("input_email").value = funcionario.email;
-            document.getElementById("input_senha").value = funcionario.senha;
-            document.getElementById("sl_cargo").value = funcionario.cargo;
-            document.getElementById("sl_privilegio").value = funcionario.privilegio;
+            document.getElementById("input_nome").value = funcionario.nome
+            document.getElementById("input_cpf").value = funcionario.cpf
+            document.getElementById("input_email").value = funcionario.email
+            document.getElementById("input_senha").value = funcionario.senha
+            document.getElementById("sl_cargo").value = funcionario.cargo
+            document.getElementById("sl_privilegio").value = funcionario.privilegio
         } catch (error) {
-            console.log(error);
+            console.log(error)
         }
     }
 
 
     async function editar() {
+        const inner = `<div class="c-loader"></div>`
+        const feedback_user = document.getElementById("feedback_user")
+        const botaoCadastrar = document.getElementById("botao-cadastrar")
+        var result = document.getElementById("snackbar")
+        const form = new FormData()
 
-        const form = new FormData();
-
-        form.append('nome', input_nome.value);
-        form.append('email', input_email.value);
-        form.append('senha', input_senha.value);
-        form.append('cpf', input_cpf.value);
-        form.append('cargo', sl_cargo.value);
-        form.append('privilegio', sl_privilegio.value);
-        form.append('foto', bufferFoto);
+        form.append('nome', input_nome.value)
+        form.append('email', input_email.value)
+        form.append('senha', input_senha.value)
+        form.append('cpf', input_cpf.value)
+        form.append('cargo', sl_cargo.value)
+        form.append('privilegio', sl_privilegio.value)
+        form.append('foto', bufferFoto)
 
         try {
-            const response = await axios.patch(`/funcionarios/${idFuncionarioEditar}`, form);
-            console.log("Funcionário editado com sucesso!");
-            console.log(response.data);
-            window.location.href = 'lista-funcionario.html';
+            const response = await axios.patch(`/funcionarios/${idFuncionarioEditar}`, form)
+            if (response.status === 200){
+                setTimeout(function () {
+                    result.className = "show"
+                    const loader = document.querySelector(".c-loader")[0]
+                    console.log('Redirecionando para lista-funcionario.html')
+                    window.location.href = 'lista-funcionario.html'
+                    loader.remove()
+                }, 1500)
+            }
         } catch (error) {
-            console.log(error);
+            console.log(error)
         }
     }
 
     sidebarItems.forEach(item => {
-    item.addEventListener('click', function() {
-        sidebarItems.forEach(i => i.classList.remove('active'));
-        item.classList.add('active');
+        item.addEventListener('click', function () {
+            sidebarItems.forEach(i => i.classList.remove('active'))
+            item.classList.add('active')
+        })
     });
-});
 
 </script>
 
