@@ -241,17 +241,13 @@
         try {
             const historico = await axios.get(`/historico/${idMaquina}/${idComp}`)
             const startIndex = Math.max(0, historico.data.length - 1)
-            var alertaQtd = 0
             var alerta = false
             if (historico.data.length > 0) {
                 const startIndex = Math.max(0, historico.data.length - 10)
                 for (var i = 0; i < historico.data.length; i++) {
+                    var alertaQtd = 0
                     alerta = false
-                    alerta = false
-                    if (historico.data[i].leitura >= 60 && historico.data[i].leitura < 80) {
-                        alertaQtd = 1
-                        alerta = true
-                    } else if (historico.data[i].leitura >= 80) {
+                    if (historico.data[i].leitura >= 80) {
                         alerta = true
                         alertaQtd = 1
                     }
@@ -270,18 +266,17 @@
 
     async function historicoDisco(idMaquina, idComp) {
         try {
-            const historico = await axios.get(`/dados/${idMaquina}/${idComp}`)
+            const historico = await axios.get(`/historico/${idMaquina}/${idComp}`)
             const startIndex = Math.max(0, historico.data.length - 1)
-            var alertaQtd = false
-            alerta = false
+            var alerta = false
             for (var i = 0; i < historico.data.length; i++) {
-                var alertaQtd = 0
                 if (historico.data.length > 0) {
-                    if (historico.data[i].descricao === 'Disco Tamanho Total') {
-                        if (historico.data[i].valor - historico.data[i + 1].valor >= 70 && historico.data[i].valor - historico.data[i + 1].valor < 90) {
-                            alertaQtd += 1
-                            alerta = true
-                        } else if (historico.data[i].valor - historico.data[i + 1].valor >= 90) {
+                    if (historico.data[i].nome === 'Disco Tamanho Total') {
+                        var alertaQtd = 0
+                        alerta = false
+                        const tamRestante = Number(historico.data[i].leitura) - Number(historico.data[i + 1].leitura)
+                        const alertaDisco = tamRestante / historico.data[i].leitura * 100
+                        if (alertaDisco >= 80) {
                             alertaQtd += 1
                             alerta = true
                         }
@@ -294,7 +289,7 @@
                                             Disco
                                         </li>`
             }
-            qtdEmAlerta += alertaQtd
+            
         } catch (error) {
             console.log(error)
         }
@@ -307,8 +302,8 @@
             var alerta = false
             if (historico.data.length > 0) {
                 for (var i = 0; i < historico.data.length; i++) {
-                    var alertaQtd = 0
                     if (historico.data[i].nome === 'Memoria em Uso') {
+                        var alertaQtd = 0
                         var usoAlerta = Number(historico.data[i].leitura)
                         const alertaMemoria = usoAlerta / (Number(historico.data[i].leitura) + Number(historico.data[i + 1].leitura)) * 100
                         alerta = false
@@ -338,6 +333,7 @@
             var alerta = false
             if (historico.data.length > 0) {
                 for (var i = 0; i < historico.data.length; i++) {
+                    alerta = false
                     var alertaQtd = 0
                     var dataAtual = new Date()
                     var dataHistorico = new Date(historico.data[i].dataHora)
@@ -567,7 +563,7 @@
 
                 maquinasPesquisadas.forEach((maquina) => {
                     linha_maquina.innerHTML += `<div class="cardMaquina" onclick="navegacao(${maquina.idMaquina})">
-                                    <div class="alerta">
+                                    <div class="alerta" style="background-color: ${situacaoAlerta}">
                                     </div>
                                     <div class="informacoes">
                                         <div class="tituloMaquina">
@@ -577,22 +573,16 @@
                                         <div class="info">
                                             <div class="componentes">
                                                 <p>Componentens em alertas:</p>
-                                                <div class="listaComponentes">
+                                                <div class="listaComponentes>
                                                     <li class="componenteEspecifico">
-                                                        Memória
-                                                    </li>
-                                                    <li class="componenteEspecifico">
-                                                        CPU
-                                                    </li>
-                                                    <li class="componenteEspecifico">
-                                                        Disco
+                                                        ${listaCompAlertas}
                                                     </li>
                                                 </div>
                                             </div>
                                             <div class="situacao">
                                                 <div class="grave">
                                                     Situação:
-                                                    <span class="colorSituacao"> Grave </span>
+                                                    <span class="colorSituacao" id="situacao" style="color: ${situacaoAlerta}"> ${sit} </span>
                                                 </div>
                                                 <div class="local">
                                                     Local: ${maquina.local}
