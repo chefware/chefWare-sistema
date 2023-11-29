@@ -1,6 +1,6 @@
 .areaTitulo {
     width: 100%;
-    padding-left: 2%;   
+    padding-left: 2%;
 }
 
 .titulo {
@@ -169,4 +169,23 @@
 
 .imgAcoes {
     display: flex;
+}
+
+#sidebar .areaSideBar {
+    position: relative;
+}
+
+.sidebar-item.active {
+    position: relative;
+}
+
+.sidebar-item.active::before {
+    content: '';
+    position: absolute;
+    left: -20px;
+    top: 0;
+    bottom: 0;
+    width: 5px;
+    background: white;
+    border-radius: 2px;
 }

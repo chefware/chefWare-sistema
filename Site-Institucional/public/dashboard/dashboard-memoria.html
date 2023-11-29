@@ -40,7 +40,7 @@
 
 
                 <div class="itensMenu">
-                    <div class="sidebar-item" id="itemMenuMaquina">
+                    <div class="sidebar-item active" id="itemMenuMaquina">
                         <img src="../assets/pc.png" class="sidebar-icon">
                         <span class="sidebar-text">Máquinas</span>
                     </div>
@@ -229,7 +229,7 @@
             console.error(error);
         }
     };
- 
+
     if (privilegio == "Comum") {
         document.getElementById("itemMenuEmpresa").style.display = "none";
         const botoesCrud = document.querySelectorAll(".botao");
@@ -398,7 +398,7 @@
             console.log(especificacao)
             if (especificacao.status === 200 && especificacao.data.length > 0) {
                 const dadosEspecificacoes = especificacao.data
-                historicoDisco(dadosEspecificacoes[0].idComponente)            
+                historicoDisco(dadosEspecificacoes[0].idComponente)
             }
         } catch (error) {
             console.log(error)
@@ -423,7 +423,7 @@
                         botaoDisco.style.backgroundColor = '#F4FA58'
                     } else if(alertaDisco >= 80){
                         botaoDisco.style.backgroundColor = '#FFCDD2'
-                    } 
+                    }
                     }
                 }
             }
@@ -635,6 +635,13 @@
             console.log(error)
         })
     }
+
+    sidebarItems.forEach(item => {
+    item.addEventListener('click', function() {
+        sidebarItems.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+    });
+});
 </script>
 
 <script src="../assets/js/controle-pages.js"></script>

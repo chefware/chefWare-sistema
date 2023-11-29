@@ -24,7 +24,7 @@
 
 
                 <div class="itensMenu">
-                    <div class="sidebar-item" id="itemMenuMaquina">
+                    <div class="sidebar-item active" id="itemMenuMaquina">
                         <img src="../assets/pc.png" class="sidebar-icon">
                         <span class="sidebar-text">Máquinas</span>
                     </div>
@@ -215,6 +215,14 @@
     async function cancelar() {
         window.location.href = `dashboard-cpu.html?id=${idMaquina}`
     }
+
+    sidebarItems.forEach(item => {
+    item.addEventListener('click', function() {
+        sidebarItems.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+    });
+});
+
 </script>
 
 <script src="../assets/js/navegacao-menu.js"></script>
