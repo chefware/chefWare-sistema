@@ -20,6 +20,7 @@ maquinasController.get('/page/:page', async (req, res) => {
             prisma.maquina.findMany({
                 where: {
                     fkEmpresa: fkEmpresa || undefined
+                    ativo: true
                 },
                 take: take,
                 skip: skip,
@@ -181,11 +182,14 @@ maquinasController.patch('/:id', async (req, res) => {
     }
 })
 
-maquinasController.delete('/deletar/:id', async (req, res) => {
+maquinasController.patch('/deletar/:id', async (req, res) => {
     const idMaquina = Number(req.params.id)
     await prisma.maquina.delete({
         where: {
             idMaquina: idMaquina
+        },
+        data: {
+            ativo: false
         }
     })
 
