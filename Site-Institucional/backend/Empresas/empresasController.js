@@ -5,9 +5,9 @@ const prisma = new PrismaClient()
 const empresasController = express.Router()
 
 empresasController.get('/page/:page', async (req, res) => {
-    const take = 5;
-    const page = Number(req.params.page) || 0;
-    const skip = page * take;
+    const take = 5
+    const page = Number(req.params.page) || 0
+    const skip = page * take
     try {
         const [empresas, total] = await prisma.$transaction([
             prisma.empresa.findMany({
@@ -15,52 +15,44 @@ empresasController.get('/page/:page', async (req, res) => {
                 skip: skip
             }),
             prisma.empresa.count()
-        ]);
+        ])
 
-        const totalPaginas = Math.ceil(total / take);
+        const totalPaginas = Math.ceil(total / take)
 
         const empresasComEnderecoEMaquinasMonitoradas = await Promise.all(empresas.map(async (empresa) => {
             const endereco = await prisma.endereco.findFirst({
                 where: {
                     fkEmpresa: empresa.idEmpresa
                 }
-            });
+            })
             const maquinasMonitoradas = await prisma.maquina.count({
                 where: {
                     fkEmpresa: empresa.idEmpresa,
                     monitoramento: true
                 }
-            });
+            })
 
-            // Modificando o formato do objeto da empresa
             return {
-                idEmpresa: empresa.idEmpresa,
-                nome: empresa.nome,
-                endereco: {
-                    idEndereco: endereco.idEndereco,
-                    logradouro: endereco.logradouro,
-                    cidade: endereco.cidade,
-                    estado: endereco.estado
-                },
-                maquinasMonitoradas: maquinasMonitoradas
-            };
-        }));
+                ...empresa,
+                endereco,
+                maquinasMonitoradas
+            }
+        }))
 
         const resposta = {
             empresas: empresasComEnderecoEMaquinasMonitoradas,
             totalPaginas,
             paginaAtual: page,
             totalEmpresas: total
-        };
+        }
 
-        res.status(200).json(resposta);
+        res.status(200).json(resposta)
 
     } catch (error) {
-        res.status(400).json(error);
-        console.log(error);
+        res.status(400).json(error)
+        console.log(error)
     }
-});
-
+})
 
 
 empresasController.get('/search/:termo', async (req, res) => {
