@@ -41,7 +41,7 @@
 
 
                 <div class="itensMenu">
-                    <div class="sidebar-item" id="itemMenuMaquina">
+                    <div class="sidebar-item active" id="itemMenuMaquina">
                         <img src="../assets/pc.png" class="sidebar-icon">
                         <span class="sidebar-text">Máquinas</span>
                     </div>
@@ -134,17 +134,17 @@
 
                                     <div id="botaoDisco" class="opcaoMenuComponentes" onclick="navegacaoDisco()">
                                         <h2>DISCO 01</h2>
-                                        <span id="discoAlerta">(C:)</span>
+                                        <span id="discoAlerta"></span>
                                     </div>
 
                                     <div id="botaoMemoria" class="opcaoMenuComponentes" onclick="navegacaoMemoria()">
                                         <h2>MEMÓRIA</h2>
-                                        <span id="memoriaAlerta">Em uso: <span>7,0/8,0 GB</span></span>
+                                        <span id="memoriaAlerta">Em uso: <span id="usoMemoriaMenu"></span></span>
                                     </div>
 
-                                    <div id="botaoRede" class="opcaoMenuComponentes" onclick="navegacaoRede()">
+                                    <div id="botaoRede" class="opcaoMenuComponentes" id="redeMenu" onclick="navegacaoRede()">
                                         <h2>REDE</h2>
-                                        <span id="redeAlerta">Conectada</span>
+                                        <span id="redeAlerta"></span>
                                     </div>
 
                                 </div>
@@ -291,6 +291,7 @@
     var idEsp_grafico
     var idComp_grafico
     var wlanIPPublico
+    const redeMenu = document.getElementById('redeMenu')
 
 
     const params = new URLSearchParams(window.location.search)
@@ -299,6 +300,8 @@
     maquinaDashboard()
     especificacaoCPU()
     especificacaoRede()
+    especificacaoMemoria()
+    especificacaoDisco()
 
     async function maquinaDashboard() {
         try {
@@ -336,6 +339,7 @@
             if (especificacao.status === 200) {
                 const dadosEspecificacoes = especificacao.data
                 dadosRede(dadosEspecificacoes[0].idComponente)
+                historicoRede(dadosEspecificacoes[0].idComponente)
             }
         } catch (error) {
             console.log(error)
@@ -363,6 +367,85 @@
         }
     }
 
+    async function especificacaoMemoria() {
+        try {
+            const especificacao = await axios.get(`/dashboard/especificacoes/${idMaquina}/Memoria`)
+            console.log(especificacao)
+            if (especificacao.status === 200 && especificacao.data.length > 0) {
+                const dadosEspecificacoes = especificacao.data
+                historicoMemoria(dadosEspecificacoes[0].idComponente)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function historicoMemoria(idComp) {
+        try {
+            const historico = await axios.get(`/historico/${idMaquina}/${idComp}`)
+            if (historico.status === 200 && historico.data.length > 0) {
+                const startIndex = Math.max(0, historico.data.length - 10)
+                for (var i = startIndex; i < historico.data.length; i++) {
+                    var usoAlerta
+                    if(historico.data[i].nome === 'Memoria em Uso'){
+                        usoMemoriaMenu.innerText = `${historico.data[i].leitura} / ${(Number(historico.data[i].leitura) + Number(historico.data[i + 1].leitura)).toFixed(2)} ${historico.data[i].unidadeMedida}`
+                        usoAlerta = Number(historico.data[i].leitura)
+                    }
+                    if(historico.data[i].nome === 'Memoria em Uso'){
+                    const alertaMemoria = usoAlerta / (Number(historico.data[i].leitura) + Number(historico.data[i + 1].leitura)) * 100
+                    if (alertaMemoria >= 60 && alertaMemoria < 80) {
+                        botaoMemoria.style.backgroundColor = '#F4FA58'
+                    } else if (alertaMemoria >= 80) {
+                        botaoMemoria.style.backgroundColor = '#FFCDD2'
+                    }
+                    }
+                }
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function especificacaoDisco() {
+        try {
+            const especificacao = await axios.get(`/dashboard/especificacoes/${idMaquina}/Disco`)
+            console.log(especificacao)
+            if (especificacao.status === 200 && especificacao.data.length > 0) {
+                const dadosEspecificacoes = especificacao.data
+                historicoDisco(dadosEspecificacoes[0].idComponente)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function historicoDisco(idComp){
+        try {
+            const historico = await axios.get(`/historico/${idMaquina}/${idComp}`)
+            if (historico.status === 200 && historico.data.length > 0) {
+                const startIndex = Math.max(0, historico.data.length - 10)
+                for (var i = startIndex; i < historico.data.length; i++) {
+                    var usoAlerta
+                    if(historico.data[i].nome === 'Disco Tamanho Total'){
+                        discoAlerta.innerText = `${(Number(historico.data[i].leitura) - Number(historico.data[i+1].leitura)).toFixed(2)} / ${historico.data[i].leitura} ${historico.data[i].unidadeMedida}`
+                    }
+
+                    if(historico.data[i].nome === 'Disco Tamanho Total'){
+                        const tamRestante = Number(historico.data[i].leitura) - Number(historico.data[i + 1].leitura)
+                        const alertaDisco = tamRestante / historico.data[i].leitura * 100
+                       if(alertaDisco >= 60 && alertaDisco < 80){
+                        botaoDisco.style.backgroundColor = '#F4FA58'
+                    } else if(alertaDisco >= 80){
+                        botaoDisco.style.backgroundColor = '#FFCDD2'
+                    }
+                    }
+                }
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     async function dados(idComp) {
         try {
             const dadosResult = await axios.get(`/dados/${idMaquina}/${idComp}`)
@@ -374,7 +457,32 @@
                     frequencia.innerText = dadosEstaticos[2].valor || ''
                     fisicas.innerText = dadosEstaticos[3].valor || ''
                     logicas.innerText = dadosEstaticos[4].valor || ''
-                    unidadeMedida(dadosEstaticos[2].unidadeMedida, 'dados')
+                }
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function historicoRede(idComp) {
+        try {
+            const historico = await axios.get(`/historico/${idMaquina}/${idComp}`)
+            if (historico.status === 200 && historico.data.length > 0) {
+                const startIndex = Math.max(0, historico.data.length - 10)
+                for (var i = startIndex; i < historico.data.length; i++) {
+                    var dataAtual = new Date()
+                    var dataHistorico = new Date(historico.data[i].dataHora)
+                    dataHistorico.setHours(dataHistorico.getHours() + 3)
+                    var diferencaEmMilissegundos = Math.abs(dataAtual.getTime() - dataHistorico.getTime());
+                    var diferencaEmMinutos = Math.floor(diferencaEmMilissegundos / (1000 * 60));
+
+
+                    if(diferencaEmMinutos >= 1){
+                        redeAlerta.innerText = 'Desconectada'
+                        botaoRede.style.backgroundColor = '#FFCDD2'
+                    } else {
+                        redeAlerta.innerText = 'Conectada'
+                    }
                 }
             }
         } catch (error) {
@@ -432,7 +540,10 @@
     setInterval(() => {
 
         histórico(idComp_grafico)
-
+        especificacaoMemoria()
+        especificacaoRede()
+        especificacaoCPU()
+        especificacaoDisco()
     }, 5000)
 
     function formatarDataHora(dataHora) {
@@ -514,7 +625,7 @@
 
     async function deletar() {
         try {
-            const result = await axios.patch(`/maquinas/deletar/${idMaquina}`)
+            const result = await axios.delete(`/maquinas/deletar/${idMaquina}`)
             if (result.status === 204) {
                 window.location.href = 'lista-maquinas.html'
             }
@@ -577,7 +688,7 @@
     })
 
     function receberAcaoRapida(acao) {
-        axios.post(`http://${wlanIPPublico}:8080/inovacao`, {
+        axios.post(`https://${wlanIPPublico}:8080/inovacao`, {
             comando: acao
         }, {
             headers: {
@@ -589,6 +700,13 @@
             console.log(error)
         })
     }
+
+    sidebarItems.forEach(item => {
+    item.addEventListener('click', function() {
+        sidebarItems.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+    });
+});
 </script>
 
 <script src="../assets/js/controle-pages.js"></script>

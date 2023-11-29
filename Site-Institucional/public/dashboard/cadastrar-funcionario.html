@@ -34,7 +34,7 @@
                         <img src="../assets/escritorio 1.png" class="sidebar-icon">
                         <span class="sidebar-text">Empresas</span>
                     </div>
-                    <div class="sidebar-item" id="itemMenuFuncionario">
+                    <div class="sidebar-item active" id="itemMenuFuncionario">
                         <img src="../assets/funcionarios 1.png" class="sidebar-icon">
                         <span class="sidebar-text">Funcionários</span>
                     </div>
@@ -115,6 +115,8 @@
                                     placeholder="Nome funcionário" onchange="handleFileSelect(event)">
                             </div>
 
+                            <div id="select_empresas">   </div>
+
                             <div class="campo-botoes campo-horizontal">
                                 <button class="bt_edicao" id="botao-cancelar" onclick="cancelar()">Cancelar</button>
                                 <button class="bt_edicao" id="botao-editar" onclick="cadastrar()">Cadastrar</button>
@@ -153,7 +155,7 @@
                 </select>
             </div>
             `
-            const formCadastrar = document.getElementsByClassName('form-editar')[0]
+            const formCadastrar = document.getElementById('select_empresas');
             formCadastrar.innerHTML += inner
 
             const form = document.getElementsByClassName('selectEmpresa')[0]
@@ -284,6 +286,14 @@
             console.log(error)
         }
     }
+
+    sidebarItems.forEach(item => {
+    item.addEventListener('click', function() {
+        sidebarItems.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+    });
+});
+
 </script>
 
 <script src="../assets/js/navegacao-menu.js"></script>

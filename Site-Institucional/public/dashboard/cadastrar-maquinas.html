@@ -22,7 +22,7 @@
                     <img src="../assets/logoBRANCA.png" class="logo">
                 </div>
                 <div class="itensMenu">
-                    <div class="sidebar-item" id="itemMenuMaquina">
+                    <div class="sidebar-item active" id="itemMenuMaquina">
                         <img src="../assets/pc.png" class="sidebar-icon">
                         <span class="sidebar-text">Máquinas</span>
                     </div>
@@ -89,13 +89,6 @@
                             <div class="campo">
                                 <h4 class="label-cadastrar">Local:</h4>
                                 <input type="text" class="input-form-cadastrar" placeholder="Cozinha" id="input_local">
-                            </div>
-
-                            <div class="campo campo-descricao">
-                                <h4 class="label-cadastrar">Descrição dos Componentes:</h4>
-                                <textarea id="input_descricao">
-
-                                </textarea>
                             </div>
 
                             <div class="campo-botoes campo-horizontal">
@@ -170,7 +163,6 @@
             const hostName = input_hostName.value
             const modelo = input_modelo.value
             const local = input_local.value
-            const descComponentes = input_descricao.value;
             const fkEmpresa = sessionStorage.getItem("fkEmpresa");
             console.log(fkEmpresa)
             const data = {
@@ -179,7 +171,6 @@
                 hostName,
                 modelo,
                 local,
-                descComponentes,
                 fkEmpresa
             }
 
@@ -207,6 +198,13 @@
     function cancelar() {
         window.location.href = 'lista-maquinas.html'
     }
+
+    sidebarItems.forEach(item => {
+    item.addEventListener('click', function() {
+        sidebarItems.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+    });
+});
 
 </script>
 

@@ -29,7 +29,7 @@
                     <img src="../assets/logoBRANCA.png" class="logo">
                 </div>
                 <div class="itensMenu">
-                    <div class="sidebar-item" id="itemMenuMaquina">
+                    <div class="sidebar-item active" id="itemMenuMaquina">
                         <img src="../assets/pc.png" class="sidebar-icon">
                         <span class="sidebar-text">Máquinas</span>
                     </div>
@@ -219,7 +219,6 @@
     }
 
     async function historicoGeral() {
-        console.log(qtdEmAlerta)
         try {
             if (qtdEmAlerta === 1) {
                 situacaoAlerta = 'yellow'
@@ -242,16 +241,13 @@
         try {
             const historico = await axios.get(`/historico/${idMaquina}/${idComp}`)
             const startIndex = Math.max(0, historico.data.length - 1)
-            var alertaQtd = 0
             var alerta = false
             if (historico.data.length > 0) {
+                const startIndex = Math.max(0, historico.data.length - 10)
                 for (var i = 0; i < historico.data.length; i++) {
+                    var alertaQtd = 0
                     alerta = false
-                    alerta = false
-                    if (historico.data[i].leitura >= 70 && historico.data[i].leitura < 90) {
-                        alertaQtd = 1
-                        alerta = true
-                    } else if (historico.data[i].leitura >= 90) {
+                    if (historico.data[i].leitura >= 80) {
                         alerta = true
                         alertaQtd = 1
                     }
@@ -270,18 +266,17 @@
 
     async function historicoDisco(idMaquina, idComp) {
         try {
-            const historico = await axios.get(`/dados/${idMaquina}/${idComp}`)
+            const historico = await axios.get(`/historico/${idMaquina}/${idComp}`)
             const startIndex = Math.max(0, historico.data.length - 1)
-            var alertaQtd = false
+            var alerta = false
             for (var i = 0; i < historico.data.length; i++) {
-                alerta = false
-                var alertaQtd = 0
                 if (historico.data.length > 0) {
-                    if (historico.data[i].descricao === 'Disco Tamanho Total') {
-                        if (historico.data[i].valor - historico.data[i + 1].valor >= 70 && historico.data[i].valor - historico.data[i + 1].valor < 90) {
-                            alertaQtd += 1
-                            alerta = true
-                        } else if (historico.data[i].valor - historico.data[i + 1].valor >= 90) {
+                    if (historico.data[i].nome === 'Disco Tamanho Total') {
+                        var alertaQtd = 0
+                        alerta = false
+                        const tamRestante = Number(historico.data[i].leitura) - Number(historico.data[i + 1].leitura)
+                        const alertaDisco = tamRestante / historico.data[i].leitura * 100
+                        if (alertaDisco >= 80) {
                             alertaQtd += 1
                             alerta = true
                         }
@@ -294,7 +289,7 @@
                                             Disco
                                         </li>`
             }
-            qtdEmAlerta += alertaQtd
+
         } catch (error) {
             console.log(error)
         }
@@ -307,14 +302,12 @@
             var alerta = false
             if (historico.data.length > 0) {
                 for (var i = 0; i < historico.data.length; i++) {
-
-                    var alertaQtd = 0
                     if (historico.data[i].nome === 'Memoria em Uso') {
+                        var alertaQtd = 0
+                        var usoAlerta = Number(historico.data[i].leitura)
+                        const alertaMemoria = usoAlerta / (Number(historico.data[i].leitura) + Number(historico.data[i + 1].leitura)) * 100
                         alerta = false
-                        if (historico.data[i].leitura >= 70 && historico.data[i].leitura < 90) {
-                            alertaQtd += 1
-                            alerta = true
-                        } else if (historico.data[i].leitura >= 90) {
+                        if (alertaMemoria >= 80) {
                             alerta = true
                             alertaQtd += 1
                         }
@@ -340,13 +333,15 @@
             var alerta = false
             if (historico.data.length > 0) {
                 for (var i = 0; i < historico.data.length; i++) {
+                    alerta = false
                     var alertaQtd = 0
-                    if (historico.data[i].dataHora <= (Number(new Date().getHours() + ':' + new Date().getMinutes() + ':' + new Date().getSeconds() - 20)))
-                        alerta = false
-                    if (historico.data[i].leitura >= 70 && historico.data[i].leitura < 90) {
-                        alerta = true
-                        alertaQtd += 1
-                    } else if (historico.data[i].leitura >= 90) {
+                    var dataAtual = new Date()
+                    var dataHistorico = new Date(historico.data[i].dataHora)
+                    dataHistorico.setHours(dataHistorico.getHours() + 3)
+                    var diferencaEmMilissegundos = Math.abs(dataAtual.getTime() - dataHistorico.getTime());
+                    var diferencaEmMinutos = Math.floor(diferencaEmMilissegundos / (1000 * 60));
+
+                    if (diferencaEmMinutos > 1){
                         alerta = true
                         alertaQtd += 1
                     }
@@ -358,6 +353,7 @@
                                     </li>`
             }
             qtdEmAlerta += alertaQtd
+            console.log(qtdEmAlerta)
         } catch (error) {
             console.log(error)
         }
@@ -567,7 +563,7 @@
 
                 maquinasPesquisadas.forEach((maquina) => {
                     linha_maquina.innerHTML += `<div class="cardMaquina" onclick="navegacao(${maquina.idMaquina})">
-                                    <div class="alerta">
+                                    <div class="alerta" style="background-color: ${situacaoAlerta}">
                                     </div>
                                     <div class="informacoes">
                                         <div class="tituloMaquina">
@@ -577,22 +573,16 @@
                                         <div class="info">
                                             <div class="componentes">
                                                 <p>Componentens em alertas:</p>
-                                                <div class="listaComponentes">
+                                                <div class="listaComponentes>
                                                     <li class="componenteEspecifico">
-                                                        Memória
-                                                    </li>
-                                                    <li class="componenteEspecifico">
-                                                        CPU
-                                                    </li>
-                                                    <li class="componenteEspecifico">
-                                                        Disco
+                                                        ${listaCompAlertas}
                                                     </li>
                                                 </div>
                                             </div>
                                             <div class="situacao">
                                                 <div class="grave">
                                                     Situação:
-                                                    <span class="colorSituacao"> Grave </span>
+                                                    <span class="colorSituacao" id="situacao" style="color: ${situacaoAlerta}"> ${sit} </span>
                                                 </div>
                                                 <div class="local">
                                                     Local: ${maquina.local}
@@ -616,6 +606,13 @@
             console.error(error)
         }
     }
+
+    sidebarItems.forEach(item => {
+    item.addEventListener('click', function() {
+        sidebarItems.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+    });
+});
 </script>
 
 <script src="../assets/js/navegacao-menu.js"></script>

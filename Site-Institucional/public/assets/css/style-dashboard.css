@@ -150,51 +150,6 @@
     background-color: #f1f0f0;
 }
 
-.opcaoMenuComponentes:nth-child(2)::before {
-    content: '';
-    background-image: url(../img/indicadorVerde.svg);
-    top: 10px;
-    left: 10px;
-    width: 20px;
-    height: 20px;
-    background-repeat: no-repeat;
-    position: absolute;
-    z-index: 1;
-}
-
-.opcaoMenuComponentes:nth-child(3)::before {
-    content: '';
-    background-image: url(../img/indicadorAmarelo.svg);
-    top: 10px;
-    left: 10px;
-    width: 20px;
-    height: 20px;
-    background-repeat: no-repeat;
-    position: absolute;
-}
-
-.opcaoMenuComponentes:nth-child(4)::before {
-    content: '';
-    background-image: url(../img/indicadorVermelho.svg);
-    top: 10px;
-    left: 10px;
-    width: 20px;
-    height: 20px;
-    background-repeat: no-repeat;
-    position: absolute;
-}
-
-.opcaoMenuComponentes:nth-child(5)::before {
-    content: '';
-    background-image: url(../img/indicadorVerde.svg);
-    top: 10px;
-    left: 10px;
-    width: 20px;
-    height: 20px;
-    background-repeat: no-repeat;
-    position: absolute;
-}
-
 .opcaoMenuComponentes h2 {
     color: #040454;
     margin: 0;
@@ -380,4 +335,23 @@
 
 .componente-selecionado {
     border: #040454 solid 2px;
+}
+
+#sidebar .areaSideBar {
+    position: relative;
+}
+
+.sidebar-item.active {
+    position: relative;
+}
+
+.sidebar-item.active::before {
+    content: '';
+    position: absolute;
+    left: -20px;
+    top: 0;
+    bottom: 0;
+    width: 5px;
+    background: white;
+    border-radius: 2px;
 }
