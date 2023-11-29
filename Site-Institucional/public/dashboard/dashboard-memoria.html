@@ -171,7 +171,7 @@
                                         <span class="tituloInformacoesEstaticas">Informações Estáticas:</span>
                                         <div class="areaDadosEstaticos">
                                             <span class="tituloDadoEstatico">Total:
-                                                <span class="dadoEstatico" id="total">8 GB</span></span>
+                                                <span class="dadoEstatico" id="total"></span></span>
                                         </div>
 
                                     </div>
@@ -383,9 +383,7 @@
                         botaoCpu.style.backgroundColor = '#F4FA58'
                     } else if (historico.data[i].leitura >= 80) {
                         botaoCpu.style.backgroundColor = '#FFCDD2'
-                    } else {
-                        botaoCpu.style.backgroundColor = '#FFCDD2'
-                    }
+                    } 
                 }
             }
         } catch (error) {

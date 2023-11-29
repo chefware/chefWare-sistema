@@ -332,8 +332,6 @@
                         botaoCpu.style.backgroundColor = '#F4FA58'
                     } else if (historico.data[i].leitura >= 80) {
                         botaoCpu.style.backgroundColor = '#FFCDD2'
-                    } else {
-                        botaoCpu.style.backgroundColor = '#FFCDD2'
                     }
                 }
             }
@@ -344,7 +342,7 @@
 
     async function especificacaoMemoria() {
         try {
-            const especificacao = await axios.get(`/dashboard/especificacoes/${idMaquina}/Memoria`)
+            const especificacao = await axios.get(`/dashboard/especificacoes/${idMaquina}/Memória`)
             console.log(especificacao)
             if (especificacao.status === 200 && especificacao.data.length > 0) {
                 const dadosEspecificacoes = especificacao.data

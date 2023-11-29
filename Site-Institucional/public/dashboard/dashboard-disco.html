@@ -290,7 +290,7 @@
 
     async function especificacaoMemoria() {
         try {
-            const especificacao = await axios.get(`/dashboard/especificacoes/${idMaquina}/Memoria`)
+            const especificacao = await axios.get(`/dashboard/especificacoes/${idMaquina}/Memória`)
             console.log(especificacao)
             if (especificacao.status === 200 && especificacao.data.length > 0) {
                 const dadosEspecificacoes = especificacao.data
@@ -399,11 +399,10 @@
                 const startIndex = Math.max(0, historico.data.length - 10)
                 for (var i = startIndex; i < historico.data.length; i++) {
                     usoCPU.innerText = `${Number(historico.data[i].leitura).toFixed(2)} ${historico.data[i].unidadeMedida}`
+                    console.log(historico.data[i].leitura)
                     if (historico.data[i].leitura >= 60 && historico.data[i].leitura < 80) {
                         botaoCpu.style.backgroundColor = '#F4FA58'
                     } else if (historico.data[i].leitura >= 80) {
-                        botaoCpu.style.backgroundColor = '#FFCDD2'
-                    } else {
                         botaoCpu.style.backgroundColor = '#FFCDD2'
                     }
                 }
@@ -561,7 +560,7 @@
                         if (vetor_grafico.length >= 10) {
                             vetor_grafico.shift()
                         }
-                        vetor_grafico.push(historico.data[i].leitura)
+                        vetor_grafico.push((historico.data[i].leitura - historico.data[i + 1].leitura).toFixed(2))
 
                         if (vetor_dataHora.length >= 10) {
                             vetor_dataHora.shift()

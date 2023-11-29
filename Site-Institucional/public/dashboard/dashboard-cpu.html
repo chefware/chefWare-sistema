@@ -370,7 +370,7 @@
 
     async function especificacaoMemoria() {
         try {
-            const especificacao = await axios.get(`/dashboard/especificacoes/${idMaquina}/Memoria`)
+            const especificacao = await axios.get(`/dashboard/especificacoes/${idMaquina}/Memória`)
             console.log(especificacao)
             if (especificacao.status === 200 && especificacao.data.length > 0) {
                 const dadosEspecificacoes = especificacao.data
@@ -614,7 +614,7 @@
                     qtdUsoMenu.innerText = `${Number(historico.data[i].leitura).toFixed(2)} ${historico.data[i].unidadeMedida}` 
                     
             
-
+                    console.log(historico.data[i].leitura)
                     if (historico.data[i].leitura >= 60 && historico.data[i].leitura < 80) {
                         situacaoAlerta.style.backgroundColor = 'yellow'
                     } else if (historico.data[i].leitura >= 80) {
